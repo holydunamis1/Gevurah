@@ -1,0 +1,458 @@
+{
+  "args": {
+    "dependency": "transitive",
+    "version": "2.7.0"
+  },
+  "async": {
+    "dependency": "transitive",
+    "version": "2.13.1"
+  },
+  "audioplayers": {
+    "dependency": "transitive",
+    "version": "6.8.1"
+  },
+  "audioplayers_android": {
+    "dependency": "transitive",
+    "version": "5.3.0"
+  },
+  "audioplayers_darwin": {
+    "dependency": "transitive",
+    "version": "6.5.0"
+  },
+  "audioplayers_linux": {
+    "dependency": "transitive",
+    "version": "4.3.0"
+  },
+  "audioplayers_platform_interface": {
+    "dependency": "transitive",
+    "version": "7.2.0"
+  },
+  "audioplayers_web": {
+    "dependency": "transitive",
+    "version": "5.3.0"
+  },
+  "audioplayers_windows": {
+    "dependency": "transitive",
+    "version": "4.4.1"
+  },
+  "boolean_selector": {
+    "dependency": "transitive",
+    "version": "2.1.2"
+  },
+  "characters": {
+    "dependency": "transitive",
+    "version": "1.4.1"
+  },
+  "clock": {
+    "dependency": "transitive",
+    "version": "1.1.3"
+  },
+  "code_assets": {
+    "dependency": "transitive",
+    "version": "2.2.0"
+  },
+  "collection": {
+    "dependency": "transitive",
+    "version": "1.19.1"
+  },
+  "connectivity_plus": {
+    "dependency": "direct main",
+    "version": "7.3.2"
+  },
+  "connectivity_plus_platform_interface": {
+    "dependency": "transitive",
+    "version": "2.1.0"
+  },
+  "crypto": {
+    "dependency": "direct main",
+    "version": "3.0.8"
+  },
+  "cupertino_ui": {
+    "dependency": "transitive",
+    "version": "1.1.7"
+  },
+  "dbus": {
+    "dependency": "transitive",
+    "version": "0.8.0"
+  },
+  "equatable": {
+    "dependency": "transitive",
+    "version": "3.0.0"
+  },
+  "fake_async": {
+    "dependency": "transitive",
+    "version": "1.3.3"
+  },
+  "ffi": {
+    "dependency": "transitive",
+    "version": "2.2.0"
+  },
+  "file": {
+    "dependency": "transitive",
+    "version": "7.0.1"
+  },
+  "fixnum": {
+    "dependency": "transitive",
+    "version": "1.1.1"
+  },
+  "flame": {
+    "dependency": "direct main",
+    "version": "1.38.2"
+  },
+  "flame_audio": {
+    "dependency": "direct main",
+    "version": "2.12.2"
+  },
+  "flutter": {
+    "dependency": "direct main",
+    "version": "0.0.0"
+  },
+  "flutter_lints": {
+    "dependency": "direct dev",
+    "version": "6.0.0"
+  },
+  "flutter_local_notifications": {
+    "dependency": "direct main",
+    "version": "23.0.3"
+  },
+  "flutter_local_notifications_linux": {
+    "dependency": "transitive",
+    "version": "9.0.0"
+  },
+  "flutter_local_notifications_platform_interface": {
+    "dependency": "transitive",
+    "version": "13.0.0"
+  },
+  "flutter_local_notifications_web": {
+    "dependency": "transitive",
+    "version": "2.0.0"
+  },
+  "flutter_local_notifications_windows": {
+    "dependency": "transitive",
+    "version": "4.0.1"
+  },
+  "flutter_localizations": {
+    "dependency": "transitive",
+    "version": "0.0.0"
+  },
+  "flutter_test": {
+    "dependency": "direct dev",
+    "version": "0.0.0"
+  },
+  "flutter_timezone": {
+    "dependency": "direct main",
+    "version": "5.1.1"
+  },
+  "flutter_web_plugins": {
+    "dependency": "transitive",
+    "version": "0.0.0"
+  },
+  "google_mobile_ads": {
+    "dependency": "direct main",
+    "version": "9.2.0"
+  },
+  "hooks": {
+    "dependency": "transitive",
+    "version": "2.2.0"
+  },
+  "http": {
+    "dependency": "transitive",
+    "version": "1.6.0"
+  },
+  "http_parser": {
+    "dependency": "transitive",
+    "version": "4.1.2"
+  },
+  "in_app_purchase": {
+    "dependency": "direct main",
+    "version": "3.3.1"
+  },
+  "in_app_purchase_android": {
+    "dependency": "transitive",
+    "version": "0.5.5"
+  },
+  "in_app_purchase_platform_interface": {
+    "dependency": "transitive",
+    "version": "1.4.1"
+  },
+  "in_app_purchase_storekit": {
+    "dependency": "transitive",
+    "version": "0.4.17"
+  },
+  "intl": {
+    "dependency": "direct main",
+    "version": "0.20.3"
+  },
+  "jni": {
+    "dependency": "transitive",
+    "version": "1.1.2"
+  },
+  "jni_flutter": {
+    "dependency": "transitive",
+    "version": "1.0.4+1"
+  },
+  "jni_util": {
+    "dependency": "transitive",
+    "version": "1.0.0"
+  },
+  "json_annotation": {
+    "dependency": "transitive",
+    "version": "4.12.0"
+  },
+  "leak_tracker": {
+    "dependency": "transitive",
+    "version": "11.0.2"
+  },
+  "leak_tracker_flutter_testing": {
+    "dependency": "transitive",
+    "version": "3.0.10"
+  },
+  "leak_tracker_testing": {
+    "dependency": "transitive",
+    "version": "3.0.2"
+  },
+  "lints": {
+    "dependency": "transitive",
+    "version": "6.1.0"
+  },
+  "listen": {
+    "dependency": "transitive",
+    "version": "1.0.1"
+  },
+  "logging": {
+    "dependency": "transitive",
+    "version": "1.3.0"
+  },
+  "lucide_icons_flutter": {
+    "dependency": "direct main",
+    "version": "4.0.3"
+  },
+  "matcher": {
+    "dependency": "transitive",
+    "version": "0.12.20"
+  },
+  "material_color_utilities": {
+    "dependency": "transitive",
+    "version": "0.13.0"
+  },
+  "material_ui": {
+    "dependency": "direct main",
+    "version": "1.11.1"
+  },
+  "meta": {
+    "dependency": "transitive",
+    "version": "1.19.0"
+  },
+  "nm": {
+    "dependency": "transitive",
+    "version": "0.6.0"
+  },
+  "objective_c": {
+    "dependency": "transitive",
+    "version": "9.6.4"
+  },
+  "ordered_set": {
+    "dependency": "transitive",
+    "version": "8.0.1"
+  },
+  "package_config": {
+    "dependency": "transitive",
+    "version": "3.0.0"
+  },
+  "path": {
+    "dependency": "transitive",
+    "version": "1.9.1"
+  },
+  "path_provider": {
+    "dependency": "direct main",
+    "version": "2.1.6"
+  },
+  "path_provider_android": {
+    "dependency": "transitive",
+    "version": "2.3.1"
+  },
+  "path_provider_foundation": {
+    "dependency": "transitive",
+    "version": "2.6.0"
+  },
+  "path_provider_linux": {
+    "dependency": "transitive",
+    "version": "2.2.2"
+  },
+  "path_provider_platform_interface": {
+    "dependency": "transitive",
+    "version": "2.1.3"
+  },
+  "path_provider_windows": {
+    "dependency": "transitive",
+    "version": "2.3.0"
+  },
+  "petitparser": {
+    "dependency": "transitive",
+    "version": "7.1.0"
+  },
+  "phosphor_flutter": {
+    "dependency": "direct main",
+    "version": "2.1.0"
+  },
+  "platform": {
+    "dependency": "transitive",
+    "version": "3.2.0"
+  },
+  "plugin_platform_interface": {
+    "dependency": "transitive",
+    "version": "2.1.8"
+  },
+  "pub_semver": {
+    "dependency": "transitive",
+    "version": "2.2.1"
+  },
+  "record_use": {
+    "dependency": "transitive",
+    "version": "1.1.1"
+  },
+  "shared_preferences": {
+    "dependency": "direct main",
+    "version": "2.5.6"
+  },
+  "shared_preferences_android": {
+    "dependency": "transitive",
+    "version": "2.5.5"
+  },
+  "shared_preferences_foundation": {
+    "dependency": "transitive",
+    "version": "2.6.2"
+  },
+  "shared_preferences_linux": {
+    "dependency": "transitive",
+    "version": "2.4.1"
+  },
+  "shared_preferences_platform_interface": {
+    "dependency": "transitive",
+    "version": "2.4.2"
+  },
+  "shared_preferences_web": {
+    "dependency": "transitive",
+    "version": "2.4.3"
+  },
+  "shared_preferences_windows": {
+    "dependency": "transitive",
+    "version": "2.4.1"
+  },
+  "sky_engine": {
+    "dependency": "transitive",
+    "version": "0.0.0"
+  },
+  "source_span": {
+    "dependency": "transitive",
+    "version": "1.10.2"
+  },
+  "stack_trace": {
+    "dependency": "transitive",
+    "version": "1.12.2"
+  },
+  "stream_channel": {
+    "dependency": "transitive",
+    "version": "2.1.4"
+  },
+  "string_scanner": {
+    "dependency": "transitive",
+    "version": "1.4.1"
+  },
+  "synchronized": {
+    "dependency": "transitive",
+    "version": "3.6.1+1"
+  },
+  "term_glyph": {
+    "dependency": "transitive",
+    "version": "1.2.2"
+  },
+  "test_api": {
+    "dependency": "transitive",
+    "version": "0.7.14"
+  },
+  "timezone": {
+    "dependency": "direct main",
+    "version": "0.11.2"
+  },
+  "typed_data": {
+    "dependency": "transitive",
+    "version": "1.4.0"
+  },
+  "url_launcher": {
+    "dependency": "direct main",
+    "version": "6.3.3"
+  },
+  "url_launcher_android": {
+    "dependency": "transitive",
+    "version": "6.3.35"
+  },
+  "url_launcher_ios": {
+    "dependency": "transitive",
+    "version": "6.4.2"
+  },
+  "url_launcher_linux": {
+    "dependency": "transitive",
+    "version": "3.2.3"
+  },
+  "url_launcher_macos": {
+    "dependency": "transitive",
+    "version": "3.2.6"
+  },
+  "url_launcher_platform_interface": {
+    "dependency": "transitive",
+    "version": "2.3.2"
+  },
+  "url_launcher_web": {
+    "dependency": "transitive",
+    "version": "2.4.3"
+  },
+  "url_launcher_windows": {
+    "dependency": "transitive",
+    "version": "3.1.6"
+  },
+  "uuid": {
+    "dependency": "transitive",
+    "version": "4.6.0"
+  },
+  "vector_math": {
+    "dependency": "transitive",
+    "version": "2.4.3"
+  },
+  "vm_service": {
+    "dependency": "transitive",
+    "version": "15.4.0"
+  },
+  "web": {
+    "dependency": "transitive",
+    "version": "1.1.2"
+  },
+  "webview_flutter": {
+    "dependency": "transitive",
+    "version": "4.14.1"
+  },
+  "webview_flutter_android": {
+    "dependency": "transitive",
+    "version": "4.14.1"
+  },
+  "webview_flutter_platform_interface": {
+    "dependency": "transitive",
+    "version": "2.15.1"
+  },
+  "webview_flutter_wkwebview": {
+    "dependency": "transitive",
+    "version": "3.27.2"
+  },
+  "xdg_directories": {
+    "dependency": "transitive",
+    "version": "1.1.0"
+  },
+  "xml": {
+    "dependency": "transitive",
+    "version": "7.1.0"
+  },
+  "yaml": {
+    "dependency": "transitive",
+    "version": "3.1.4"
+  }
+}

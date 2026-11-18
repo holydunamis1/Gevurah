@@ -1,0 +1,77 @@
+name: check
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Repository sanity
+        run: |
+          set -e
+          test -f README.md
+          test -f .gitignore
+          test -f docs/decision.md
+          if git ls-files | grep -E '\.(jks|keystore|p12|p8|pem)$|(^|/)key\.properties$|(^|/)\.env'; then
+            echo "A secret-looking file is tracked. Remove it."
+            exit 1
+          fi
+          if git grep -nE 'gh[pousr]_[A-Za-z0-9]{30,}' -- . ':!.github'; then
+            echo "A token-looking string is committed. Remove it."
+            exit 1
+          fi
+          echo "Repository sanity passed"
+
+      - name: Detect Flutter app
+        id: app
+        run: |
+          if [ -f app/pubspec.yaml ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No app/pubspec.yaml yet; Flutter steps are skipped"
+          fi
+
+      - name: Set up Flutter
+        if: steps.app.outputs.present == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter version
+        if: steps.app.outputs.present == 'true'
+        run: flutter --version
+
+      - name: Pub get
+        if: steps.app.outputs.present == 'true'
+        working-directory: app
+        run: flutter pub get
+
+      - name: Analyze
+        if: steps.app.outputs.present == 'true'
+        working-directory: app
+        run: flutter analyze
+
+      - name: Test with coverage
+        if: steps.app.outputs.present == 'true'
+        working-directory: app
+        run: |
+          if [ -d test ]; then
+            flutter test --coverage
+          else
+            echo "No tests yet"
+          fi

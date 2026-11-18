@@ -1,0 +1,63 @@
+name: bootstrap_platform
+
+# Manual only. Generates the Android and iOS project folders on a runner
+# (no local Flutter SDK is available) and pushes them, with the exact
+# Flutter version, to a branch named bootstrap-out. It never touches main.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Generate platform folders
+        run: |
+          set -e
+          flutter create --org com.zdmgold --project-name gevurah --platforms android,ios --empty tmp_app
+          mkdir -p out/app
+          cp -r tmp_app/android out/app/android
+          cp -r tmp_app/ios out/app/ios
+          flutter --version > out/flutter_version.txt
+          dart --version >> out/flutter_version.txt 2>&1
+          echo "Generated:"
+          find out -maxdepth 3 -type d | sort
+
+      - name: Push to bootstrap-out
+        run: |
+          set -e
+          cd out
+          git init -q -b bootstrap-out
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "bootstrap: generated android and ios folders"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin bootstrap-out
+
+      - name: Summary
+        run: |
+          {
+            echo "### Bootstrap complete"
+            echo ""
+            echo '```'
+            cat out/flutter_version.txt
+            echo '```'
+            echo ""
+            echo "Branch: bootstrap-out"
+          } >> "$GITHUB_STEP_SUMMARY"

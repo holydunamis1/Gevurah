@@ -22,6 +22,7 @@ This file is the shared memory for every chat and every agent that works on Gevu
 | 014 | Decision log file name is `docs/decision.md` (singular), as in the blueprint | Locked | 2026-11-18 |
 | 015 | Android manifest declares only permissions traced to the capability matrix: INTERNET, ACCESS_NETWORK_STATE, AD_ID, POST_NOTIFICATIONS, VIBRATE. Boot receivers for rescheduling the daily reminder are added in batch p2d with the notification service, with their own decision row | Locked | 2026-11-18 |
 | 016 | AdMob uses Google's published sample app IDs (Android `ca-app-pub-3940256099942544~3347511713`, iOS `ca-app-pub-3940256099942544~1458002511`) until Ak supplies production IDs | Locked | 2026-11-18 |
+| 017 | Dependencies are pinned only from a real `flutter pub get` on a runner (`resolve_deps` workflow), never guessed. Extra packages beyond the template list: `flame_audio` (audio), `timezone` and `flutter_timezone` (scheduled local notifications). `share_plus` is not used (no share feature). Haptics use Flutter's built-in `HapticFeedback` unless a custom pattern is needed later | Locked | 2026-11-18 |
 
 ## Build log
 
@@ -29,6 +30,7 @@ Newest row first. One row per batch or notable turn.
 
 | Date | Batch | What landed | Paths | Check result |
 | --- | --- | --- | --- | --- |
+| 2026-11-18 | p1d-0 | Manual `resolve_deps` workflow: resolves latest compatible package versions with Flutter 3.50.0 and exports package source to branch `deps-out`, because this environment cannot reach pub.dev and exact pins must come from a real resolve | `.github/workflows/resolve_deps.yml` | Pending |
 | 2026-11-18 | p1c | Static website: landing page led by the game, privacy policy matching the app's actual behaviour (ads with consent, local storage, no accounts, no analytics), support page with the support email, token-based stylesheet with light and dark, security headers, 404 page. Checked at phone width in both themes | `website/index.html`, `website/privacy.html`, `website/support.html`, `website/404.html`, `website/style.css`, `website/_headers` | Pending |
 | 2026-11-18 | p1b | Android and iOS project folders from Flutter 3.50.0 (`com.zdmgold.gevurah`); manifest permissions and sample AdMob IDs; release signing reads `key.properties` when present; iOS display name, ad and tracking keys, privacy manifest added to the Runner target | `app/android/**`, `app/ios/**` | Green on `ci-analyser` and `main` |
 | 2026-11-18 | p1a | Repo files, decision log, light check workflow, bootstrap workflow | `.gitignore`, `README.md`, `docs/decision.md`, `.github/workflows/check.yml`, `.github/workflows/bootstrap_platform.yml` | Green on `ci-analyser` and `main` |

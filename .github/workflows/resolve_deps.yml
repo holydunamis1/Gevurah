@@ -1,0 +1,85 @@
+name: resolve_deps
+
+# Manual only. Resolves the latest compatible versions of the given packages with the
+# pinned Flutter, and exports their versions plus the Dart source of the packages named
+# in `sources` so their real API can be read before code is written against them.
+# Pushes everything to a branch named deps-out. It never touches main.
+
+on:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Space-separated packages to add to a scratch project'
+        required: true
+        default: 'flame flame_audio google_mobile_ads in_app_purchase shared_preferences path_provider flutter_local_notifications timezone flutter_timezone connectivity_plus url_launcher intl crypto'
+      sources:
+        description: 'Space-separated packages whose Dart source is exported'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+
+      - name: Resolve
+        env:
+          PACKAGES: ${{ inputs.packages }}
+          SOURCES: ${{ inputs.sources }}
+        run: |
+          set -e
+          pip install --quiet pyyaml
+          flutter --version
+          flutter create --empty --platforms android scratch_deps
+          cd scratch_deps
+          flutter pub add $PACKAGES
+          flutter pub get
+          cd ..
+          python3 - <<'PY'
+          import json, os, pathlib, shutil, re
+          root = pathlib.Path('scratch_deps')
+          import yaml
+          lock = yaml.safe_load((root / 'pubspec.lock').read_text())
+          pkgs = {n: {'dependency': v['dependency'], 'version': v['version']} for n, v in lock['packages'].items()}
+          out = pathlib.Path('out'); out.mkdir()
+          (out / 'deps_resolved.json').write_text(json.dumps(pkgs, indent=2, sort_keys=True))
+          (out / 'pubspec.yaml.resolved').write_text((root / 'pubspec.yaml').read_text())
+          cfg = json.loads((root / '.dart_tool' / 'package_config.json').read_text())
+          wanted = [s for s in os.environ.get('SOURCES', '').split() if s]
+          for p in cfg['packages']:
+              if p['name'] in wanted:
+                  uri = p['rootUri']
+                  base = (root / '.dart_tool' / uri).resolve() if uri.startswith('..') else pathlib.Path(uri.replace('file://', ''))
+                  dest = out / 'src' / p['name']
+                  for f in list(base.rglob('*.dart')) + [base / 'pubspec.yaml']:
+                      if f.is_file():
+                          rel = f.relative_to(base)
+                          (dest / rel).parent.mkdir(parents=True, exist_ok=True)
+                          shutil.copy(f, dest / rel)
+          print(json.dumps(pkgs, indent=2, sort_keys=True))
+          PY
+          flutter --version > out/flutter_version.txt
+
+      - name: Push to deps-out
+        run: |
+          set -e
+          cd out
+          git init -q -b deps-out
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "deps: resolved package versions"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin deps-out

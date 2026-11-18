@@ -18,8 +18,10 @@ This file is the shared memory for every chat and every agent that works on Gevu
 | 010 | Ads and money: AdMob with UMP consent gating every request; one-time Remove Ads purchase; banner on menu screens, interstitial at natural breaks with a 10-minute gap and no cap, never in the first session; opt-in rewarded ads. Google test IDs until production IDs are supplied | Locked | 2026-11-18 |
 | 011 | Fonts: Inter for headers and interface chrome, Source Sans 3 for scripture and body text; other scripts use system fonts | Locked | 2026-11-18 |
 | 012 | CI/CD: `check.yml` on every push; build, emulator and bootstrap workflows are manual only. Each batch goes to `ci-analyser`, is fixed until green, then pushed to `main`. Signing secrets are set at the release batch and never written into the repository or this file | Locked | 2026-11-18 |
-| 013 | Flutter version pin: the exact stable version is read from the first bootstrap run (`flutter_version.txt` on the `bootstrap-out` branch) and then pinned in `check.yml` and every workflow. Until then workflows use the stable channel | Open until the bootstrap run | 2026-11-18 |
+| 013 | Flutter pinned to 3.50.0 (stable, Dart 3.14.0, engine revision 371f77202a, released 2026-11-09), read from the first bootstrap run and set in `check.yml` and `bootstrap_platform.yml`. Every later workflow uses the same pin. Changing it needs a new decision row | Locked | 2026-11-18 |
 | 014 | Decision log file name is `docs/decision.md` (singular), as in the blueprint | Locked | 2026-11-18 |
+| 015 | Android manifest declares only permissions traced to the capability matrix: INTERNET, ACCESS_NETWORK_STATE, AD_ID, POST_NOTIFICATIONS, VIBRATE. Boot receivers for rescheduling the daily reminder are added in batch p2d with the notification service, with their own decision row | Locked | 2026-11-18 |
+| 016 | AdMob uses Google's published sample app IDs (Android `ca-app-pub-3940256099942544~3347511713`, iOS `ca-app-pub-3940256099942544~1458002511`) until Ak supplies production IDs | Locked | 2026-11-18 |
 
 ## Build log
 
@@ -27,10 +29,13 @@ Newest row first. One row per batch or notable turn.
 
 | Date | Batch | What landed | Paths | Check result |
 | --- | --- | --- | --- | --- |
-| 2026-11-18 | p1a | Repo files, decision log, light check workflow, bootstrap workflow | `.gitignore`, `README.md`, `docs/decision.md`, `.github/workflows/check.yml`, `.github/workflows/bootstrap_platform.yml` | Pending first run |
+| 2026-11-18 | p1b | Android and iOS project folders from Flutter 3.50.0 (`com.zdmgold.gevurah`); manifest permissions and sample AdMob IDs; release signing reads `key.properties` when present; iOS display name, ad and tracking keys, privacy manifest added to the Runner target | `app/android/**`, `app/ios/**` | Pending |
+| 2026-11-18 | p1a | Repo files, decision log, light check workflow, bootstrap workflow | `.gitignore`, `README.md`, `docs/decision.md`, `.github/workflows/check.yml`, `.github/workflows/bootstrap_platform.yml` | Green on `ci-analyser` and `main` |
 
 ## Open items
 
 - Confirm signing alias `Gevurah`.
-- Run the Bootstrap platform workflow (Actions tab, manual) to generate the Android and iOS folders and read the Flutter version.
+- iOS `SKAdNetworkItems` holds only Google's own identifier (`cstr6suwn9.skadnetwork`). The full list Google recommends could not be fetched from this environment; paste it from AdMob's "SKAdNetwork" documentation or confirm it before the iOS release batch p7b.
+- Re-verify `PrivacyInfo.xcprivacy` (tracking flag, collected data types, required-reason codes) against the actual plugin set once pubspec dependencies are resolved in p1d, and again at p7b.
+- Orientation is left at the Flutter default (portrait and landscape); decide on portrait-only before p5a.
 - Supply AdMob production IDs, the Apple team ID and the App Store Connect key when the release batches are reached.

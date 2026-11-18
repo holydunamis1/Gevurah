@@ -1,0 +1,58 @@
+# Flutter / Dart build output
+app/build/
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.packages
+app/.pub-cache/
+app/.pub/
+app/coverage/
+.dart_tool/
+build/
+coverage/
+
+# Obfuscation symbols
+symbols/
+app/symbols/
+
+# Android signing and local config (never commit)
+*.jks
+*.keystore
+key.properties
+local.properties
+app/android/key.properties
+app/android/local.properties
+app/android/.gradle/
+app/android/gradle-wrapper.jar
+app/android/captures/
+
+# iOS build output
+app/ios/Pods/
+app/ios/.symlinks/
+app/ios/Flutter/Flutter.framework
+app/ios/Flutter/Flutter.podspec
+app/ios/Flutter/ephemeral/
+app/ios/Runner.xcworkspace/xcuserdata/
+**/xcuserdata/
+**/DerivedData/
+
+# Python caches (scripture tools)
+__pycache__/
+*.pyc
+.venv/
+tools/**/.cache/
+
+# Editors and OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Secrets and scratch
+.env
+.env.*
+*.pem
+*.p12
+*.p8
+scratch/

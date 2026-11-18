@@ -29,12 +29,15 @@ Newest row first. One row per batch or notable turn.
 
 | Date | Batch | What landed | Paths | Check result |
 | --- | --- | --- | --- | --- |
-| 2026-11-18 | p1b | Android and iOS project folders from Flutter 3.50.0 (`com.zdmgold.gevurah`); manifest permissions and sample AdMob IDs; release signing reads `key.properties` when present; iOS display name, ad and tracking keys, privacy manifest added to the Runner target | `app/android/**`, `app/ios/**` | Pending |
+| 2026-11-18 | p1c | Static website: landing page led by the game, privacy policy matching the app's actual behaviour (ads with consent, local storage, no accounts, no analytics), support page with the support email, token-based stylesheet with light and dark, security headers, 404 page. Checked at phone width in both themes | `website/index.html`, `website/privacy.html`, `website/support.html`, `website/404.html`, `website/style.css`, `website/_headers` | Pending |
+| 2026-11-18 | p1b | Android and iOS project folders from Flutter 3.50.0 (`com.zdmgold.gevurah`); manifest permissions and sample AdMob IDs; release signing reads `key.properties` when present; iOS display name, ad and tracking keys, privacy manifest added to the Runner target | `app/android/**`, `app/ios/**` | Green on `ci-analyser` and `main` |
 | 2026-11-18 | p1a | Repo files, decision log, light check workflow, bootstrap workflow | `.gitignore`, `README.md`, `docs/decision.md`, `.github/workflows/check.yml`, `.github/workflows/bootstrap_platform.yml` | Green on `ci-analyser` and `main` |
 
 ## Open items
 
 - Confirm signing alias `Gevurah`.
+- Cloudflare Pages: Ak connects the repo with production branch `main`, build command empty, output directory `website`. After the first deploy, record the site URL here and in README.
+- Review `website/privacy.html` wording against the final AdMob and consent behaviour at batch p2e, and have it read by someone qualified before release; it is plain-language drafting, not legal advice.
 - iOS `SKAdNetworkItems` holds only Google's own identifier (`cstr6suwn9.skadnetwork`). The full list Google recommends could not be fetched from this environment; paste it from AdMob's "SKAdNetwork" documentation or confirm it before the iOS release batch p7b.
 - Re-verify `PrivacyInfo.xcprivacy` (tracking flag, collected data types, required-reason codes) against the actual plugin set once pubspec dependencies are resolved in p1d, and again at p7b.
 - Orientation is left at the Flutter default (portrait and landscape); decide on portrait-only before p5a.

@@ -1,5 +1,3 @@
-import 'dart:ui' show PlatformDispatcher;
-
 import 'package:flutter/foundation.dart';
 
 /// Receives every uncaught error. [fatal] is true for errors that escaped

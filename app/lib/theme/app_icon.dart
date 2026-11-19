@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'app_theme.dart';
 import 'tokens.dart';
 
-/// The one icon widget. It fixes the stroke weight (Lucide weight 400, a
-/// 2.0 stroke, so the mass matches 17 pt text) and the default size, and
-/// takes its symbol from [AppIcons] only.
+/// The one icon widget. It fixes the default size and colour; the stroke
+/// weight is fixed by `AppIcons`, which only uses the weight 400 font (a 2.0
+/// stroke, so the mass matches 17 pt text). Take symbols from `AppIcons` only.
 class AppIcon extends StatelessWidget {
   const AppIcon(
     this.symbol, {
@@ -15,7 +15,7 @@ class AppIcon extends StatelessWidget {
     this.semanticLabel,
   });
 
-  /// An alias from `AppIcons`; any symbol's code point works with the fixed weight.
+  /// An alias from `AppIcons`.
   final IconData symbol;
   final double size;
 
@@ -25,19 +25,10 @@ class AppIcon extends StatelessWidget {
   /// Read by screen readers. Leave null for purely decorative icons.
   final String? semanticLabel;
 
-  static const String _fixedWeightFamily = 'Lucide400';
-  static const String _package = 'lucide_icons_flutter';
-
   @override
   Widget build(BuildContext context) {
-    final IconData glyph = IconData(
-      symbol.codePoint,
-      fontFamily: _fixedWeightFamily,
-      fontPackage: _package,
-      matchTextDirection: symbol.matchTextDirection,
-    );
     return Icon(
-      glyph,
+      symbol,
       size: size,
       color: color ?? AppTheme.of(context).palette.textPrimary,
       semanticLabel: semanticLabel,

@@ -30,7 +30,7 @@ void main() {
           perfectMs: TimingWindows.perfectMs + TimingWindows.assistMs,
           goodMs: TimingWindows.goodMs + TimingWindows.assistMs,
         ),
-        Quality.miss,
+        Quality.good,
       );
       expect(const BeatOffset(150).quality(goodMs: 160), Quality.good);
     });

@@ -1,4 +1,4 @@
-/// Small helpers shared by the hand-written models. Pure Dart.
+// Small helpers shared by the hand-written models. Pure Dart.
 
 /// Element-wise list equality (order matters).
 bool listEq<T>(List<T> a, List<T> b) {

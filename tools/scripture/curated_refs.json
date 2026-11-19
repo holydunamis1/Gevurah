@@ -1,0 +1,1099 @@
+{
+ "note": "Which verses the game shows, with moment tags. Refs use USFM book codes and the vref (English) versification. Books are common to every canon. Ids are stable; do not renumber. Verse 1 of a Psalm is avoided because some translations put the heading in it; refs listed in psalm_verse1_ok were checked and have no heading. Daily and card verses avoid wording that promises a result.",
+ "verses": [
+  {
+   "id": "card_starter_strike",
+   "ref": "PHP 4:13",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_starter_guard",
+   "ref": "PSA 18:2",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_starter_insight",
+   "ref": "PSA 119:105",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_starter_steadiness",
+   "ref": "ISA 40:31",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_fear",
+   "ref": "ISA 41:10",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_worry",
+   "ref": "MAT 6:34",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_anger",
+   "ref": "JAS 1:19",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_impatience",
+   "ref": "PSA 27:14",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_loneliness",
+   "ref": "DEU 31:6",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_discouragement",
+   "ref": "JOS 1:9",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_exhaustion",
+   "ref": "MAT 11:28",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_envy",
+   "ref": "PRO 14:30",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_doubt",
+   "ref": "MRK 9:24",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_temptation",
+   "ref": "1CO 10:13",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_rejection",
+   "ref": "PSA 27:10",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_bitterness",
+   "ref": "EPH 4:31",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_pride",
+   "ref": "PRO 16:18",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_shame",
+   "ref": "ROM 10:11",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_failure",
+   "ref": "PRO 24:16",
+   "moments": [
+    "card",
+    "tenCount"
+   ]
+  },
+  {
+   "id": "card_giving_up",
+   "ref": "EPH 6:13",
+   "moments": [
+    "card",
+    "preBout"
+   ]
+  },
+  {
+   "id": "card_comparison",
+   "ref": "GAL 6:4",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_procrastination",
+   "ref": "EPH 5:16",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_distraction",
+   "ref": "HEB 12:1",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_regret",
+   "ref": "PHP 3:13",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_indecision",
+   "ref": "JAS 1:5",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_money_pressure",
+   "ref": "HEB 13:5",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_perfectionism",
+   "ref": "2CO 12:9",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_overwhelm",
+   "ref": "PSA 61:2",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_unforgiveness",
+   "ref": "COL 3:13",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "card_complaining",
+   "ref": "PHP 2:14",
+   "moments": [
+    "card"
+   ]
+  },
+  {
+   "id": "prebout_fear",
+   "ref": "PSA 56:3",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_worry",
+   "ref": "PHP 4:6",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_anger",
+   "ref": "PRO 15:1",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_impatience",
+   "ref": "PSA 37:7",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_loneliness",
+   "ref": "PSA 25:16",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_discouragement",
+   "ref": "PSA 42:11",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_exhaustion",
+   "ref": "ISA 40:29",
+   "moments": [
+    "preBout",
+    "loss"
+   ]
+  },
+  {
+   "id": "prebout_envy",
+   "ref": "GAL 5:26",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_doubt",
+   "ref": "JUD 1:22",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_temptation",
+   "ref": "MAT 26:41",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_rejection",
+   "ref": "JHN 6:37",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_bitterness",
+   "ref": "HEB 12:15",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_pride",
+   "ref": "JAS 4:6",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_shame",
+   "ref": "PSA 34:5",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_failure",
+   "ref": "MIC 7:8",
+   "moments": [
+    "preBout",
+    "tenCount"
+   ]
+  },
+  {
+   "id": "prebout_giving_up",
+   "ref": "GAL 6:9",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_comparison",
+   "ref": "PSA 139:14",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_procrastination",
+   "ref": "COL 3:23",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_distraction",
+   "ref": "PRO 4:25",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_regret",
+   "ref": "ISA 43:18",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_indecision",
+   "ref": "PRO 3:6",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_money_pressure",
+   "ref": "MAT 6:26",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_perfectionism",
+   "ref": "PSA 103:14",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_overwhelm",
+   "ref": "PSA 94:19",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_unforgiveness",
+   "ref": "EPH 4:32",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "prebout_complaining",
+   "ref": "1TH 5:18",
+   "moments": [
+    "preBout"
+   ]
+  },
+  {
+   "id": "corner_01",
+   "ref": "PSA 46:7",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_02",
+   "ref": "PSA 121:3",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_03",
+   "ref": "PRO 3:5",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_04",
+   "ref": "ISA 26:3",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_05",
+   "ref": "PSA 23:4",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_06",
+   "ref": "PSA 28:7",
+   "moments": [
+    "corner",
+    "win"
+   ]
+  },
+  {
+   "id": "corner_07",
+   "ref": "PSA 31:24",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_08",
+   "ref": "PSA 55:22",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_09",
+   "ref": "PSA 62:5",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_10",
+   "ref": "PSA 138:3",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_11",
+   "ref": "NEH 8:10",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_12",
+   "ref": "2TI 1:7",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "corner_13",
+   "ref": "ROM 8:31",
+   "moments": [
+    "corner"
+   ]
+  },
+  {
+   "id": "tencount_01",
+   "ref": "PSA 37:24",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_02",
+   "ref": "PSA 145:14",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_03",
+   "ref": "PSA 40:2",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_04",
+   "ref": "PSA 71:20",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_05",
+   "ref": "2CO 4:9",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_06",
+   "ref": "ISA 41:13",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_07",
+   "ref": "PSA 54:4",
+   "moments": [
+    "tenCount"
+   ]
+  },
+  {
+   "id": "tencount_08",
+   "ref": "LAM 3:22",
+   "moments": [
+    "tenCount",
+    "loss"
+   ]
+  },
+  {
+   "id": "win_01",
+   "ref": "PSA 118:24",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_02",
+   "ref": "PSA 126:3",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_03",
+   "ref": "PHP 1:6",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_04",
+   "ref": "2TI 4:7",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_05",
+   "ref": "ROM 8:37",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_06",
+   "ref": "1CO 15:58",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_07",
+   "ref": "PSA 34:3",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_08",
+   "ref": "PSA 107:1",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "win_09",
+   "ref": "COL 3:15",
+   "moments": [
+    "win"
+   ]
+  },
+  {
+   "id": "loss_01",
+   "ref": "PSA 34:18",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_02",
+   "ref": "PSA 147:3",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_03",
+   "ref": "PSA 73:26",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_04",
+   "ref": "PSA 30:5",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_06",
+   "ref": "LAM 3:23",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_07",
+   "ref": "ISA 43:2",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_08",
+   "ref": "PSA 138:8",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "loss_09",
+   "ref": "HEB 4:16",
+   "moments": [
+    "loss"
+   ]
+  },
+  {
+   "id": "daily_01",
+   "ref": "PSA 19:14",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_02",
+   "ref": "PSA 23:3",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_03",
+   "ref": "PSA 27:4",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_04",
+   "ref": "PSA 32:8",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_05",
+   "ref": "PSA 34:8",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_06",
+   "ref": "PSA 37:3",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_07",
+   "ref": "PSA 46:10",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_08",
+   "ref": "PSA 51:10",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_09",
+   "ref": "PSA 62:8",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_10",
+   "ref": "PSA 90:12",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_11",
+   "ref": "PSA 91:2",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_12",
+   "ref": "PSA 100:4",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_13",
+   "ref": "PSA 103:2",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_14",
+   "ref": "PSA 111:10",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_15",
+   "ref": "PSA 119:11",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_16",
+   "ref": "PSA 121:2",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_17",
+   "ref": "PSA 130:5",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_18",
+   "ref": "PSA 139:23",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_19",
+   "ref": "PSA 145:18",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_20",
+   "ref": "PRO 1:7",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_21",
+   "ref": "PRO 4:23",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_22",
+   "ref": "PRO 14:29",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_23",
+   "ref": "PRO 12:25",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_24",
+   "ref": "PRO 16:32",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_25",
+   "ref": "PRO 17:17",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_26",
+   "ref": "PRO 18:10",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_27",
+   "ref": "PRO 19:21",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_28",
+   "ref": "PRO 16:24",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_29",
+   "ref": "PRO 27:17",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_30",
+   "ref": "ECC 3:1",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_31",
+   "ref": "ISA 55:8",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_32",
+   "ref": "MIC 6:8",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_33",
+   "ref": "HAB 3:19",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_34",
+   "ref": "MAT 5:9",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_35",
+   "ref": "MAT 5:16",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_36",
+   "ref": "MAT 6:33",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_37",
+   "ref": "MAT 5:14",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_38",
+   "ref": "MAT 11:29",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_39",
+   "ref": "MAT 22:37",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_40",
+   "ref": "JHN 1:5",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_41",
+   "ref": "JHN 8:12",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_42",
+   "ref": "JHN 14:27",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_43",
+   "ref": "JHN 15:12",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_44",
+   "ref": "ROM 12:21",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_45",
+   "ref": "ROM 12:2",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_46",
+   "ref": "ROM 12:12",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_47",
+   "ref": "ROM 12:18",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_48",
+   "ref": "ROM 15:13",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_49",
+   "ref": "1CO 13:13",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_50",
+   "ref": "1CO 16:13",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_51",
+   "ref": "2CO 4:16",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_52",
+   "ref": "2CO 5:7",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_53",
+   "ref": "EPH 4:2",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_54",
+   "ref": "PHP 4:8",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_55",
+   "ref": "COL 3:12",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_56",
+   "ref": "1TH 5:16",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_57",
+   "ref": "2TH 3:13",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_58",
+   "ref": "HEB 11:1",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_59",
+   "ref": "JAS 1:12",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_60",
+   "ref": "1PE 5:7",
+   "moments": [
+    "daily"
+   ]
+  },
+  {
+   "id": "daily_61",
+   "ref": "1JN 4:19",
+   "moments": [
+    "daily"
+   ]
+  }
+ ],
+ "psalm_verse1_ok": [
+  "PSA 107:1"
+ ]
+}

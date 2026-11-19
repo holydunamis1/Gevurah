@@ -56,3 +56,7 @@ Thumbs.db
 *.p12
 *.p8
 scratch/
+
+# Downloaded scripture sources (fetched by tools/scripture/fetch_sources.py)
+tools/scripture/cache/
+__pycache__/

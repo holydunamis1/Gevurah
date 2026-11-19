@@ -1,0 +1,15 @@
+{
+  "note": "Notice text per source, copied into app/assets/licenses by build_curated.py. Attribution lines are the exact text the licence asks for; empty where the text is public domain.",
+  "notices": {
+    "en": {"id": "engbsb", "sourceName": "Berean Standard Bible (BSB), via eBible.org", "license": "Public Domain", "attribution": ""},
+    "es": {"id": "spaRV1909", "sourceName": "Santa Biblia — Reina Valera 1909, via eBible.org", "license": "Public Domain", "attribution": ""},
+    "fr": {"id": "fraLSG", "sourceName": "Louis Segond 1910, via eBible.org", "license": "Public Domain", "attribution": ""},
+    "de": {"id": "deu1912", "sourceName": "Luther Bibel 1912, via eBible.org", "license": "Public Domain", "attribution": ""},
+    "pt": {"id": "porbr2018", "sourceName": "Bíblia Livre (BLIVRE), via eBible.org", "license": "Creative Commons Atribuição 3.0 Brasil (CC BY 3.0 BR)", "attribution": "Todas as Escrituras em português citadas são da Bíblia Livre (BLIVRE), Copyright © Diego Santos, Mario Sérgio, e Marco Teles, http://sites.google.com/site/biblialivre/ - fevereiro de 2018. Licença Creative Commons Atribuição 3.0 Brasil (http://creativecommons.org/licenses/by/3.0/br/)."},
+    "ar": {"id": "arb_vd", "sourceName": "Smith and Van Dyck Arabic Bible, via eBible.org", "license": "Public Domain", "attribution": ""},
+    "hi": {"id": "hin2017", "sourceName": "The Indian Revised Version (IRV) Holy Bible in Hindi, via eBible.org", "license": "Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)", "attribution": "The Indian Revised Version Holy Bible in the Hindi language of India. Copyright © 2017, 2018 Bridge Connectivity Solutions. Licensed under the Creative Commons Attribution-ShareAlike 4.0 licence (https://creativecommons.org/licenses/by-sa/4.0/). Verses are shown unchanged."},
+    "zh": {"id": "cmn_cu89s", "sourceName": "Chinese Union Version, simplified, via eBible.org", "license": "Public Domain", "attribution": ""},
+    "he": {"id": "heb", "sourceName": "Modern Hebrew Bible, via eBible.org", "license": "Public Domain", "attribution": ""}
+  },
+  "link": "https://github.com/BibleNLP/ebible/blob/2bde52b4c2cfd7056cf4ed07c48969647df79744/metadata/licences.tsv"
+}

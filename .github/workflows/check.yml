@@ -35,6 +35,17 @@ jobs:
           fi
           echo "Repository sanity passed"
 
+      - name: Scripture data
+        run: |
+          set -e
+          if [ -d tools/scripture ]; then
+            python3 -m unittest discover -s tools/scripture
+            python3 tools/scripture/fetch_sources.py
+            python3 tools/scripture/verify_curated.py
+          else
+            echo "No tools/scripture yet"
+          fi
+
       - name: Detect Flutter app
         id: app
         run: |

@@ -1,0 +1,4 @@
+{
+  "note": "Scripted fixes only. Each entry: language, ref (e.g. PHP 4:13), from (exact text in the source), to (corrected text), reason. Empty means every bundled verse equals its source exactly.",
+  "corrections": []
+}

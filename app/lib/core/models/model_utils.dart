@@ -81,3 +81,52 @@ T readEnum<T extends Enum>(List<T> values, Map<String, Object?> json, String key
   }
   throw FormatException('Unknown value "$name" at "$key"');
 }
+
+/// Key-and-value equality of two maps.
+bool mapEq<K, V>(Map<K, V> a, Map<K, V> b) {
+  if (identical(a, b)) {
+    return true;
+  }
+  if (a.length != b.length) {
+    return false;
+  }
+  for (final MapEntry<K, V> e in a.entries) {
+    if (!b.containsKey(e.key) || b[e.key] != e.value) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/// Order-independent hash of a map.
+int mapHash<K, V>(Map<K, V> a) {
+  int h = 0;
+  for (final MapEntry<K, V> e in a.entries) {
+    h ^= Object.hash(e.key, e.value);
+  }
+  return h;
+}
+
+/// Reads a list of strings from decoded JSON.
+List<String> readStringList(Map<String, Object?> json, String key) {
+  final List<String> out = <String>[];
+  for (final Object? v in readList(json, key)) {
+    if (v is! String) {
+      throw FormatException('Expected a string in "$key", got $v');
+    }
+    out.add(v);
+  }
+  return out;
+}
+
+/// Reads an optional string (absent or null gives null).
+String? readOptString(Map<String, Object?> json, String key) {
+  final Object? v = json[key];
+  if (v == null) {
+    return null;
+  }
+  if (v is String) {
+    return v;
+  }
+  throw FormatException('Expected a string or null at "$key", got $v');
+}

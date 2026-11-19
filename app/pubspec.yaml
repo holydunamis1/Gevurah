@@ -1,0 +1,44 @@
+name: gevurah
+description: "Gevurah Boxing: Faith Fight Game. A rhythm boxing game where the opponents are the struggles of life."
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.14.0
+
+# Every version below was resolved by a real `flutter pub get` on a runner with
+# Flutter 3.50.0 (resolve_deps workflow, branch deps-out) and is pinned exactly.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  connectivity_plus: 7.3.2
+  crypto: 3.0.8
+  flame: 1.38.2
+  flame_audio: 2.12.2
+  flutter_local_notifications: 23.0.3
+  flutter_timezone: 5.1.1
+  google_mobile_ads: 9.2.0
+  in_app_purchase: 3.3.1
+  intl: 0.20.3
+  lucide_icons_flutter: 4.0.3
+  path_provider: 2.1.6
+  shared_preferences: 2.5.6
+  timezone: 0.11.2
+  url_launcher: 6.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 6.0.0
+
+flutter:
+  uses-material-design: false
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+    - family: SourceSans3
+      fonts:
+        - asset: assets/fonts/SourceSans3.ttf

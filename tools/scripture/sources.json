@@ -6,20 +6,92 @@
     "path": "metadata/vref.txt",
     "sha256": "a7575f550dd2260cf707f98c909a551f5b1ef9c0b52e1e3ccce96df1f2dba845"
   },
-  "note": "eBible.org corpus: one verse per line, line N matches line N of vref.txt. Licence data is from metadata/licences.tsv and each translation's copr.htm at the same commit.",
+  "note": "eBible.org corpus: one verse per line, line N matches line N of vref.txt. Licence data is from metadata/licences.tsv and each translation's copr.htm at the same commit. Japanese and Korean come from scrollmapper/bible_databases (format scrollmapper-json: books, chapters, verses with explicit numbers), pinned by commit and sha256 per language.",
   "languages": {
-    "en": {"translation_id": "engbsb", "name": "Berean Standard Bible", "path": "corpus/eng-engbsb.txt", "sha256": "27feb8808721820237c478f57b1c2af5e46d22f4c25613d0ad7d54de7bca9545", "license_id": "engbsb"},
-    "es": {"translation_id": "spaRV1909", "name": "Santa Biblia, Reina Valera 1909", "path": "corpus/spa-spaRV1909.txt", "sha256": "2c4f25159dec840dbb733331bf671b6c200a2e251d410fb5d09fc65aae3fb2e1", "license_id": "spaRV1909"},
-    "fr": {"translation_id": "fraLSG", "name": "Louis Segond 1910", "path": "corpus/fra-fraLSG.txt", "sha256": "238a9d145d1ffcc7b4aed63d27dd351c2ff0b7a31a7f2b2514507d094af4a271", "license_id": "fraLSG"},
-    "de": {"translation_id": "deu1912", "name": "Luther Bibel 1912", "path": "corpus/deu-deu1912.txt", "sha256": "c3304d76e46af85dc79c44d651921a4faca3d5f7677b7ccadc5d8d92a9f60bd2", "license_id": "deu1912"},
-    "pt": {"translation_id": "porbr2018", "name": "Bíblia Livre", "path": "corpus/por-porbr2018.txt", "sha256": "a9a1449b93b60eba907acfc49dfca575e13ebbd7f7a19340d497c23b517062fd", "license_id": "porbr2018"},
-    "ar": {"translation_id": "arb_vd", "name": "Smith and Van Dyck Arabic Bible", "path": "corpus/arb-arb_vd.txt", "sha256": "e2086900557dfeea0c1ed5e6341ac10da2cfb860acbcfc976ef86d9954df3ca8", "license_id": "arb_vd"},
-    "hi": {"translation_id": "hin2017", "name": "Indian Revised Version (IRV) Hindi", "path": "corpus/hin-hin2017.txt", "sha256": "981c71c62726c1c47046942fbe2877213cb4cde61a2555b10feae288b020d09d", "license_id": "hin2017"},
-    "zh": {"translation_id": "cmn_cu89s", "name": "Chinese Union Version (Simplified)", "path": "corpus/cmn-cmn_cu89s.txt", "sha256": "277840aea0ef67a7f8ca06e7c3725b5fd2d749f4405238c8b69c32656aeed608", "license_id": "cmn_cu89s"},
-    "he": {"translation_id": "heb", "name": "Modern Hebrew Bible (eBible)", "path": "corpus/heb-heb.txt", "sha256": "a55cd9732e458e30064401b0e5cf731e00953c4b10b897cc2ac6e5242711d9bf", "license_id": "heb"}
-  },
-  "pending_languages": {
-    "ja": "No full Kougo-yaku source found yet. eBible has only Shinkaiyaku 1965 New Testament.",
-    "ko": "No source found yet."
+    "en": {
+      "translation_id": "engbsb",
+      "name": "Berean Standard Bible",
+      "path": "corpus/eng-engbsb.txt",
+      "sha256": "27feb8808721820237c478f57b1c2af5e46d22f4c25613d0ad7d54de7bca9545",
+      "license_id": "engbsb"
+    },
+    "es": {
+      "translation_id": "spaRV1909",
+      "name": "Santa Biblia, Reina Valera 1909",
+      "path": "corpus/spa-spaRV1909.txt",
+      "sha256": "2c4f25159dec840dbb733331bf671b6c200a2e251d410fb5d09fc65aae3fb2e1",
+      "license_id": "spaRV1909"
+    },
+    "fr": {
+      "translation_id": "fraLSG",
+      "name": "Louis Segond 1910",
+      "path": "corpus/fra-fraLSG.txt",
+      "sha256": "238a9d145d1ffcc7b4aed63d27dd351c2ff0b7a31a7f2b2514507d094af4a271",
+      "license_id": "fraLSG"
+    },
+    "de": {
+      "translation_id": "deu1912",
+      "name": "Luther Bibel 1912",
+      "path": "corpus/deu-deu1912.txt",
+      "sha256": "c3304d76e46af85dc79c44d651921a4faca3d5f7677b7ccadc5d8d92a9f60bd2",
+      "license_id": "deu1912"
+    },
+    "pt": {
+      "translation_id": "porbr2018",
+      "name": "Bíblia Livre",
+      "path": "corpus/por-porbr2018.txt",
+      "sha256": "a9a1449b93b60eba907acfc49dfca575e13ebbd7f7a19340d497c23b517062fd",
+      "license_id": "porbr2018"
+    },
+    "ar": {
+      "translation_id": "arb_vd",
+      "name": "Smith and Van Dyck Arabic Bible",
+      "path": "corpus/arb-arb_vd.txt",
+      "sha256": "e2086900557dfeea0c1ed5e6341ac10da2cfb860acbcfc976ef86d9954df3ca8",
+      "license_id": "arb_vd"
+    },
+    "hi": {
+      "translation_id": "hin2017",
+      "name": "Indian Revised Version (IRV) Hindi",
+      "path": "corpus/hin-hin2017.txt",
+      "sha256": "981c71c62726c1c47046942fbe2877213cb4cde61a2555b10feae288b020d09d",
+      "license_id": "hin2017"
+    },
+    "zh": {
+      "translation_id": "cmn_cu89s",
+      "name": "Chinese Union Version (Simplified)",
+      "path": "corpus/cmn-cmn_cu89s.txt",
+      "sha256": "277840aea0ef67a7f8ca06e7c3725b5fd2d749f4405238c8b69c32656aeed608",
+      "license_id": "cmn_cu89s"
+    },
+    "he": {
+      "translation_id": "heb",
+      "name": "Modern Hebrew Bible (eBible)",
+      "path": "corpus/heb-heb.txt",
+      "sha256": "a55cd9732e458e30064401b0e5cf731e00953c4b10b897cc2ac6e5242711d9bf",
+      "license_id": "heb"
+    },
+    "ja": {
+      "translation_id": "JapKougo",
+      "name": "Japanese Kougo-yaku 1954/1955",
+      "path": "formats/json/JapKougo.json",
+      "sha256": "9ee1d1ba36b881c420048ac81dd125e1917bbb4082d31467fdf83d188cc474cb",
+      "license_id": "JapKougo",
+      "repo": "scrollmapper/bible_databases",
+      "commit": "59b18c5af5845728c275d5b7178ad0d024172b1f",
+      "raw_base": "https://raw.githubusercontent.com/scrollmapper/bible_databases",
+      "format": "scrollmapper-json"
+    },
+    "ko": {
+      "translation_id": "KorRV",
+      "name": "Korean Revised Version (Gaeyeok Hangeul) 1961",
+      "path": "formats/json/KorRV.json",
+      "sha256": "ffdafc000a0555f87c889c03638b631ff27d033fe9aed0ef89b38d04b576c4bf",
+      "license_id": "KorRV",
+      "repo": "scrollmapper/bible_databases",
+      "commit": "59b18c5af5845728c275d5b7178ad0d024172b1f",
+      "raw_base": "https://raw.githubusercontent.com/scrollmapper/bible_databases",
+      "format": "scrollmapper-json"
+    }
   }
 }

@@ -73,11 +73,16 @@ def main():
             errors.append(f"{lang}: licence notice missing or wrong")
         if "Creative Commons" in notice["license"] and not notice["attribution"]:
             errors.append(f"{lang}: licence needs an attribution line")
-        parsed = parse.parse_corpus((cache / pathlib.Path(src["path"]).name).read_text(encoding="utf-8"), vref_all)
+        parsed = parse.load_language(src, cache, vref_all)
         if lang == "en":
             english = parsed
         shifts = align.chapter_shifts(parsed, english)
-        raw_lines = (cache / pathlib.Path(src["path"]).name).read_bytes().decode("utf-8").split("\n")
+        scroll = src.get("format") == "scrollmapper-json"
+        if scroll:
+            raw = json.loads((cache / pathlib.Path(src["path"]).name).read_text(encoding="utf-8"))
+            raw_lines = None
+        else:
+            raw_lines = (cache / pathlib.Path(src["path"]).name).read_bytes().decode("utf-8").split("\n")
         for v in curated:
             ref = (v["ref"]["book"], v["ref"]["chapter"], v["ref"]["verse"])
             k = parse.key(*ref)
@@ -90,7 +95,19 @@ def main():
             except ValueError as e:
                 errors.append(f"{lang}: {v['id']}: {e}")
                 continue
-            source_line = raw_lines[line_of[local]].rstrip("\r")
+            if scroll:
+                # Independent lookup straight into the JSON structure.
+                source_line = None
+                for ch in raw["books"][local[0] - 1]["chapters"]:
+                    if int(ch["chapter"]) == local[1]:
+                        for vv in ch["verses"]:
+                            if int(vv["verse"]) == local[2]:
+                                source_line = vv["text"]
+                if source_line is None:
+                    errors.append(f"{lang}: {v['id']} ({k}) not found in the source")
+                    continue
+            else:
+                source_line = raw_lines[line_of[local]].rstrip("\r")
             expected = source_line
             code = canon.BOOKS[ref[0] - 1][1]
             c = corr.get((lang, f"{code} {ref[1]}:{ref[2]}"))

@@ -67,8 +67,7 @@ def main():
     english = None
     maps = {}
     for lang, src in cfg["languages"].items():
-        text = (cache / pathlib.Path(src["path"]).name).read_text(encoding="utf-8")
-        verses = parse.parse_corpus(text, vref)
+        verses = parse.load_language(src, cache, vref)
         if lang == "en":
             english = verses
         shifts = align.chapter_shifts(verses, english)
@@ -98,7 +97,7 @@ def main():
         n = notices["notices"][lang]
         dump(
             ROOT / f"app/assets/licenses/{lang}.json",
-            {"id": n["id"], "sourceName": n["sourceName"], "license": n["license"], "attribution": n["attribution"], "link": notices["link"]},
+            {"id": n["id"], "sourceName": n["sourceName"], "license": n["license"], "attribution": n["attribution"], "link": n.get("link", notices["link"])},
         )
     dump(HERE / "alignment.json", {"note": "Per language: chapters (book.chapter) whose verses sit later than in English, and by how many. Computed by align.py.", "shifts": maps})
     print(f"{len(items)} curated verses, {len(cfg['languages'])} languages, {applied} corrections applied")

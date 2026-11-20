@@ -8,7 +8,7 @@ import 'package:gevurah/core/models/curated_verse.dart';
 import 'package:gevurah/core/models/license_notice.dart';
 import 'package:gevurah/core/models/verse_card_def.dart';
 
-const List<String> _languages = <String>['en', 'es', 'fr', 'de', 'pt', 'ar', 'hi', 'zh', 'he'];
+const List<String> _languages = <String>['en', 'es', 'fr', 'de', 'pt', 'ar', 'hi', 'zh', 'he', 'ja', 'ko'];
 
 Map<String, Object?> _readJson(String path) {
   final Object? decoded = jsonDecode(File(path).readAsStringSync());

@@ -1,11 +1,11 @@
 """Download each source file at the pinned commit and check its sha256.
 
 Usage:
-  python3 tools/scripture/fetch_sources.py [--out DIR] [--local CLONE_DIR]
+  python3 tools/scripture/fetch_sources.py [--out DIR] [--local DIR_WITH_REPO_CLONES]
 
 Files land in DIR (default tools/scripture/cache, ignored by git). With --local,
 files are copied from a local clone of the repository at the pinned commit
-instead of downloaded. Exits non-zero if any checksum differs.
+instead of downloaded (DIR_WITH_REPO_CLONES holds one folder per repository name, e.g. ebible/). Exits non-zero if any checksum differs.
 """
 import argparse
 import hashlib
@@ -34,16 +34,17 @@ def main():
     cfg = json.loads((HERE / "sources.json").read_text(encoding="utf-8"))
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    wanted = [(cfg["vref"]["path"], cfg["vref"]["sha256"])]
-    wanted += [(v["path"], v["sha256"]) for v in cfg["languages"].values()]
+    wanted = [(cfg["vref"]["path"], cfg["vref"]["sha256"], cfg["raw_base"], cfg["commit"], cfg["repo"])]
+    for v in cfg["languages"].values():
+        wanted.append((v["path"], v["sha256"], v.get("raw_base", cfg["raw_base"]), v.get("commit", cfg["commit"]), v.get("repo", cfg["repo"])))
     bad = 0
-    for rel, expected in wanted:
+    for rel, expected, raw_base, commit, repo in wanted:
         dest = out / pathlib.Path(rel).name
         if not (dest.exists() and sha256_of(dest) == expected):
             if args.local:
-                shutil.copy(pathlib.Path(args.local) / rel, dest)
+                shutil.copy(pathlib.Path(args.local) / repo.split("/")[-1] / rel, dest)
             else:
-                url = f'{cfg["raw_base"]}/{cfg["commit"]}/{rel}'
+                url = f"{raw_base}/{commit}/{rel}"
                 with urllib.request.urlopen(url, timeout=120) as r, open(dest, "wb") as f:
                     shutil.copyfileobj(r, f)
         actual = sha256_of(dest)

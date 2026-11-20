@@ -28,7 +28,7 @@ abstract final class CardCatalog {
     _card('rejection', 'Psalms 27:10', CardType.steadiness, 'rejection'),
     _card('bitterness', 'Ephesians 4:31', CardType.insight, 'bitterness'),
     _card('pride', 'Proverbs 16:18', CardType.guard, 'pride'),
-    _card('shame', 'Romans 10:11', CardType.steadiness, 'shame'),
+    _card('shame', 'Isaiah 54:4', CardType.steadiness, 'shame'),
     _card('failure', 'Proverbs 24:16', CardType.strike, 'failure'),
     _card('giving_up', 'Ephesians 6:13', CardType.steadiness, 'giving_up'),
     _card('comparison', 'Galatians 6:4', CardType.insight, 'comparison'),

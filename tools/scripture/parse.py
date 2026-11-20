@@ -52,3 +52,37 @@ def parse_ref(text):
     code, cv = text.split()
     chapter, verse = cv.split(":")
     return canon.BY_CODE[code][0], int(chapter), int(verse)
+
+
+def parse_scrollmapper(json_text):
+    """Parse a scrollmapper bible_databases JSON file into {(book, chapter, verse): text}.
+
+    The file lists the 66 books in canonical order, each with chapters and verses
+    that carry explicit numbers. Raises ValueError if the shape is not as expected.
+    """
+    import json
+
+    data = json.loads(json_text)
+    books = data["books"]
+    if len(books) != len(canon.BOOKS):
+        raise ValueError(f"expected {len(canon.BOOKS)} books, got {len(books)}")
+    verses = {}
+    for book_index, book in enumerate(books):
+        for chapter in book["chapters"]:
+            for verse in chapter["verses"]:
+                text = verse["text"]
+                if text.strip() == "":
+                    continue
+                verses[(book_index + 1, int(chapter["chapter"]), int(verse["verse"]))] = text
+    return verses
+
+
+def load_language(src, cache_dir, vref):
+    """Load one language's verses according to its source format."""
+    import pathlib
+
+    path = pathlib.Path(cache_dir) / pathlib.Path(src["path"]).name
+    text = path.read_text(encoding="utf-8")
+    if src.get("format") == "scrollmapper-json":
+        return parse_scrollmapper(text)
+    return parse_corpus(text, vref)

@@ -1,5 +1,5 @@
 {
- "note": "Which verses the game shows, with moment tags. Refs use USFM book codes and the vref (English) versification. Books are common to every canon. Ids are stable; do not renumber. Verse 1 of a Psalm is avoided because some translations put the heading in it; refs listed in psalm_verse1_ok were checked and have no heading. Daily and card verses avoid wording that promises a result.",
+ "note": "Which verses the game shows, with moment tags. Refs use USFM book codes and the vref (English) versification. Books are common to every canon. Ids are stable; do not renumber. Verse 1 of a Psalm is avoided because some translations put the heading in it; refs listed in psalm_verse1_ok were checked and have no heading. Daily and card verses avoid wording that promises a result. Verses whose source text carries a Selah marker are avoided (the Japanese source drops the closing bracket).",
  "verses": [
   {
    "id": "card_starter_strike",
@@ -122,7 +122,7 @@
   },
   {
    "id": "card_shame",
-   "ref": "ROM 10:11",
+   "ref": "ISA 54:4",
    "moments": [
     "card"
    ]
@@ -279,7 +279,7 @@
   },
   {
    "id": "prebout_temptation",
-   "ref": "MAT 26:41",
+   "ref": "HEB 2:18",
    "moments": [
     "preBout"
    ]
@@ -329,7 +329,7 @@
   },
   {
    "id": "prebout_comparison",
-   "ref": "PSA 139:14",
+   "ref": "EPH 2:10",
    "moments": [
     "preBout"
    ]
@@ -399,7 +399,7 @@
   },
   {
    "id": "corner_01",
-   "ref": "PSA 46:7",
+   "ref": "PSA 118:6",
    "moments": [
     "corner"
    ]
@@ -463,7 +463,7 @@
   },
   {
    "id": "corner_10",
-   "ref": "PSA 138:3",
+   "ref": "PSA 18:32",
    "moments": [
     "corner"
    ]
@@ -653,7 +653,7 @@
   },
   {
    "id": "loss_08",
-   "ref": "PSA 138:8",
+   "ref": "PSA 57:7",
    "moments": [
     "loss"
    ]
@@ -723,7 +723,7 @@
   },
   {
    "id": "daily_09",
-   "ref": "PSA 62:8",
+   "ref": "PSA 62:6",
    "moments": [
     "daily"
    ]
@@ -779,14 +779,14 @@
   },
   {
    "id": "daily_17",
-   "ref": "PSA 130:5",
+   "ref": "PSA 33:20",
    "moments": [
     "daily"
    ]
   },
   {
    "id": "daily_18",
-   "ref": "PSA 139:23",
+   "ref": "PSA 86:11",
    "moments": [
     "daily"
    ]

@@ -26,13 +26,19 @@ def main():
     cfg = json.loads((HERE / "sources.json").read_text(encoding="utf-8"))
     vref = parse.parse_vref((cache / "vref.txt").read_text(encoding="utf-8"))
     out = {"note": "Canonical verses with no text of their own, per language. Numbering is otherwise shared.", "languages": {}}
+    english = None
     for lang, src in cfg["languages"].items():
-        text = (cache / pathlib.Path(src["path"]).name).read_text(encoding="utf-8")
-        verses = parse.parse_corpus(text, vref)
+        verses = parse.load_language(src, cache, vref)
+        if lang == "en":
+            english = verses
         missing = []
-        for book, code, chapter, verse in vref:
-            if book is not None and (book, chapter, verse) not in verses:
-                missing.append(parse.key(book, chapter, verse))
+        if src.get("format") == "scrollmapper-json":
+            # Numbered like English: list English verses this translation has no text for.
+            missing = [parse.key(*k) for k in sorted(english) if k not in verses]
+        else:
+            for book, code, chapter, verse in vref:
+                if book is not None and (book, chapter, verse) not in verses:
+                    missing.append(parse.key(book, chapter, verse))
         out["languages"][lang] = {"present": len(verses), "missing": missing}
         print(f"{lang}: {len(verses)} verses with text, {len(missing)} empty")
     (HERE / "verse_maps.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")

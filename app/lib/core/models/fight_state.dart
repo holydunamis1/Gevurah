@@ -30,6 +30,7 @@ class FightState {
     required this.exchangeIndex,
     required this.phase,
     this.end,
+    this.struggleRises = 0,
   });
 
   static const int roundsPerBout = 3;
@@ -42,7 +43,8 @@ class FightState {
         player = const PlayerState.initial(),
         exchangeIndex = 0,
         phase = FightPhase.telegraph,
-        end = null;
+        end = null,
+        struggleRises = 0;
 
   /// 1 to [roundsPerBout].
   final int round;
@@ -59,6 +61,9 @@ class FightState {
   /// Set once the bout is finished.
   final FightEnd? end;
 
+  /// Times the struggle has got back up after being knocked down (Failure does it once).
+  final int struggleRises;
+
   bool get isFinished => end != null;
 
   /// Weight removed so far.
@@ -72,6 +77,7 @@ class FightState {
     int? exchangeIndex,
     FightPhase? phase,
     FightEnd? end,
+    int? struggleRises,
   }) {
     return FightState(
       round: round ?? this.round,
@@ -81,6 +87,7 @@ class FightState {
       exchangeIndex: exchangeIndex ?? this.exchangeIndex,
       phase: phase ?? this.phase,
       end: end ?? this.end,
+      struggleRises: struggleRises ?? this.struggleRises,
     );
   }
 
@@ -92,6 +99,7 @@ class FightState {
         'exchangeIndex': exchangeIndex,
         'phase': phase.name,
         'end': end?.name,
+        'struggleRises': struggleRises,
       };
 
   factory FightState.fromJson(Map<String, Object?> json) {
@@ -111,6 +119,7 @@ class FightState {
       exchangeIndex: readInt(json, 'exchangeIndex'),
       phase: readEnum(FightPhase.values, json, 'phase'),
       end: end,
+      struggleRises: json['struggleRises'] == null ? 0 : readInt(json, 'struggleRises'),
     );
   }
 
@@ -123,11 +132,12 @@ class FightState {
         other.player == player &&
         other.exchangeIndex == exchangeIndex &&
         other.phase == phase &&
-        other.end == end;
+        other.end == end &&
+        other.struggleRises == struggleRises;
   }
 
   @override
-  int get hashCode => Object.hash(round, startingWeight, weight, player, exchangeIndex, phase, end);
+  int get hashCode => Object.hash(round, startingWeight, weight, player, exchangeIndex, phase, end, struggleRises);
 
   @override
   String toString() => 'FightState(round $round, weight $weight, ${player.toString()}, ${phase.name})';

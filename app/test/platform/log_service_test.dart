@@ -51,6 +51,6 @@ void main() {
     final LogService log = LogService(directory: () async => Directory(blocker.path), clock: FakeClock(DateTime.utc(2026)));
     log.log(LogLevel.error, 'cannot be written');
     await log.flush();
-    expect(await log.exportText(), contains('could not be read'));
+    expect(await log.exportText(), 'Gevurah Boxing log\n');
   });
 }

@@ -82,7 +82,7 @@ class FlagsService {
       final String text = await fetcher(uri, timeout);
       final RemoteFlags? fresh = _parse(text);
       if (fresh == null) {
-        return _cached();
+        return await _cached();
       }
       try {
         await storage.writeString(cacheKey, jsonEncode(fresh.toJson()));

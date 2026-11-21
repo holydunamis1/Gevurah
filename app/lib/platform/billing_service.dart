@@ -123,10 +123,14 @@ class BillingService implements BillingPort {
     } on Object {
       // No cache is fine.
     }
+    _listen();
+    unawaited(_settle());
+  }
+
+  void _listen() {
     _subscription ??= driver.events.listen(_onEvent, onError: (Object e) {
       log?.log(LogLevel.warning, 'Store event failed', error: e);
     });
-    unawaited(_settle());
   }
 
   Future<void> _settle() async {
@@ -145,6 +149,7 @@ class BillingService implements BillingPort {
   }
 
   Future<bool> _restoreAndWait() async {
+    _listen();
     final Completer<void> signal = Completer<void>();
     _ownedSignal = signal;
     await driver.restore();
@@ -220,6 +225,7 @@ class BillingService implements BillingPort {
     if (_entitlement == Entitlement.adsRemoved) {
       return PurchaseOutcome.restored;
     }
+    _listen();
     final Completer<PurchaseOutcome> waiter = Completer<PurchaseOutcome>();
     _waiter = waiter;
     try {

@@ -7,12 +7,10 @@ import '../core/ports/log_port.dart';
 /// A small rotating log in the app's private folder, with no third-party
 /// service. The player can send the exported text by email.
 class LogService implements LogPort {
-  LogService({required Future<Directory> Function() directory, ClockPort clock = const SystemClock(), this.maxBytes = 64 * 1024})
-      : _directory = directory,
-        _clock = clock;
+  LogService({required this.directory, this.clock = const SystemClock(), this.maxBytes = 64 * 1024});
 
-  final Future<Directory> Function() _directory;
-  final ClockPort _clock;
+  final Future<Directory> Function() directory;
+  final ClockPort clock;
 
   /// The current file rotates to the previous one when it passes this size.
   final int maxBytes;
@@ -25,7 +23,7 @@ class LogService implements LogPort {
 
   @override
   void log(LogLevel level, String message, {Object? error, StackTrace? stack}) {
-    final String stamp = _clock.now().toIso8601String();
+    final String stamp = clock.now().toIso8601String();
     final StringBuffer line = StringBuffer('$stamp ${level.name.toUpperCase()} $message');
     if (error != null) {
       line.write(' | $error');
@@ -41,7 +39,7 @@ class LogService implements LogPort {
   }
 
   Future<void> _append(String text) async {
-    final Directory dir = await _directory();
+    final Directory dir = await directory();
     if (!dir.existsSync()) {
       await dir.create(recursive: true);
     }
@@ -60,7 +58,7 @@ class LogService implements LogPort {
     await _chain;
     final StringBuffer out = StringBuffer('Gevurah Boxing log\n');
     try {
-      final Directory dir = await _directory();
+      final Directory dir = await directory();
       for (final String name in <String>[previousName, currentName]) {
         final File f = File('${dir.path}/$name');
         if (f.existsSync()) {

@@ -49,14 +49,12 @@ class MemoryBackend implements KeyValueBackend {
 /// [degraded] turns true so the app can show a warning, and the next
 /// successful write or [flushPending] clears it.
 class StorageService implements StoragePort {
-  StorageService({required Future<Directory> Function() directory, KeyValueBackend? backend})
-      : _directory = directory,
-        _backend = backend ?? SharedPrefsBackend();
+  StorageService({required this.directory, KeyValueBackend? backend}) : _backend = backend ?? SharedPrefsBackend();
 
   /// The app's private support folder and shared_preferences.
   factory StorageService.create() => StorageService(directory: getApplicationSupportDirectory);
 
-  final Future<Directory> Function() _directory;
+  final Future<Directory> Function() directory;
   final KeyValueBackend _backend;
   final Map<String, String> _pendingFiles = <String, String>{};
   final Map<String, String> _pendingStrings = <String, String>{};
@@ -74,7 +72,7 @@ class StorageService implements StoragePort {
   }
 
   Future<File> _file(String name) async {
-    final Directory dir = await _directory();
+    final Directory dir = await directory();
     return File('${dir.path}/${_checkName(name)}');
   }
 
@@ -97,7 +95,7 @@ class StorageService implements StoragePort {
   Future<void> writeFile(String name, String contents) async {
     _checkName(name);
     try {
-      final Directory dir = await _directory();
+      final Directory dir = await directory();
       if (!dir.existsSync()) {
         await dir.create(recursive: true);
       }

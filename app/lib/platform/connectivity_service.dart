@@ -7,12 +7,11 @@ import '../core/ports/connectivity_port.dart';
 class ConnectivityService implements ConnectivityPort {
   ConnectivityService({
     Future<List<ConnectivityResult>> Function()? check,
-    Stream<List<ConnectivityResult>>? changes,
-  })  : _check = check ?? Connectivity().checkConnectivity,
-        _changes = changes;
+    this.changes,
+  }) : _check = check ?? Connectivity().checkConnectivity;
 
   final Future<List<ConnectivityResult>> Function() _check;
-  final Stream<List<ConnectivityResult>>? _changes;
+  final Stream<List<ConnectivityResult>>? changes;
 
   static bool _online(List<ConnectivityResult> results) =>
       results.any((ConnectivityResult r) => r != ConnectivityResult.none);
@@ -29,5 +28,5 @@ class ConnectivityService implements ConnectivityPort {
 
   @override
   Stream<bool> get onlineChanges =>
-      (_changes ?? Connectivity().onConnectivityChanged).map(_online).distinct();
+      (changes ?? Connectivity().onConnectivityChanged).map(_online).distinct();
 }

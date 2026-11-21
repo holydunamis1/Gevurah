@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../models/beat_offset.dart';
 import '../models/exchange_outcome.dart';
 import '../models/exchange_record.dart';
@@ -14,34 +16,32 @@ import 'stamina.dart';
 import 'struggle_ai.dart';
 import 'struggle_tuning.dart';
 
-/// How a simulated player behaves. All chances are 0 to 1.
+/// How a simulated player behaves.
 class BotProfile {
   const BotProfile({
     required this.name,
-    required this.perfect,
-    required this.good,
+    required this.sigmaMs,
     required this.choice,
     required this.reading,
   });
 
-  /// A newer player: mostly good timing, few perfects, often reads wrongly.
-  static const BotProfile novice = BotProfile(name: 'novice', perfect: 0.15, good: 0.45, choice: 0.5, reading: 0.4);
+  /// A newer player: loose timing, often chooses or reads wrongly.
+  static const BotProfile novice = BotProfile(name: 'novice', sigmaMs: 150, choice: 0.5, reading: 0.4);
 
   /// A regular player.
-  static const BotProfile average = BotProfile(name: 'average', perfect: 0.35, good: 0.45, choice: 0.8, reading: 0.7);
+  static const BotProfile average = BotProfile(name: 'average', sigmaMs: 100, choice: 0.8, reading: 0.7);
 
   /// A practised player.
-  static const BotProfile expert = BotProfile(name: 'expert', perfect: 0.65, good: 0.28, choice: 0.97, reading: 0.93);
+  static const BotProfile expert = BotProfile(name: 'expert', sigmaMs: 55, choice: 0.97, reading: 0.93);
 
   static const List<BotProfile> all = <BotProfile>[novice, average, expert];
 
   final String name;
 
-  /// Chance a response lands perfect at a reference telegraph.
-  final double perfect;
-
-  /// Chance a response lands good (not perfect).
-  final double good;
+  /// Spread of the player's timing error around the beat, in ms (a normal
+  /// distribution). The timing windows then decide perfect, good or miss, so
+  /// stances and cards that move the windows matter in the simulation.
+  final double sigmaMs;
 
   /// Chance the best response (Slip for heavy, Guard otherwise) is chosen.
   final double choice;
@@ -171,25 +171,19 @@ abstract final class BoutSimulator {
     return OpeningAction.none;
   }
 
+  /// A timing error drawn from a normal distribution. A longer telegraph
+  /// (factor above 1) tightens it; a shorter one loosens it.
   static BeatOffset _offset(SeededRng rng, BotProfile bot, double factor) {
-    final double perfect = (bot.perfect * factor).clamp(0.0, 1.0);
-    final double good = (bot.good * (0.5 + 0.5 * factor)).clamp(0.0, 1.0 - perfect);
-    final double r = rng.nextDouble();
-    final double sign = rng.chance(0.5) ? 1 : -1;
-    final double u = rng.nextDouble();
-    if (r < perfect) {
-      return BeatOffset(sign * 45 * u);
-    }
-    if (r < perfect + good) {
-      return BeatOffset(sign * (55 + 60 * u));
-    }
-    return BeatOffset(sign * (130 + 170 * u));
+    final double u1 = 1 - rng.nextDouble();
+    final double u2 = rng.nextDouble();
+    final double z = math.sqrt(-2 * math.log(u1)) * math.cos(2 * math.pi * u2);
+    return BeatOffset(z * bot.sigmaMs / factor);
   }
 
   static int _goodTaps(SeededRng rng, BotProfile bot) {
     int taps = 0;
     for (int i = 0; i < 5; i++) {
-      if (rng.chance(bot.perfect + bot.good)) {
+      if (_offset(rng, bot, 1).abs <= TimingWindows.goodMs) {
         taps++;
       }
     }

@@ -12,6 +12,7 @@ import 'progression_rules.dart';
 import 'seeded_rng.dart';
 import 'stamina.dart';
 import 'struggle_ai.dart';
+import 'struggle_tuning.dart';
 
 /// How a simulated player behaves. All chances are 0 to 1.
 class BotProfile {
@@ -111,6 +112,7 @@ abstract final class BoutSimulator {
           player: state.player,
           assist: config.timingAssist,
           costly: costly,
+          incomingDamagePercent: StruggleTuning.incomingDamagePercent(def),
           struggleDamageTakenPercent: StruggleAi.damageTakenPercent(def, history),
         ),
       );

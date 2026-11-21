@@ -34,6 +34,7 @@ class ExchangeContext {
     this.assist = false,
     this.costly = false,
     this.struggleDamageTakenPercent = 100,
+    this.incomingDamagePercent = 100,
   });
 
   final Modifiers modifiers;
@@ -47,6 +48,10 @@ class ExchangeContext {
 
   /// Percent of counter damage the struggle takes (Shame's guard, 100 is normal).
   final int struggleDamageTakenPercent;
+
+  /// Percent of the move's damage that reaches the player, a per-struggle
+  /// balance value from StruggleTuning (100 is unchanged).
+  final int incomingDamagePercent;
 }
 
 /// Resolves one exchange. A pure function: the same inputs always give the same
@@ -118,7 +123,7 @@ abstract final class ExchangeResolver {
     if (baitSprung) {
       takenPercent = 0;
     }
-    double damage = move.damage * move.hits * takenPercent / 100;
+    double damage = move.damage * move.hits * takenPercent / 100 * context.incomingDamagePercent / 100;
     if (player.resolve < ExchangeTuning.lowResolveBelow && m.lowResolveDamageReducePercent > 0) {
       damage = damage * (100 - m.lowResolveDamageReducePercent) / 100;
     }
@@ -153,7 +158,7 @@ abstract final class ExchangeResolver {
         stamina -= cost;
         if (baitSprung) {
           // Striking into a bait is the trap.
-          damageTaken += move.damage * move.hits;
+          damageTaken += (move.damage * move.hits * context.incomingDamagePercent / 100).round();
         } else {
           final Windows sw = TimingJudge.strikeWindows(m, assist: context.assist);
           final Quality sq = strikeOffset == null ? reported : TimingJudge.judge(strikeOffset, sw);

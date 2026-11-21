@@ -8,18 +8,22 @@ abstract final class StruggleTuning {
 
   /// Per-struggle replacements for the tier value.
   static const Map<String, int> damagePercentOverrides = <String, int>{
+    'discouragement': 600,
+    'distraction': 800,
+    'complaining': 800,
+    'rejection': 450,
     'temptation': 200,
     'exhaustion': 140,
     'bitterness': 200,
     'comparison': 260,
     'regret': 260,
     'overwhelm': 260,
-    'shame': 160,
-    'failure': 160,
-    'pride': 170,
-    'giving_up': 260,
-    'perfectionism': 180,
-    'unforgiveness': 160,
+    'shame': 135,
+    'failure': 125,
+    'pride': 135,
+    'giving_up': 160,
+    'perfectionism': 160,
+    'unforgiveness': 135,
   };
 
   static int incomingDamagePercent(StruggleDef def) {

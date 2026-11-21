@@ -32,7 +32,7 @@ class BotProfile {
   static const BotProfile average = BotProfile(name: 'average', sigmaMs: 85, choice: 0.8, reading: 0.7);
 
   /// A practised player.
-  static const BotProfile expert = BotProfile(name: 'expert', sigmaMs: 55, choice: 0.92, reading: 0.85);
+  static const BotProfile expert = BotProfile(name: 'expert', sigmaMs: 65, choice: 0.92, reading: 0.85);
 
   static const List<BotProfile> all = <BotProfile>[novice, average, expert];
 
@@ -94,7 +94,7 @@ abstract final class BoutSimulator {
 
       final MoveDef move = StruggleAi.nextMove(def, history, aiRng);
       final double telegraph = modifiers.telegraphFor(move).toDouble();
-      final double factor = (telegraph / referenceTelegraphMs).clamp(0.5, 1.2);
+      final double factor = math.sqrt((telegraph / referenceTelegraphMs).clamp(0.25, 1.5));
 
       final Response response = _chooseResponse(move, botRng, bot);
       final BeatOffset offset = _offset(botRng, bot, factor);

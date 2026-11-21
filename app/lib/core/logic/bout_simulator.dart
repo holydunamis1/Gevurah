@@ -26,13 +26,13 @@ class BotProfile {
   });
 
   /// A newer player: loose timing, often chooses or reads wrongly.
-  static const BotProfile novice = BotProfile(name: 'novice', sigmaMs: 150, choice: 0.5, reading: 0.4);
+  static const BotProfile novice = BotProfile(name: 'novice', sigmaMs: 120, choice: 0.5, reading: 0.4);
 
   /// A regular player.
-  static const BotProfile average = BotProfile(name: 'average', sigmaMs: 100, choice: 0.8, reading: 0.7);
+  static const BotProfile average = BotProfile(name: 'average', sigmaMs: 85, choice: 0.8, reading: 0.7);
 
   /// A practised player.
-  static const BotProfile expert = BotProfile(name: 'expert', sigmaMs: 55, choice: 0.97, reading: 0.93);
+  static const BotProfile expert = BotProfile(name: 'expert', sigmaMs: 55, choice: 0.92, reading: 0.85);
 
   static const List<BotProfile> all = <BotProfile>[novice, average, expert];
 

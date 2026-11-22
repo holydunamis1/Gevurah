@@ -238,8 +238,9 @@ void main() {
       ));
       final Finder arrow = find.byWidgetPredicate((Widget w) => w is Icon && w.icon == AppIcons.forward);
       expect(arrow, findsOneWidget);
-      expect(t.getCenter(arrow).dx, greaterThan(180));
-      expect(t.getCenter(find.byWidgetPredicate((Widget w) => w is Icon && w.icon == AppIcons.help)).dx, lessThan(180));
+      final double mid = t.getCenter(find.byType(NavBar)).dx;
+      expect(t.getCenter(arrow).dx, greaterThan(mid));
+      expect(t.getCenter(find.byWidgetPredicate((Widget w) => w is Icon && w.icon == AppIcons.help)).dx, lessThan(mid));
     });
 
     testWidgets('nav bar shows a brand when there is no back', (WidgetTester t) async {

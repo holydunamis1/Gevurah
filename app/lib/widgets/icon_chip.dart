@@ -21,13 +21,17 @@ class IconChip extends StatelessWidget {
       onPressed: onPressed,
       semanticLabel: semanticLabel,
       excludeChildSemantics: true,
-      child: Center(
-        child: SizedBox(
-          width: IconSizes.chip,
-          height: IconSizes.chip,
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: theme.palette.bgTertiary, borderRadius: BorderRadius.circular(Radii.chip)),
-            child: Center(child: AppIcon(icon, size: IconSizes.medium)),
+      child: SizedBox(
+        width: IconSizes.target,
+        height: IconSizes.target,
+        child: Center(
+          child: SizedBox(
+            width: IconSizes.chip,
+            height: IconSizes.chip,
+            child: DecoratedBox(
+              decoration: BoxDecoration(color: theme.palette.bgTertiary, borderRadius: BorderRadius.circular(Radii.chip)),
+              child: Center(child: AppIcon(icon, size: IconSizes.medium)),
+            ),
           ),
         ),
       ),

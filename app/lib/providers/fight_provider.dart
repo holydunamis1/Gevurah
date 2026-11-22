@@ -133,7 +133,24 @@ class FightProvider extends ValueNotifier<FightView?> {
     if (v == null || move == null || v.finished) {
       return null;
     }
-    final ExchangeOutcome outcome = ExchangeResolver.resolve(
+    final ExchangeOutcome outcome = _resolve(v, move, response, offset, counter, strikeOffset);
+    final ExchangeRecord record = ExchangeRecord(
+      index: v.state.exchangeIndex,
+      round: v.state.round,
+      move: move,
+      response: response,
+      offset: offset,
+      outcome: outcome,
+      counter: counter,
+      strikeOffset: strikeOffset,
+    );
+    final List<ExchangeRecord> history = <ExchangeRecord>[...v.history, record];
+    _set(FightRules.apply(v.state, record, v.struggle), history);
+    return record;
+  }
+
+  ExchangeOutcome _resolve(FightView v, MoveDef move, Response response, BeatOffset offset, OpeningAction counter, BeatOffset? strikeOffset) {
+    return ExchangeResolver.resolve(
       move: move,
       response: response,
       offset: offset,
@@ -148,19 +165,17 @@ class FightProvider extends ValueNotifier<FightView?> {
         struggleDamageTakenPercent: StruggleAi.damageTakenPercent(v.struggle, v.history),
       ),
     );
-    final ExchangeRecord record = ExchangeRecord(
-      index: v.state.exchangeIndex,
-      round: v.state.round,
-      move: move,
-      response: response,
-      offset: offset,
-      outcome: outcome,
-      counter: counter,
-      strikeOffset: strikeOffset,
-    );
-    final List<ExchangeRecord> history = <ExchangeRecord>[...v.history, record];
-    _set(FightRules.apply(v.state, record, v.struggle), history);
-    return record;
+  }
+
+  /// What a response would do, without applying it. The fight controller uses
+  /// it to know at once whether the response opens an attack window.
+  ExchangeOutcome? preview({required Response response, required BeatOffset offset}) {
+    final FightView? v = value;
+    final MoveDef? move = v?.move;
+    if (v == null || move == null || v.finished) {
+      return null;
+    }
+    return _resolve(v, move, response, offset, OpeningAction.none, null);
   }
 
   /// The ten-count: [goodTaps] timed taps bring the player back up.

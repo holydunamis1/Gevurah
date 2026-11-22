@@ -29,6 +29,7 @@ class AppDialog extends StatelessWidget {
     final AppTheme theme = AppTheme.of(context);
     return Semantics(
       scopesRoute: true,
+      explicitChildNodes: true,
       namesRoute: true,
       label: title,
       child: ConstrainedBox(

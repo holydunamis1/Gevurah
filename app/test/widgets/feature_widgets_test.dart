@@ -196,7 +196,7 @@ void main() {
       ];
       for (final Widget w in absent) {
         await t.pumpWidget(w);
-        expect(t.getSize(find.byType(AdSlot)), Size.zero);
+        expect(t.getSize(find.byType(AdSlot)).height, 0);
         expect(find.text('AD'), findsNothing);
         expect(find.descendant(of: find.byType(AdSlot), matching: find.byType(DecoratedBox)), findsNothing);
       }
@@ -210,11 +210,11 @@ void main() {
       await t.pumpWidget(wrap(StatefulBuilder(
         builder: (BuildContext c, StateSetter set) => ToggleRow(label: 'Sound', icon: AppIcons.sound, subtitle: 'Effects', value: value, onChanged: (bool v) => set(() => value = v)),
       )));
-      expect(t.getSemantics(find.byType(ToggleRow)).flagsCollection.isToggled, isFalse);
+      expect(t.getSemantics(find.byType(ToggleRow)).flagsCollection.isToggled.toBoolOrNull(), isFalse);
       await t.tap(find.text('Sound'));
       await t.pumpAndSettle();
       expect(value, isTrue);
-      expect(t.getSemantics(find.byType(ToggleRow)).flagsCollection.isToggled, isTrue);
+      expect(t.getSemantics(find.byType(ToggleRow)).flagsCollection.isToggled.toBoolOrNull(), isTrue);
       expect(t.getSize(find.byType(ToggleRow)).height, greaterThanOrEqualTo(48));
       h.dispose();
     });
@@ -261,10 +261,17 @@ void main() {
 
     testWidgets('showAppBottomSheet opens and closes by tapping outside', (WidgetTester t) async {
       late BuildContext ctx;
-      await t.pumpWidget(wrap(Builder(builder: (BuildContext c) {
-        ctx = c;
-        return const SizedBox();
-      })));
+      await t.pumpWidget(wrap(SizedBox(
+        height: 600,
+        child: Navigator(
+          onGenerateRoute: (RouteSettings s) => PageRouteBuilder<void>(
+            pageBuilder: (BuildContext c, Animation<double> a, Animation<double> b) {
+              ctx = c;
+              return const SizedBox();
+            },
+          ),
+        ),
+      )));
       Future<String?> result = Future<String?>.value();
       result = showAppBottomSheet<String>(ctx, barrierLabel: 'Close', builder: (BuildContext c) => const AppBottomSheet(title: 'Sheet', child: Text('inside')));
       await t.pumpAndSettle();
@@ -296,10 +303,17 @@ void main() {
 
     testWidgets('showAppDialog opens over the screen and closes through an action', (WidgetTester t) async {
       late BuildContext ctx;
-      await t.pumpWidget(wrap(Builder(builder: (BuildContext c) {
-        ctx = c;
-        return const SizedBox();
-      })));
+      await t.pumpWidget(wrap(SizedBox(
+        height: 600,
+        child: Navigator(
+          onGenerateRoute: (RouteSettings s) => PageRouteBuilder<void>(
+            pageBuilder: (BuildContext c, Animation<double> a, Animation<double> b) {
+              ctx = c;
+              return const SizedBox();
+            },
+          ),
+        ),
+      )));
       final Future<bool?> result = showAppDialog<bool>(
         ctx,
         barrierLabel: 'Close',

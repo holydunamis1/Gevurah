@@ -98,6 +98,12 @@ class TellPainter extends CustomPainter {
           ..close();
         canvas.drawPath(p, line);
         canvas.drawCircle(c, u * 0.15, fill);
+      case MoveKind.drain:
+        for (int i = 0; i < 3; i++) {
+          final double half = u * (0.8 - i * 0.25);
+          final double y = c.dy + (i - 1) * u * 0.5;
+          canvas.drawLine(Offset(c.dx - half, y), Offset(c.dx + half, y), line);
+        }
     }
   }
 

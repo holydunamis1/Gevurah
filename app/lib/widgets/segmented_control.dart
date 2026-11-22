@@ -14,8 +14,7 @@ class SegmentOption<T> {
 /// Two to four exclusive choices side by side. The chosen one is filled and
 /// bold and is announced as selected.
 class SegmentedControl<T> extends StatelessWidget {
-  SegmentedControl({super.key, required this.options, required this.selected, required this.onChanged})
-      : assert(options.length >= 2 && options.length <= 4, 'A segmented control has two to four choices');
+  const SegmentedControl({super.key, required this.options, required this.selected, required this.onChanged});
 
   final List<SegmentOption<T>> options;
   final T selected;
@@ -23,6 +22,7 @@ class SegmentedControl<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(options.length >= 2 && options.length <= 4, 'A segmented control has two to four choices');
     final AppTheme theme = AppTheme.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(color: theme.palette.bgTertiary, borderRadius: BorderRadius.circular(Radii.chip)),

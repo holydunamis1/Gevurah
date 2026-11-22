@@ -34,7 +34,7 @@ class StarRow extends StatelessWidget {
               ),
             ),
           const SizedBox(width: Sp.xs),
-          Text(label, style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
+          Flexible(child: Text(label, style: theme.text.footnote.copyWith(color: theme.palette.textSecondary))),
         ],
       ),
     );

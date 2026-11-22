@@ -26,7 +26,7 @@ class StatPill extends StatelessWidget {
             children: <Widget>[
               Flexible(child: Text(label, style: theme.text.footnote.copyWith(color: theme.palette.textSecondary))),
               const SizedBox(width: Sp.sm),
-              Text(value, style: theme.text.footnote.copyWith(fontWeight: FontWeight.w600)),
+              Flexible(child: Text(value, style: theme.text.footnote.copyWith(fontWeight: FontWeight.w600))),
             ],
           ),
         ),

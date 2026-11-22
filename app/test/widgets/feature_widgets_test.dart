@@ -276,7 +276,7 @@ void main() {
       result = showAppBottomSheet<String>(ctx, barrierLabel: 'Close', builder: (BuildContext c) => const AppBottomSheet(title: 'Sheet', child: Text('inside')));
       await t.pumpAndSettle();
       expect(find.text('inside'), findsOneWidget);
-      await t.tapAt(const Offset(10, 10));
+      await t.tapAt(const Offset(400, 10));
       await t.pumpAndSettle();
       expect(find.text('inside'), findsNothing);
       expect(await result, isNull);

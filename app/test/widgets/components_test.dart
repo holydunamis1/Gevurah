@@ -159,7 +159,7 @@ void main() {
       final SemanticsHandle h = t.ensureSemantics();
       await t.pumpWidget(wrap(const SectionHeader('Modes')));
       expect(find.text('MODES'), findsOneWidget);
-      expect(t.getSemantics(find.text('MODES')).hasFlag(SemanticsFlag.isHeader), isTrue);
+      expect(t.getSemantics(find.text('MODES')).flagsCollection.isHeader, isTrue);
       h.dispose();
     });
 
@@ -254,7 +254,7 @@ void main() {
         const SizedBox(
           width: 360,
           height: 640,
-          child: ScreenFrame(navBar: Text('nav'), child: Text('body'), adSlot: SizedBox(height: 50, child: Text('ad'))),
+          child: ScreenFrame(navBar: Text('nav'), adSlot: SizedBox(height: 50, child: Text('ad')), child: Text('body')),
         ),
       ));
       expect(t.getTopLeft(find.text('nav')).dy, lessThan(t.getTopLeft(find.text('body')).dy));

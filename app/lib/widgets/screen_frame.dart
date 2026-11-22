@@ -21,7 +21,7 @@ class ScreenFrame extends StatelessWidget {
           children: <Widget>[
             navBar,
             Expanded(child: child),
-            if (adSlot != null) adSlot!,
+            ?adSlot,
           ],
         ),
       ),

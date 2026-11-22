@@ -9,28 +9,25 @@ enum ReminderStatus { off, scheduled, permissionDenied }
 /// player's language. Turning it on asks for permission only then; a refusal
 /// leaves it off and says so, and nothing else is affected.
 class ReminderProvider extends ValueNotifier<ReminderStatus> {
-  ReminderProvider({required NotificationPort notifications, required SettingsProvider settings})
-      : _notifications = notifications,
-        _settings = settings,
-        super(ReminderStatus.off);
+  ReminderProvider({required this.notifications, required this.settings}) : super(ReminderStatus.off);
 
-  final NotificationPort _notifications;
-  final SettingsProvider _settings;
+  final NotificationPort notifications;
+  final SettingsProvider settings;
 
   /// Re-applies the saved setting, for launch and for a language change.
   Future<void> sync({required String title, required String body}) async {
-    final bool on = _settings.settings.remindersOn;
+    final bool on = settings.settings.remindersOn;
     try {
       if (!on) {
-        await _notifications.cancelDaily();
+        await notifications.cancelDaily();
         value = ReminderStatus.off;
         return;
       }
-      if (!await _notifications.permissionGranted()) {
+      if (!await notifications.permissionGranted()) {
         value = ReminderStatus.permissionDenied;
         return;
       }
-      await _notifications.scheduleDaily(minuteOfDay: _settings.settings.reminderMinuteOfDay, title: title, body: body);
+      await notifications.scheduleDaily(minuteOfDay: settings.settings.reminderMinuteOfDay, title: title, body: body);
       value = ReminderStatus.scheduled;
     } on Object {
       value = ReminderStatus.off;
@@ -41,23 +38,23 @@ class ReminderProvider extends ValueNotifier<ReminderStatus> {
     if (enabled) {
       bool granted = false;
       try {
-        granted = await _notifications.permissionGranted() || await _notifications.requestPermission();
+        granted = await notifications.permissionGranted() || await notifications.requestPermission();
       } on Object {
         granted = false;
       }
       if (!granted) {
-        await _settings.update((s) => s.copyWith(remindersOn: false));
+        await settings.update((s) => s.copyWith(remindersOn: false));
         value = ReminderStatus.permissionDenied;
         return value;
       }
     }
-    await _settings.update((s) => s.copyWith(remindersOn: enabled));
+    await settings.update((s) => s.copyWith(remindersOn: enabled));
     await sync(title: title, body: body);
     return value;
   }
 
   Future<void> setTime(int minuteOfDay, {required String title, required String body}) async {
-    await _settings.update((s) => s.copyWith(reminderMinuteOfDay: minuteOfDay.clamp(0, 1439)));
+    await settings.update((s) => s.copyWith(reminderMinuteOfDay: minuteOfDay.clamp(0, 1439)));
     await sync(title: title, body: body);
   }
 }

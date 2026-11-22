@@ -11,12 +11,11 @@ import 'flags_provider.dart';
 /// rewarded ads stay available (they are always the player's choice).
 class AdProvider extends ValueNotifier<bool> {
   AdProvider({
-    required AdsPort ads,
+    required this.ads,
     required ConsentProvider consent,
     required EntitlementProvider entitlement,
     required FlagsProvider flags,
-  })  : _ads = ads,
-        _consent = consent,
+  })  : _consent = consent,
         _entitlement = entitlement,
         _flags = flags,
         super(false) {
@@ -26,7 +25,7 @@ class AdProvider extends ValueNotifier<bool> {
     _recompute();
   }
 
-  final AdsPort _ads;
+  final AdsPort ads;
   final ConsentProvider _consent;
   final EntitlementProvider _entitlement;
   final FlagsProvider _flags;
@@ -52,12 +51,12 @@ class AdProvider extends ValueNotifier<bool> {
       return;
     }
     try {
-      await _ads.initialize();
+      await ads.initialize();
       if (interstitialAllowed) {
-        await _ads.loadInterstitial();
+        await ads.loadInterstitial();
       }
       if (rewardedAllowed) {
-        await _ads.loadRewarded();
+        await ads.loadRewarded();
       }
     } on Object {
       // No ad is not an error.
@@ -66,19 +65,19 @@ class AdProvider extends ValueNotifier<bool> {
 
   /// Offered only at a natural pause after a bout. Returns whether one was shown.
   Future<bool> maybeShowInterstitial() async {
-    if (!interstitialAllowed || !_ads.interstitialReady) {
+    if (!interstitialAllowed || !ads.interstitialReady) {
       return false;
     }
     try {
-      final bool shown = await _ads.showInterstitial();
-      await _ads.loadInterstitial();
+      final bool shown = await ads.showInterstitial();
+      await ads.loadInterstitial();
       return shown;
     } on Object {
       return false;
     }
   }
 
-  bool get rewardedReady => rewardedAllowed && _ads.rewardedReady;
+  bool get rewardedReady => rewardedAllowed && ads.rewardedReady;
 
   /// Shows a rewarded ad the player chose to watch. True only if the reward was earned.
   Future<bool> watchRewarded() async {
@@ -86,8 +85,8 @@ class AdProvider extends ValueNotifier<bool> {
       return false;
     }
     try {
-      final bool earned = await _ads.showRewarded();
-      await _ads.loadRewarded();
+      final bool earned = await ads.showRewarded();
+      await ads.loadRewarded();
       return earned;
     } on Object {
       return false;

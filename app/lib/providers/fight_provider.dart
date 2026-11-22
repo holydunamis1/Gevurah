@@ -71,15 +71,11 @@ class FightFinish {
 /// decided by the pure core. The same config and the same inputs always give
 /// the same bout.
 class FightProvider extends ValueNotifier<FightView?> {
-  FightProvider({required ProgressProvider progress, required AchievementsProvider achievements, required ClockPort clock})
-      : _progress = progress,
-        _achievements = achievements,
-        _clock = clock,
-        super(null);
+  FightProvider({required this.progress, required this.achievements, required this.clock}) : super(null);
 
-  final ProgressProvider _progress;
-  final AchievementsProvider _achievements;
-  final ClockPort _clock;
+  final ProgressProvider progress;
+  final AchievementsProvider achievements;
+  final ClockPort clock;
 
   SeededRng? _aiRng;
   Modifiers _modifiers = Modifiers.none;
@@ -212,15 +208,15 @@ class FightProvider extends ValueNotifier<FightView?> {
     if (v.config.mode == FightMode.daily) {
       final DailyChallenge? d = _daily;
       if (d != null) {
-        await _progress.applyDaily(d, completed: v.won, stars: v.stars);
+        await progress.applyDaily(d, completed: v.won, stars: v.stars);
       }
     } else {
-      applied = await _progress.applyFightResult(v.config, v.state, v.history);
+      applied = await progress.applyFightResult(v.config, v.state, v.history);
     }
-    final List<String> fresh = await _achievements.evaluate(
+    final List<String> fresh = await achievements.evaluate(
       finalState: v.state,
       history: v.history,
-      todayKey: DailySeed.dateKey(_clock.now()),
+      todayKey: DailySeed.dateKey(clock.now()),
     );
     return _finish = FightFinish(view: v, applied: applied, newAchievements: fresh);
   }

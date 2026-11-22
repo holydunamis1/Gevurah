@@ -11,12 +11,12 @@ enum EffectKind { impact, stars, perfect }
 /// perfect response. It removes itself when finished. With Reduce Motion it is
 /// a fixed-size flash that fades, with no movement.
 class Effect extends PositionComponent {
-  Effect({required this.kind, required this.color, this.reduceMotion = false, double radius = 60}) : _radius = radius;
+  Effect({required this.kind, required this.color, this.reduceMotion = false, this.radius = 60});
 
   final EffectKind kind;
   final Color color;
   final bool reduceMotion;
-  final double _radius;
+  final double radius;
 
   double _ms = 0;
 
@@ -52,7 +52,7 @@ class Effect extends PositionComponent {
     final double fade = 1 - t;
     final Paint p = Paint()..color = color.withValues(alpha: fade);
     if (reduceMotion) {
-      canvas.drawCircle(Offset.zero, _radius * 0.6, p);
+      canvas.drawCircle(Offset.zero, radius * 0.6, p);
       return;
     }
     switch (kind) {
@@ -61,11 +61,11 @@ class Effect extends PositionComponent {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 5 * fade + 1
           ..color = color.withValues(alpha: fade);
-        canvas.drawCircle(Offset.zero, _radius * (0.3 + 0.7 * t), ring);
+        canvas.drawCircle(Offset.zero, radius * (0.3 + 0.7 * t), ring);
         for (int i = 0; i < 8; i++) {
           final double a = i * math.pi / 4;
-          final Offset from = Offset(math.cos(a), math.sin(a)) * (_radius * (0.35 + 0.5 * t));
-          final Offset to = Offset(math.cos(a), math.sin(a)) * (_radius * (0.55 + 0.7 * t));
+          final Offset from = Offset(math.cos(a), math.sin(a)) * (radius * (0.35 + 0.5 * t));
+          final Offset to = Offset(math.cos(a), math.sin(a)) * (radius * (0.55 + 0.7 * t));
           canvas.drawLine(from, to, ring);
         }
       case EffectKind.perfect:
@@ -73,11 +73,11 @@ class Effect extends PositionComponent {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 3
           ..color = color.withValues(alpha: fade);
-        canvas.drawCircle(Offset.zero, _radius * (0.5 + 0.9 * t), ring);
+        canvas.drawCircle(Offset.zero, radius * (0.5 + 0.9 * t), ring);
       case EffectKind.stars:
         for (int i = 0; i < 5; i++) {
           final double a = i * 2 * math.pi / 5 + t * 2;
-          final Offset c = Offset(math.cos(a), math.sin(a) * 0.5) * (_radius * 0.5) + Offset(0, -_radius * 0.9 * t);
+          final Offset c = Offset(math.cos(a), math.sin(a) * 0.5) * (radius * 0.5) + Offset(0, -radius * 0.9 * t);
           _star(canvas, c, 7 * (1 - t * 0.4), p);
         }
     }

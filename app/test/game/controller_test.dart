@@ -6,7 +6,6 @@ import 'package:gevurah/core/input/tap_swipe_strategy.dart';
 import 'package:gevurah/core/models/exchange_outcome.dart';
 import 'package:gevurah/core/models/exchange_record.dart';
 import 'package:gevurah/core/models/fight_config.dart';
-import 'package:gevurah/core/models/fight_state.dart';
 import 'package:gevurah/core/models/stance.dart';
 import 'package:gevurah/core/ports/haptics_port.dart';
 import 'package:gevurah/core/storage/progress_store.dart';
@@ -60,7 +59,7 @@ class Rig {
         }
       case OpeningOpened():
         if (skill == Skill.perfect) {
-          final double beat = (clock.now > _lastBeat ? clock.now : _lastBeat) + GameTuning.openingDelayMs;
+          final double beat = clock.now + GameTuning.openingDelayMs;
           taps.add(Tapish(beat));
           if (combo) {
             taps.add(Tapish(beat + 120));
@@ -83,7 +82,6 @@ class Rig {
     }
   }
 
-  double _lastBeat = 0;
 
   /// Steps 8 ms at a time until [done] or the cap.
   void run({bool Function()? done, int maxSteps = 400000}) {
@@ -133,7 +131,7 @@ void main() {
 
   test('timestamps are judged against the beat, not the frame', () {
     final Rig r = Rig();
-    r.run(done: () => r_resolved(r, 3));
+    r.run(done: () => resolvedAtLeast(r, 3));
     for (final ExchangeRecord e in r.history) {
       if (e.response != Response.takeIt) {
         expect(e.offset.ms.abs(), lessThan(1), reason: 'a tap stamped on the beat has no error, whatever the frame step');
@@ -308,4 +306,4 @@ void main() {
   });
 }
 
-bool r_resolved(Rig r, int n) => r.history.length >= n;
+bool resolvedAtLeast(Rig r, int n) => r.history.length >= n;

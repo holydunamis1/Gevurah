@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';

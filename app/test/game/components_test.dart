@@ -314,7 +314,7 @@ void main() {
     testWidgets('loads the world, lays it out and drives the controller each frame', (WidgetTester t) async {
       final ct.Rig r = ct.Rig(skill: ct.Skill.never);
       final BoxingGame game = BoxingGame(controller: r.controller, palette: pal, struggleId: StruggleCatalog.career.first.id);
-      await t.pumpWidget(themed(SizedBox(width: 360, height: 640, child: GameWidget<BoxingGame>(game: game))));
+      await t.pumpWidget(themed(Align(alignment: Alignment.topLeft, child: SizedBox(width: 360, height: 640, child: GameWidget<BoxingGame>(game: game)))));
       await t.pump();
       await t.pump(const Duration(milliseconds: 16));
       expect(game.backgroundColor(), pal.bgPrimary);
@@ -333,7 +333,7 @@ void main() {
     testWidgets('the world reacts to a full bout: poses, effects and the defeat', (WidgetTester t) async {
       final ct.Rig r = ct.Rig();
       final BoxingGame game = BoxingGame(controller: r.controller, palette: pal, struggleId: StruggleCatalog.career.first.id);
-      await t.pumpWidget(themed(SizedBox(width: 360, height: 640, child: GameWidget<BoxingGame>(game: game))));
+      await t.pumpWidget(themed(Align(alignment: Alignment.topLeft, child: SizedBox(width: 360, height: 640, child: GameWidget<BoxingGame>(game: game)))));
       await t.pump();
       r.controller.begin();
       final Set<FighterPose> poses = <FighterPose>{};

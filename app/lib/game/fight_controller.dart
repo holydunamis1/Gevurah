@@ -119,9 +119,27 @@ class FightController {
   /// The move being telegraphed, or null.
   MoveDef? get currentMove => fight.value?.move;
 
+  final List<FightEvent> _queue = <FightEvent>[];
+  bool _emitting = false;
+
+  /// Events are delivered in order. A listener may call back into the
+  /// controller (for example to resume from a pause); any event that causes
+  /// is queued and delivered after the current one.
   void _emit(FightEvent e) {
-    if (!_events.isClosed) {
-      _events.add(e);
+    _queue.add(e);
+    if (_emitting) {
+      return;
+    }
+    _emitting = true;
+    try {
+      while (_queue.isNotEmpty) {
+        final FightEvent next = _queue.removeAt(0);
+        if (!_events.isClosed) {
+          _events.add(next);
+        }
+      }
+    } finally {
+      _emitting = false;
     }
   }
 

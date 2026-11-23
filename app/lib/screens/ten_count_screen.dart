@@ -138,7 +138,7 @@ class _TenCountScreenState extends State<TenCountScreen> {
             }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[heading, const SizedBox(height: Sp.lg), Expanded(child: verse), const SizedBox(height: Sp.md), controls],
+              children: <Widget>[heading, const SizedBox(height: Sp.lg), Flexible(child: verse), const SizedBox(height: Sp.md), Flexible(child: controls)],
             );
           },
         ),

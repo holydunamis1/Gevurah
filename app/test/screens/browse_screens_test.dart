@@ -28,6 +28,8 @@ Progress wonCareer(int count, {int stars = 2, List<String> achievements = const 
 Future<void> tapText(WidgetTester t, String text) async {
   final Finder f = find.text(text);
   await t.scrollUntilVisible(f, 200, scrollable: find.byType(Scrollable).first);
+  await t.ensureVisible(f);
+  await t.pumpAndSettle();
   await t.tap(f);
 }
 
@@ -72,6 +74,8 @@ void main() {
       await t.pumpWidget(host(r.app, JourneyMapScreen(onOpen: opened.add, onBack: () {})));
       final Finder finalRow = find.text('Still Standing · Ready');
       await t.scrollUntilVisible(finalRow, 300, scrollable: find.byType(Scrollable).first);
+      await t.ensureVisible(find.text('Giving Up'));
+      await t.pumpAndSettle();
       await t.tap(find.text('Giving Up'));
       expect(opened, <String>['giving_up']);
     });

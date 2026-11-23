@@ -24,3 +24,9 @@ String formatClock(Duration duration) {
   final int seconds = totalSeconds % 60;
   return '$minutes:${seconds.toString().padLeft(2, '0')}';
 }
+
+/// A minute of the day as HH:mm with Latin digits, for example 09:30.
+String formatMinuteOfDay(int minuteOfDay) {
+  final int m = minuteOfDay.clamp(0, 1439);
+  return '${(m ~/ 60).toString().padLeft(2, '0')}:${(m % 60).toString().padLeft(2, '0')}';
+}

@@ -964,5 +964,81 @@
   "enduranceNewBest": "New best",
   "@enduranceNewBest": {
     "description": "Endurance result badge"
+  },
+  "libraryTitle": "Verse library",
+  "@libraryTitle": {
+    "description": "Verse library title"
+  },
+  "libraryTabCards": "Cards",
+  "@libraryTabCards": {
+    "description": "Library tab"
+  },
+  "libraryTabStruggles": "Struggles",
+  "@libraryTabStruggles": {
+    "description": "Library tab"
+  },
+  "libraryTabMoments": "Moments",
+  "@libraryTabMoments": {
+    "description": "Library tab"
+  },
+  "libraryEmptyStruggles": "Meet a struggle in the Journey to read its verse here.",
+  "@libraryEmptyStruggles": {
+    "description": "Library empty"
+  },
+  "libraryEmpty": "No verses are available right now.",
+  "@libraryEmpty": {
+    "description": "Library nothing loaded"
+  },
+  "libraryCorner": "Between rounds",
+  "@libraryCorner": {
+    "description": "Library section"
+  },
+  "libraryTenCount": "Getting back up",
+  "@libraryTenCount": {
+    "description": "Library section"
+  },
+  "libraryWin": "After a win",
+  "@libraryWin": {
+    "description": "Library section"
+  },
+  "libraryLoss": "Encouragement after a loss",
+  "@libraryLoss": {
+    "description": "Library section"
+  },
+  "libraryDaily": "Daily verses",
+  "@libraryDaily": {
+    "description": "Library section"
+  },
+  "dailyOff": "The Daily Bout is not available right now.",
+  "@dailyOff": {
+    "description": "Daily bout switched off"
+  },
+  "dailyDone": "Done for today. Come back tomorrow.",
+  "@dailyDone": {
+    "description": "Daily bout finished"
+  },
+  "dailyToday": "Today's struggle",
+  "@dailyToday": {
+    "description": "Daily bout heading"
+  },
+  "reminderToggle": "Remind me each day",
+  "@reminderToggle": {
+    "description": "Reminder switch"
+  },
+  "reminderTime": "Reminder time",
+  "@reminderTime": {
+    "description": "Reminder time row"
+  },
+  "reminderDenied": "Notifications are turned off for this app. Turn them on in your phone's settings to get a reminder.",
+  "@reminderDenied": {
+    "description": "Reminder permission refused"
+  },
+  "reminderTitle": "Daily Bout",
+  "@reminderTitle": {
+    "description": "Reminder notification title"
+  },
+  "reminderBody": "Today's bout is ready.",
+  "@reminderBody": {
+    "description": "Reminder notification text"
   }
 }

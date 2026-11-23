@@ -43,6 +43,15 @@ class VerseProvider extends ValueNotifier<String> {
     }
   }
 
+  /// Every verse bundled for [moment], in a stable order, for the library.
+  Future<List<Verse>> all(VerseMoment moment) async {
+    try {
+      return await _repo.byMoment(moment, value);
+    } on Object {
+      return const <Verse>[];
+    }
+  }
+
   Future<Verse?> preBout(String struggleId) => _guard(() => _repo.preBoutFor(struggleId, value));
 
   Future<Verse?> card(String cardId) => _guard(() => _repo.cardVerse(cardId, value));

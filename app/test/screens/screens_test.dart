@@ -33,11 +33,12 @@ import '../fakes/fakes.dart';
 Future<String> fromDisk(String path) async => File(path).readAsStringSync();
 
 class Rigging {
-  Rigging(this.app, this.storage, this.ads);
+  Rigging(this.app, this.storage, this.ads, this.notifications);
 
   final AppProviders app;
   final FakeStorage storage;
   final FakeAds ads;
+  final FakeNotifications notifications;
 }
 
 Future<Rigging> makeApp({FakeStorage? storage, Progress? progress}) async {
@@ -46,13 +47,14 @@ Future<Rigging> makeApp({FakeStorage? storage, Progress? progress}) async {
     s.files[ProgressStore.mainFile] = ProgressCodec.encode(progress);
   }
   final FakeAds ads = FakeAds();
+  final FakeNotifications notes = FakeNotifications();
   final AppProviders app = AppProviders.create(
     storage: s,
     clock: FakeClock(DateTime(2026, 11, 22, 9)),
     billing: FakeBilling(),
     consent: FakeConsent(const ConsentState(canRequestAds: true, privacyOptionsRequired: false)),
     ads: ads,
-    notifications: FakeNotifications(),
+    notifications: notes,
     verseRepository: VerseRepository(fromDisk),
     fetchFlags: () async => RemoteFlags.defaults,
     deviceLanguages: <String>['en'],
@@ -60,7 +62,7 @@ Future<Rigging> makeApp({FakeStorage? storage, Progress? progress}) async {
     audio: FakeAudio(),
   );
   await app.startUp();
-  return Rigging(app, s, ads);
+  return Rigging(app, s, ads, notes);
 }
 
 Widget host(

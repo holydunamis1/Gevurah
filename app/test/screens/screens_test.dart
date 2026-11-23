@@ -113,6 +113,12 @@ void playOut(AppProviders app) {
   }
 }
 
+/// Lets a route transition start and finish.
+Future<void> settle(WidgetTester t) async {
+  await t.pump(const Duration(milliseconds: 50));
+  await t.pump(const Duration(seconds: 1));
+}
+
 class Clock {
   double now = 0;
   double read() => now;
@@ -214,6 +220,7 @@ void main() {
       expect(r.app.fight.value, isNotNull);
       expect(r.app.fight.value!.struggle.id, first);
       expect(r.app.fight.value!.config.mode, FightMode.journey);
+      await t.scrollUntilVisible(find.text('Change cards'), 200, scrollable: find.byType(Scrollable).first);
       await t.tap(find.text('Change cards'));
       await t.tap(find.bySemanticsLabel('Back'));
       expect(log, <String>['start', 'cards', 'back']);
@@ -397,26 +404,26 @@ void main() {
       await t.pump(const Duration(milliseconds: 100));
       await t.pump(const Duration(milliseconds: 100));
       await t.tap(find.bySemanticsLabel('Pause'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       expect(find.text('Paused'), findsOneWidget);
       await t.tap(find.text('Resume'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       expect(find.text('Paused'), findsNothing);
       await t.tap(find.bySemanticsLabel('Pause'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       await t.tap(find.text('Leave bout'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       expect(find.text('Leave this bout?'), findsOneWidget);
       await t.tap(find.text('Keep fighting'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       expect(left, 0);
       expect(r.app.fight.value, isNotNull);
       await t.tap(find.bySemanticsLabel('Pause'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       await t.tap(find.text('Leave bout'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       await t.tap(find.text('Leave bout'));
-      await t.pump(const Duration(seconds: 1));
+      await settle(t);
       expect(left, 1);
       expect(finished, 0);
       expect(r.app.fight.value, isNull);

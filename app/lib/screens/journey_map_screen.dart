@@ -4,7 +4,6 @@ import '../core/catalog/struggle_catalog.dart';
 import '../core/logic/progression_rules.dart';
 import '../core/models/struggle_def.dart';
 import '../l10n/app_localizations.dart';
-import '../l10n/l10n_helpers.dart';
 import '../providers/app_providers.dart';
 import '../providers/app_scope.dart';
 import '../theme/tokens.dart';

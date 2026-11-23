@@ -70,7 +70,7 @@ Widget host(
       child: Directionality(
         textDirection: dir,
         child: Localizations(
-          locale: Locale(dir == TextDirection.rtl ? 'ar' : 'en'),
+          locale: Locale('en'),
           delegates: const <LocalizationsDelegate<dynamic>>[AppLocalizations.delegate, DefaultWidgetsLocalizations.delegate],
           child: AppTheme.forBrightness(
             brightness: brightness,

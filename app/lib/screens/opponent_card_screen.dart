@@ -81,9 +81,13 @@ class OpponentCardScreen extends StatelessWidget {
         builder: (BuildContext context, Widget? _) {
           final Loadout loadout = app.loadout.value.loadout;
           final bool canFight = def != null && ProgressionRules.canFight(app.progress.value.progress, mode, struggleId);
-          return ListView(
-            padding: const EdgeInsets.all(Sp.lg),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.all(Sp.lg),
+                  children: <Widget>[
               if (def != null && def.track == StruggleTrack.career) Text(l.tierLabel(def.tier), style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
               if (def != null) ...<Widget>[
                 const SizedBox(height: Sp.sm),
@@ -97,8 +101,13 @@ class OpponentCardScreen extends StatelessWidget {
               for (final String id in loadout.cardIds) _cardRow(l, id),
               AppRow(label: l.opponentStance(l.stanceName(loadout.stance)), leadingIcon: AppIcons.guard, showChevron: false),
               AppRow(label: l.opponentChange, onPressed: onChangeCards),
-              const SizedBox(height: Sp.lg),
-              PrimaryButton(label: l.opponentStart, icon: AppIcons.fight, onPressed: canFight ? () => _start(app) : null),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(Sp.lg, Sp.sm, Sp.lg, Sp.lg),
+                child: PrimaryButton(label: l.opponentStart, icon: AppIcons.fight, onPressed: canFight ? () => _start(app) : null),
+              ),
             ],
           );
         },

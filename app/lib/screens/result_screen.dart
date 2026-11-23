@@ -62,9 +62,13 @@ class _ResultScreenState extends State<ResultScreen> {
           final bool won = f.view.won;
           final String? cardId = f.applied?.newCardId;
           final VerseCardDef? card = cardId == null ? null : CardCatalog.byId(cardId);
-          return ListView(
-            padding: const EdgeInsets.all(Sp.lg),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.all(Sp.lg),
+                  children: <Widget>[
               Text(won ? l.resultWon : l.resultLost, style: theme.text.display),
               const SizedBox(height: Sp.sm),
               Text(l.struggleName(f.view.struggle.id), style: theme.text.callout.copyWith(color: theme.palette.textSecondary)),
@@ -80,11 +84,21 @@ class _ResultScreenState extends State<ResultScreen> {
                 const SizedBox(height: Sp.sm),
                 Text(l.resultAchievements(f.newAchievements.length), style: theme.text.callout),
               ],
-              const SizedBox(height: Sp.lg),
-              PrimaryButton(label: l.resultContinue, onPressed: widget.onContinue),
-              const SizedBox(height: Sp.sm),
-              AppRow(label: l.resultTryAgain, onPressed: widget.onTryAgain),
-              AppRow(label: l.resultHome, onPressed: widget.onHome),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(Sp.lg, Sp.sm, Sp.lg, Sp.lg),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    PrimaryButton(label: l.resultContinue, onPressed: widget.onContinue),
+                    AppRow(label: l.resultTryAgain, onPressed: widget.onTryAgain),
+                    AppRow(label: l.resultHome, onPressed: widget.onHome),
+                  ],
+                ),
+              ),
             ],
           );
         },

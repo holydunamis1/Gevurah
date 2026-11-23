@@ -1,4 +1,8 @@
+import 'package:flutter/widgets.dart';
+
+import '../core/ports/audio_port.dart';
 import '../core/ports/clock_port.dart';
+import '../core/ports/haptics_port.dart';
 import '../core/ports/notification_port.dart';
 import '../core/ports/billing_port.dart';
 import '../core/ports/ads_port.dart';
@@ -40,6 +44,9 @@ class AppProviders {
     required this.fight,
     required this.verses,
     required this.reminder,
+    this.haptics,
+    this.audio,
+    this.bannerBuilder,
   });
 
   factory AppProviders.create({
@@ -52,6 +59,9 @@ class AppProviders {
     required VerseRepository verseRepository,
     required Future<RemoteFlags> Function() fetchFlags,
     List<String> deviceLanguages = const <String>[],
+    HapticsPort? haptics,
+    AudioPort? audio,
+    WidgetBuilder? bannerBuilder,
   }) {
     final SettingsProvider settings = SettingsProvider(storage);
     final LocaleProvider locale = LocaleProvider(settings, deviceLanguages: deviceLanguages);
@@ -75,6 +85,9 @@ class AppProviders {
       fight: FightProvider(progress: progress, achievements: achievements, clock: clock),
       verses: VerseProvider(verseRepository, locale),
       reminder: ReminderProvider(notifications: notifications, settings: settings),
+      haptics: haptics,
+      audio: audio,
+      bannerBuilder: bannerBuilder,
     );
   }
 
@@ -92,6 +105,13 @@ class AppProviders {
   final FightProvider fight;
   final VerseProvider verses;
   final ReminderProvider reminder;
+
+  /// Device feedback for the fight; null when the platform has none.
+  final HapticsPort? haptics;
+  final AudioPort? audio;
+
+  /// Builds the platform banner ad, or null when no banner exists.
+  final WidgetBuilder? bannerBuilder;
 
   /// Launch order: what the first screen needs loads first; the rest never
   /// blocks it. Each step handles its own failure.

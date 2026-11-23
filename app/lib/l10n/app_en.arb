@@ -407,5 +407,255 @@
   "hudPause": "Pause",
   "@hudPause": {
     "description": "Button"
+  },
+  "commonBack": "Back",
+  "@commonBack": {
+    "description": "Back button name for screen readers"
+  },
+  "commonClose": "Close",
+  "@commonClose": {
+    "description": "Close button name"
+  },
+  "homeContinue": "Continue",
+  "@homeContinue": {
+    "description": "Home: continue the journey"
+  },
+  "homeNext": "Next: {name}",
+  "@homeNext": {
+    "description": "Home: the next struggle",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeJourney": "Journey",
+  "@homeJourney": {
+    "description": "Home card"
+  },
+  "homeDaily": "Daily Bout",
+  "@homeDaily": {
+    "description": "Home card"
+  },
+  "homeDailyDone": "Done today",
+  "@homeDailyDone": {
+    "description": "Home: daily bout finished"
+  },
+  "homeDailyStreak": "{count}-day streak",
+  "@homeDailyStreak": {
+    "description": "Home: daily streak",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeModes": "Modes",
+  "@homeModes": {
+    "description": "Home card"
+  },
+  "homeCards": "Cards",
+  "@homeCards": {
+    "description": "Home card"
+  },
+  "homeLibrary": "Verse library",
+  "@homeLibrary": {
+    "description": "Home card"
+  },
+  "homeSettings": "Settings",
+  "@homeSettings": {
+    "description": "Settings button name"
+  },
+  "homeSaveFailed": "Your progress could not be saved.",
+  "@homeSaveFailed": {
+    "description": "Home warning"
+  },
+  "homeSaveRetry": "Try again",
+  "@homeSaveRetry": {
+    "description": "Home warning action"
+  },
+  "homeNoticeRecovered": "Your progress was restored from a backup.",
+  "@homeNoticeRecovered": {
+    "description": "Home notice"
+  },
+  "homeNoticeStartedClean": "Your saved progress could not be read, so you are starting fresh.",
+  "@homeNoticeStartedClean": {
+    "description": "Home notice"
+  },
+  "homeNoticeDismiss": "Dismiss",
+  "@homeNoticeDismiss": {
+    "description": "Home notice action"
+  },
+  "homeReadOnly": "This save comes from a newer version of the app. Progress will not be changed.",
+  "@homeReadOnly": {
+    "description": "Home warning"
+  },
+  "opponentStart": "Start bout",
+  "@opponentStart": {
+    "description": "Opponent card button"
+  },
+  "opponentCards": "Your cards",
+  "@opponentCards": {
+    "description": "Opponent card section"
+  },
+  "opponentNoCards": "No cards equipped",
+  "@opponentNoCards": {
+    "description": "Opponent card"
+  },
+  "opponentChange": "Change cards",
+  "@opponentChange": {
+    "description": "Opponent card button"
+  },
+  "opponentVerse": "Before the bout",
+  "@opponentVerse": {
+    "description": "Opponent card section"
+  },
+  "opponentStance": "Stance: {name}",
+  "@opponentStance": {
+    "description": "Opponent card",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fightPauseTitle": "Paused",
+  "@fightPauseTitle": {
+    "description": "Pause sheet"
+  },
+  "fightResume": "Resume",
+  "@fightResume": {
+    "description": "Pause sheet"
+  },
+  "fightLeave": "Leave bout",
+  "@fightLeave": {
+    "description": "Pause sheet"
+  },
+  "fightLeaveTitle": "Leave this bout?",
+  "@fightLeaveTitle": {
+    "description": "Dialog"
+  },
+  "fightLeaveBody": "This bout will not be saved.",
+  "@fightLeaveBody": {
+    "description": "Dialog"
+  },
+  "fightStay": "Keep fighting",
+  "@fightStay": {
+    "description": "Dialog"
+  },
+  "cornerTitle": "Corner",
+  "@cornerTitle": {
+    "description": "Corner screen"
+  },
+  "cornerRoundDone": "Round {round} complete",
+  "@cornerRoundDone": {
+    "description": "Corner screen",
+    "placeholders": {
+      "round": {
+        "type": "int"
+      }
+    }
+  },
+  "cornerNext": "Next round",
+  "@cornerNext": {
+    "description": "Corner screen button"
+  },
+  "cornerRested": "Stamina restored",
+  "@cornerRested": {
+    "description": "Corner screen"
+  },
+  "tenTitle": "Get up",
+  "@tenTitle": {
+    "description": "Ten-count screen"
+  },
+  "tenBody": "Tap steadily to stand back up.",
+  "@tenBody": {
+    "description": "Ten-count instruction"
+  },
+  "tenTap": "Tap",
+  "@tenTap": {
+    "description": "Ten-count tap button"
+  },
+  "tenProgress": "{count} of {total}",
+  "@tenProgress": {
+    "description": "Ten-count progress",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "tenStand": "Stand up",
+  "@tenStand": {
+    "description": "Ten-count button"
+  },
+  "resultWon": "You stood firm",
+  "@resultWon": {
+    "description": "Result title"
+  },
+  "resultLost": "Not this time",
+  "@resultLost": {
+    "description": "Result title"
+  },
+  "resultStars": "{count} of 3 stars",
+  "@resultStars": {
+    "description": "Stars summary",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resultCard": "New card earned",
+  "@resultCard": {
+    "description": "Result"
+  },
+  "resultAchievements": "{count, plural, =1{1 new achievement} other{{count} new achievements}}",
+  "@resultAchievements": {
+    "description": "Result",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resultContinue": "Continue",
+  "@resultContinue": {
+    "description": "Result button"
+  },
+  "resultTryAgain": "Try again",
+  "@resultTryAgain": {
+    "description": "Result button"
+  },
+  "resultHome": "Home",
+  "@resultHome": {
+    "description": "Result button"
+  },
+  "cardsTitle": "Your cards",
+  "@cardsTitle": {
+    "description": "Card picker title"
+  },
+  "cardsHint": "Choose up to three verse cards.",
+  "@cardsHint": {
+    "description": "Card picker hint"
+  },
+  "cardsEquipped": "Equipped",
+  "@cardsEquipped": {
+    "description": "Card state"
+  },
+  "cardsFull": "Three cards are equipped. Remove one to add another.",
+  "@cardsFull": {
+    "description": "Card picker note"
+  },
+  "cardsEmpty": "Overcome struggles to earn cards.",
+  "@cardsEmpty": {
+    "description": "Card picker empty"
+  },
+  "cardsStance": "Stance",
+  "@cardsStance": {
+    "description": "Card picker section"
   }
 }

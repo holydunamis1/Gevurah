@@ -1,0 +1,411 @@
+{
+  "@@locale": "en",
+  "appName": "Gevurah Boxing",
+  "@appName": {
+    "description": "The app name shown to the player"
+  },
+  "struggle_fear": "Fear",
+  "@struggle_fear": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_fear_tell": "Fast, unpredictable flurries. Stay calm and answer each one.",
+  "@struggle_fear_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_worry": "Worry",
+  "@struggle_worry": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_worry_tell": "Many small hits that add up. Don't let them pile up.",
+  "@struggle_worry_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_anger": "Anger",
+  "@struggle_anger": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_anger_tell": "Slow, charged heavy swings. Slip them, then strike back.",
+  "@struggle_anger_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_impatience": "Impatience",
+  "@struggle_impatience": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_impatience_tell": "Attacks before its own tell finishes. Answer early.",
+  "@struggle_impatience_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_loneliness": "Loneliness",
+  "@struggle_loneliness": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_loneliness_tell": "Crowds in close, and the corner offers less rest.",
+  "@struggle_loneliness_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_discouragement": "Discouragement",
+  "@struggle_discouragement": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_discouragement_tell": "Weak hits that drain your Stamina. Keep some in reserve.",
+  "@struggle_discouragement_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_exhaustion": "Exhaustion",
+  "@struggle_exhaustion": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_exhaustion_tell": "Everything costs double Stamina. Choose each action with care.",
+  "@struggle_exhaustion_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_envy": "Envy",
+  "@struggle_envy": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_envy_tell": "Mirrors your last move. Mix up what you do.",
+  "@struggle_envy_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_doubt": "Doubt",
+  "@struggle_doubt": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_doubt_tell": "Some tells are false. Read which one is real.",
+  "@struggle_doubt_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_temptation": "Temptation",
+  "@struggle_temptation": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_temptation_tell": "Baited openings that are traps. Not every opening is safe.",
+  "@struggle_temptation_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_rejection": "Rejection",
+  "@struggle_rejection": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_rejection_tell": "Pulls back when you press. Draw it in.",
+  "@struggle_rejection_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_bitterness": "Bitterness",
+  "@struggle_bitterness": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_bitterness_tell": "Returns your last hit. Strike with care.",
+  "@struggle_bitterness_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_pride": "Pride",
+  "@struggle_pride": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_pride_tell": "Counters you when you overreach. Stay measured.",
+  "@struggle_pride_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_shame": "Shame",
+  "@struggle_shame": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_shame_tell": "Its guard stays low until you stop swinging wildly. Be patient.",
+  "@struggle_shame_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_failure": "Failure",
+  "@struggle_failure": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_failure_tell": "Gets back up once after a knockdown. Finish the job.",
+  "@struggle_failure_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_giving_up": "Giving Up",
+  "@struggle_giving_up": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_giving_up_tell": "Blends every earlier tell. This is the last bout.",
+  "@struggle_giving_up_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_complaining": "Complaining",
+  "@struggle_complaining": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_complaining_tell": "Constant small jabs. Don't let them wear you down.",
+  "@struggle_complaining_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_procrastination": "Procrastination",
+  "@struggle_procrastination": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_procrastination_tell": "Strikes late. Wait for the real moment.",
+  "@struggle_procrastination_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_distraction": "Distraction",
+  "@struggle_distraction": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_distraction_tell": "Decoys everywhere. Stay on the real tell.",
+  "@struggle_distraction_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_money_pressure": "Money Pressure",
+  "@struggle_money_pressure": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_money_pressure_tell": "Pressure that grows as the bout goes on. Keep steady.",
+  "@struggle_money_pressure_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_comparison": "Comparison",
+  "@struggle_comparison": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_comparison_tell": "Copies what you do. Find your own rhythm.",
+  "@struggle_comparison_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_regret": "Regret",
+  "@struggle_regret": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_regret_tell": "Repeats its moves. Learn the pattern.",
+  "@struggle_regret_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_indecision": "Indecision",
+  "@struggle_indecision": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_indecision_tell": "Splits two ways at once. Choose and commit.",
+  "@struggle_indecision_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_overwhelm": "Overwhelm",
+  "@struggle_overwhelm": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_overwhelm_tell": "Swarms with many small moves. Take one at a time.",
+  "@struggle_overwhelm_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_perfectionism": "Perfectionism",
+  "@struggle_perfectionism": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_perfectionism_tell": "Demands exact timing. Good enough still counts.",
+  "@struggle_perfectionism_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "struggle_unforgiveness": "Unforgiveness",
+  "@struggle_unforgiveness": {
+    "description": "A struggle (opponent) name. Sensitive: review first."
+  },
+  "struggle_unforgiveness_tell": "Holds a grudge and pays back every hit. Let go to move on.",
+  "@struggle_unforgiveness_tell": {
+    "description": "One line on how the struggle fights. Encouraging only."
+  },
+  "move_strike": "Strike",
+  "@move_strike": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "move_flurry": "Flurry",
+  "@move_flurry": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "move_heavy": "Heavy swing",
+  "@move_heavy": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "move_ping": "Small hits",
+  "@move_ping": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "move_fake": "False tell",
+  "@move_fake": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "move_bait": "Bait",
+  "@move_bait": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "move_drain": "Drain",
+  "@move_drain": {
+    "description": "Name of a kind of incoming move, shown with its tell"
+  },
+  "stance_steady": "Steady",
+  "@stance_steady": {
+    "description": "Corner stance"
+  },
+  "stance_steady_hint": "Wider guard windows, smaller strike damage.",
+  "stance_bold": "Bold",
+  "@stance_bold": {
+    "description": "Corner stance"
+  },
+  "stance_bold_hint": "Larger strike damage, narrower guard windows.",
+  "stance_patient": "Patient",
+  "@stance_patient": {
+    "description": "Corner stance"
+  },
+  "stance_patient_hint": "Longer telegraphs, slower Stamina recovery.",
+  "cardType_strike": "Strike",
+  "@cardType_strike": {
+    "description": "Verse card type"
+  },
+  "cardType_guard": "Guard",
+  "@cardType_guard": {
+    "description": "Verse card type"
+  },
+  "cardType_insight": "Insight",
+  "@cardType_insight": {
+    "description": "Verse card type"
+  },
+  "cardType_steadiness": "Steadiness",
+  "@cardType_steadiness": {
+    "description": "Verse card type"
+  },
+  "cardEffect_strike": "Perfect strikes deal {percent}% more damage",
+  "@cardEffect_strike": {
+    "description": "Strike card effect",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "cardTradeoff_strike": "Combos cost {stamina} more Stamina",
+  "@cardTradeoff_strike": {
+    "description": "Strike card trade-off",
+    "placeholders": {
+      "stamina": {
+        "type": "int"
+      }
+    }
+  },
+  "cardEffect_guard": "Perfect guards return {stamina} Stamina",
+  "@cardEffect_guard": {
+    "description": "Guard card effect",
+    "placeholders": {
+      "stamina": {
+        "type": "int"
+      }
+    }
+  },
+  "cardTradeoff_guard": "Good guards reduce {percent}% less damage",
+  "@cardTradeoff_guard": {
+    "description": "Guard card trade-off",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "cardEffect_insight": "Telegraphs last {ms} ms longer",
+  "@cardEffect_insight": {
+    "description": "Insight card effect",
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "cardTradeoff_insight": "Strike windows are {ms} ms narrower",
+  "@cardTradeoff_insight": {
+    "description": "Insight card trade-off",
+    "placeholders": {
+      "ms": {
+        "type": "int"
+      }
+    }
+  },
+  "cardEffect_steadiness": "Damage taken drops {percent}% when Resolve is low",
+  "@cardEffect_steadiness": {
+    "description": "Steadiness card effect",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "cardTradeoff_steadiness": "Stamina recovers {percent}% slower",
+  "@cardTradeoff_steadiness": {
+    "description": "Steadiness card trade-off",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "bookName": "{book, select, 5{Deuteronomy} 6{Joshua} 16{Nehemiah} 19{Psalms} 20{Proverbs} 21{Ecclesiastes} 23{Isaiah} 25{Lamentations} 33{Micah} 35{Habakkuk} 40{Matthew} 41{Mark} 43{John} 45{Romans} 46{1 Corinthians} 47{2 Corinthians} 48{Galatians} 49{Ephesians} 50{Philippians} 51{Colossians} 52{1 Thessalonians} 53{2 Thessalonians} 55{2 Timothy} 58{Hebrews} 59{James} 60{1 Peter} 62{1 John} 65{Jude} other{}}",
+  "@bookName": {
+    "description": "A book of the Bible by its number (1 to 66). Other numbers fall back to the English canon name in code.",
+    "placeholders": {
+      "book": {
+        "type": "String"
+      }
+    }
+  },
+  "verseReference": "{book} {chapter}:{verse}",
+  "@verseReference": {
+    "description": "A verse reference. Right-to-left languages may reorder.",
+    "placeholders": {
+      "book": {
+        "type": "String"
+      },
+      "chapter": {
+        "type": "int"
+      },
+      "verse": {
+        "type": "int"
+      }
+    }
+  },
+  "tierLabel": "Tier {tier}",
+  "@tierLabel": {
+    "description": "A tier of struggles",
+    "placeholders": {
+      "tier": {
+        "type": "int"
+      }
+    }
+  },
+  "roundLabel": "Round {round} of {total}",
+  "@roundLabel": {
+    "description": "HUD round label",
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "hudResolve": "Resolve",
+  "@hudResolve": {
+    "description": "Meter name"
+  },
+  "hudStamina": "Stamina",
+  "@hudStamina": {
+    "description": "Meter name"
+  },
+  "hudWeight": "Weight",
+  "@hudWeight": {
+    "description": "Meter name for the struggle"
+  },
+  "hudBreath": "Breath",
+  "@hudBreath": {
+    "description": "Button: restore Stamina once per round"
+  },
+  "hudPause": "Pause",
+  "@hudPause": {
+    "description": "Button"
+  }
+}

@@ -73,6 +73,11 @@ jobs:
         working-directory: app
         run: flutter pub get
 
+      - name: Generate localizations
+        if: steps.app.outputs.present == 'true'
+        working-directory: app
+        run: flutter gen-l10n
+
       - name: Analyze
         if: steps.app.outputs.present == 'true'
         working-directory: app

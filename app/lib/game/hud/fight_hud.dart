@@ -77,8 +77,8 @@ class FightHud extends StatelessWidget {
               const SizedBox(height: Sp.sm),
               Row(
                 children: <Widget>[
-                  AppChip(label: labels.roundLabel(s.round)),
-                  const Spacer(),
+                  Expanded(child: Align(alignment: AlignmentDirectional.centerStart, child: AppChip(label: labels.roundLabel(s.round)))),
+                  const SizedBox(width: Sp.sm),
                   _BreathButton(label: labels.breath, charges: p.breathCharges, locale: locale, onPressed: p.breathCharges > 0 ? controller.breathe : null, color: theme.palette.textPrimary),
                   const SizedBox(width: Sp.sm),
                   IconChip(icon: AppIcons.pause, semanticLabel: labels.pause, onPressed: onPause),

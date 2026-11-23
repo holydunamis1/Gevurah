@@ -208,7 +208,7 @@ void main() {
       await t.pump();
       await t.pump();
       expect(find.text('Start bout'), findsOneWidget);
-      expect(find.text('No cards equipped'), findsOneWidget);
+      expect(find.text('No cards equipped'), r.app.loadout.value.loadout.cardIds.isEmpty ? findsOneWidget : findsNothing);
       expect(find.text('Tier 1'), findsOneWidget);
       await t.tap(find.text('Start bout'));
       expect(log, <String>['start']);

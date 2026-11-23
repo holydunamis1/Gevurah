@@ -86,7 +86,7 @@ class FightFinish {
 
   final FightView view;
 
-  /// Null for modes that record nothing in the career (Training, Endurance, Daily).
+  /// Null for the Daily Bout, which is recorded by date instead.
   final FightResultApplied? applied;
   final List<String> newAchievements;
 }
@@ -118,13 +118,25 @@ class FightProvider extends ValueNotifier<FightView?> {
     _aiRng = SeededRng(config.seed).fork('ai');
     _modifiers = Modifiers.from(cardIds: config.cardIds, stance: config.stance);
     final int percent = config.mode == FightMode.sparring ? DifficultyTuning.percent(config.difficulty) : 100;
-    final int weight = (def.weight * percent / 100).round();
+    final int base = (def.weight * percent / 100).round();
+    final int weight = config.mode == FightMode.endurance ? base * FightTuning.enduranceWeightFactor : base;
     final FightState state = FightState.initial(weight);
-    value = FightView(config: config, struggle: def, state: state, history: const <ExchangeRecord>[], move: _pick(def, const <ExchangeRecord>[]));
+    value = FightView(config: config, struggle: def, state: state, history: const <ExchangeRecord>[], move: _pick(def, const <ExchangeRecord>[], config));
     return true;
   }
 
-  MoveDef _pick(StruggleDef def, List<ExchangeRecord> history) => StruggleAi.nextMove(def, history, _aiRng!);
+  MoveDef _pick(StruggleDef def, List<ExchangeRecord> history, FightConfig config) {
+    final MoveDef move = StruggleAi.nextMove(def, history, _aiRng!);
+    if (config.mode != FightMode.endurance) {
+      return move;
+    }
+    int cut = (history.length ~/ FightTuning.endurancePaceEvery) * FightTuning.endurancePaceStepMs;
+    if (cut > FightTuning.endurancePaceMaxCutMs) {
+      cut = FightTuning.endurancePaceMaxCutMs;
+    }
+    final int ms = move.telegraphMs - cut;
+    return cut == 0 ? move : move.copyWith(telegraphMs: ms < StruggleAi.minTelegraphMs ? StruggleAi.minTelegraphMs : ms);
+  }
 
   /// How long the current move telegraphs, with the equipped cards and stance.
   int? get telegraphMs {
@@ -140,7 +152,7 @@ class FightProvider extends ValueNotifier<FightView?> {
       struggle: v.struggle,
       state: state,
       history: history,
-      move: needsMove ? _pick(v.struggle, history) : null,
+      move: needsMove ? _pick(v.struggle, history, v.config) : null,
       stanceChanges: v.stanceChanges,
     );
   }
@@ -170,7 +182,7 @@ class FightProvider extends ValueNotifier<FightView?> {
       strikeOffset: strikeOffset,
     );
     final List<ExchangeRecord> history = <ExchangeRecord>[...v.history, record];
-    _set(FightRules.apply(v.state, record, v.struggle), history);
+    _set(FightRules.apply(v.state, record, v.struggle, endless: v.config.mode == FightMode.endurance), history);
     return record;
   }
 
@@ -209,7 +221,7 @@ class FightProvider extends ValueNotifier<FightView?> {
     if (v == null || v.state.phase != FightPhase.tenCount) {
       return;
     }
-    _set(FightRules.rise(v.state, goodTaps), v.history);
+    _set(FightRules.rise(v.state, goodTaps, endless: v.config.mode == FightMode.endurance), v.history);
   }
 
   /// The corner between rounds ends and the next round starts.

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../core/catalog/card_catalog.dart';
 import '../core/models/curated_verse.dart';
+import '../core/models/fight_config.dart';
 import '../core/models/verse_card_def.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_helpers.dart';
@@ -59,7 +60,8 @@ class _ResultScreenState extends State<ResultScreen> {
           if (f == null) {
             return const SizedBox.shrink();
           }
-          final bool won = f.view.won;
+          final bool endurance = f.view.config.mode == FightMode.endurance;
+          final bool won = endurance || f.view.won;
           final String? cardId = f.applied?.newCardId;
           final VerseCardDef? card = cardId == null ? null : CardCatalog.byId(cardId);
           return Column(
@@ -69,11 +71,15 @@ class _ResultScreenState extends State<ResultScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(Sp.lg),
                   children: <Widget>[
-              Text(won ? l.resultWon : l.resultLost, style: theme.text.display),
+              Text(endurance ? l.enduranceResult(f.view.history.length) : (won ? l.resultWon : l.resultLost), style: theme.text.display),
               const SizedBox(height: Sp.sm),
               Text(l.struggleName(f.view.struggle.id), style: theme.text.callout.copyWith(color: theme.palette.textSecondary)),
               const SizedBox(height: Sp.md),
-              if (won) StarRow(stars: f.view.stars, label: l.resultStars(f.view.stars)),
+              if (endurance && f.applied != null) ...<Widget>[
+                Text(l.enduranceBest(f.applied!.after.enduranceBest), style: theme.text.title2),
+                if (f.applied!.after.enduranceBest > f.applied!.before.enduranceBest) Text(l.enduranceNewBest, style: theme.text.callout),
+              ] else if (won)
+                StarRow(stars: f.view.stars, label: l.resultStars(f.view.stars)),
               const SizedBox(height: Sp.lg),
               VerseBlock(load: (verses) => verses.forMoment(won ? VerseMoment.win : VerseMoment.loss, seed: f.view.config.seed)),
               if (card != null) ...<Widget>[

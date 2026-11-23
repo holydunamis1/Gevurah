@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../core/input/tap_swipe_strategy.dart';
+import '../core/models/fight_config.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_helpers.dart';
 import '../game/boxing_game.dart';
@@ -178,7 +179,7 @@ class _FightScreenState extends State<FightScreen> {
       weight: l.hudWeight,
       breath: l.hudBreath,
       pause: l.hudPause,
-      roundLabel: (int round) => l.roundLabel(round, 3),
+      roundLabel: view.config.mode == FightMode.endurance ? l.enduranceRound : (int round) => l.roundLabel(round, 3),
       moveName: l.moveName,
     );
     return ColoredBox(

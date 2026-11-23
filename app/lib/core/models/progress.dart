@@ -62,6 +62,7 @@ class Progress {
     required this.dailyHistory,
     required this.achievements,
     required this.loadout,
+    this.enduranceBest = 0,
   });
 
   /// A new player's progress with the starter cards owned.
@@ -106,6 +107,7 @@ class Progress {
       dailyHistory: daily,
       achievements: readStringList(json, 'achievements'),
       loadout: Loadout.fromJson(readMap(json, 'loadout')),
+      enduranceBest: json['enduranceBest'] is int ? json['enduranceBest']! as int : 0,
     );
   }
 
@@ -122,6 +124,10 @@ class Progress {
   final List<String> achievements;
   final Loadout loadout;
 
+  /// The most exchanges answered in one Endurance run. Optional in older
+  /// saves, which read as zero.
+  final int enduranceBest;
+
   bool ownsCard(String id) => cardsEarned.contains(id);
 
   int starsFor(String struggleId) => bouts[struggleId]?.stars ?? 0;
@@ -136,6 +142,7 @@ class Progress {
     List<DailyRecord>? dailyHistory,
     List<String>? achievements,
     Loadout? loadout,
+    int? enduranceBest,
   }) {
     return Progress(
       schemaVersion: schemaVersion ?? this.schemaVersion,
@@ -145,6 +152,7 @@ class Progress {
       dailyHistory: dailyHistory ?? this.dailyHistory,
       achievements: achievements ?? this.achievements,
       loadout: loadout ?? this.loadout,
+      enduranceBest: enduranceBest ?? this.enduranceBest,
     );
   }
 
@@ -156,6 +164,7 @@ class Progress {
         'dailyHistory': dailyHistory.map((DailyRecord d) => d.toJson()).toList(),
         'achievements': achievements,
         'loadout': loadout.toJson(),
+        'enduranceBest': enduranceBest,
       };
 
   @override
@@ -167,7 +176,8 @@ class Progress {
       listEq(other.cardsEarned, cardsEarned) &&
       listEq(other.dailyHistory, dailyHistory) &&
       listEq(other.achievements, achievements) &&
-      other.loadout == loadout;
+      other.loadout == loadout &&
+      other.enduranceBest == enduranceBest;
 
   @override
   int get hashCode => Object.hash(
@@ -178,5 +188,6 @@ class Progress {
         listHash(dailyHistory),
         listHash(achievements),
         loadout,
+        enduranceBest,
       );
 }

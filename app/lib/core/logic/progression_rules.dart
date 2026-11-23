@@ -150,8 +150,9 @@ abstract final class ProgressionRules {
       case FightMode.trials:
       case FightMode.sparring:
         break;
-      case FightMode.daily:
       case FightMode.endurance:
+        return history.length > p.enduranceBest ? p.copyWith(enduranceBest: history.length) : p;
+      case FightMode.daily:
       case FightMode.training:
         return p;
     }

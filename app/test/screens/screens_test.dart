@@ -420,6 +420,29 @@ void main() {
       expect(r.app.progress.value.progress.bouts[first]?.wins, won ? 1 : null);
     });
 
+    testWidgets('an Endurance run shows the exchanges answered and the best run', (WidgetTester t) async {
+      final Rigging r = await makeApp();
+      r.app.fight.start(const FightConfig(mode: FightMode.endurance, struggleId: 'giving_up', cardIds: <String>[], stance: Stance.steady, seed: 3));
+      for (int i = 0; i < 2000 && !r.app.fight.value!.finished; i++) {
+        final FightState s = r.app.fight.value!.state;
+        if (s.phase == FightPhase.corner) {
+          r.app.fight.endCorner();
+        } else if (s.phase == FightPhase.tenCount) {
+          r.app.fight.rise(0);
+        } else {
+          r.app.fight.respond(response: Response.takeIt, offset: const BeatOffset(0));
+        }
+      }
+      await t.pumpWidget(result(r.app, <String>[]));
+      await t.pump();
+      await t.pump();
+      await t.pump();
+      expect(find.textContaining('answered'), findsOneWidget);
+      expect(find.textContaining('Best:'), findsOneWidget);
+      expect(find.text('New best'), findsOneWidget);
+      expect(find.textContaining('stars'), findsNothing);
+    });
+
     testWidgets('dark, right-to-left and large text render', (WidgetTester t) async {
       final Rigging r = await makeApp();
       r.app.fight.start(journeyConfig(first));

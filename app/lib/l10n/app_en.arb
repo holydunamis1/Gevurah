@@ -933,5 +933,36 @@
   "achievement_daily_7_desc": "Complete the Daily Bout seven days in a row.",
   "@achievement_daily_7_desc": {
     "description": "Achievement description"
+  },
+  "enduranceRound": "Round {round}",
+  "@enduranceRound": {
+    "description": "Endurance HUD round label, no total",
+    "placeholders": {
+      "round": {
+        "type": "int"
+      }
+    }
+  },
+  "enduranceResult": "{count, plural, =1{1 exchange answered} other{{count} exchanges answered}}",
+  "@enduranceResult": {
+    "description": "Endurance result headline",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "enduranceBest": "Best: {count}",
+  "@enduranceBest": {
+    "description": "Endurance best run",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "enduranceNewBest": "New best",
+  "@enduranceNewBest": {
+    "description": "Endurance result badge"
   }
 }

@@ -22,12 +22,22 @@ abstract final class FightTuning {
 
   /// Points charged against the player for each down in a decision.
   static const int pointsPerDown = 15;
+
+  /// Endurance: the struggle never runs out of Weight (its Weight is
+  /// multiplied by this), and each [endurancePaceEvery] exchanges every tell
+  /// is [endurancePaceStepMs] shorter, up to [endurancePaceMaxCutMs].
+  static const int enduranceWeightFactor = 1000;
+  static const int endurancePaceEvery = 6;
+  static const int endurancePaceStepMs = 15;
+  static const int endurancePaceMaxCutMs = 200;
 }
 
 /// The pure rules that move a bout from one snapshot to the next.
 abstract final class FightRules {
   /// Applies one resolved exchange. Callers pass the record the resolver made.
-  static FightState apply(FightState state, ExchangeRecord record, StruggleDef struggle) {
+  /// With [endless] (Endurance) the bout has no last round and no decision: it
+  /// ends only when the player is down for the last time.
+  static FightState apply(FightState state, ExchangeRecord record, StruggleDef struggle, {bool endless = false}) {
     if (state.isFinished) {
       return state;
     }
@@ -78,7 +88,7 @@ abstract final class FightRules {
 
     final bool roundOver = nextIndex >= state.round * FightTuning.exchangesPerRound;
     if (roundOver) {
-      if (state.round >= FightState.roundsPerBout) {
+      if (!endless && state.round >= FightState.roundsPerBout) {
         return state.copyWith(
           weight: weight,
           player: player,
@@ -108,7 +118,7 @@ abstract final class FightRules {
 
   /// Resolves the ten-count after [goodTaps] timed taps. Resolve comes back
   /// partly; the bout carries on from the next exchange (or the corner).
-  static FightState rise(FightState state, int goodTaps) {
+  static FightState rise(FightState state, int goodTaps, {bool endless = false}) {
     if (state.phase != FightPhase.tenCount) {
       return state;
     }
@@ -120,7 +130,7 @@ abstract final class FightRules {
     final PlayerState player = state.player.copyWith(resolve: resolve);
     final bool roundOver = state.exchangeIndex >= state.round * FightTuning.exchangesPerRound;
     if (roundOver) {
-      if (state.round >= FightState.roundsPerBout) {
+      if (!endless && state.round >= FightState.roundsPerBout) {
         return state.copyWith(
           player: player,
           phase: FightPhase.finished,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gevurah/core/catalog/card_catalog.dart';
@@ -62,11 +63,12 @@ Widget host(
   TextDirection dir = TextDirection.ltr,
   double scale = 1,
   Brightness brightness = Brightness.light,
+  Size size = const Size(360, 720),
 }) {
   return AppScope(
     providers: app,
     child: MediaQuery(
-      data: MediaQueryData(size: const Size(360, 720), textScaler: TextScaler.linear(scale)),
+      data: MediaQueryData(size: size, textScaler: TextScaler.linear(scale)),
       child: Directionality(
         textDirection: dir,
         child: Localizations(
@@ -77,8 +79,8 @@ Widget host(
             child: Align(
               alignment: Alignment.topLeft,
               child: SizedBox(
-                width: 360,
-                height: 720,
+                width: size.width,
+                height: size.height,
                 child: Navigator(
                   onGenerateRoute: (RouteSettings s) => PageRouteBuilder<void>(pageBuilder: (BuildContext c, Animation<double> a, Animation<double> b) => child),
                 ),
@@ -280,17 +282,37 @@ void main() {
   });
 
   group('CornerScreen', () {
-    testWidgets('names the round, shows a verse and moves on', (WidgetTester t) async {
+    Widget corner(AppProviders app, {int round = 2, Stance stance = Stance.steady, ValueChanged<Stance>? onStance, VoidCallback? onNext, Size size = const Size(360, 720), double scale = 1, TextDirection dir = TextDirection.ltr}) {
+      return host(app, CornerScreen(round: round, stance: stance, onStance: onStance ?? (Stance s) {}, onNextRound: onNext ?? () {}), size: size, scale: scale, dir: dir);
+    }
+
+    testWidgets('names the round, shows a verse and a stance choice and moves on', (WidgetTester t) async {
       final Rigging r = await makeApp();
       int next = 0;
-      await t.pumpWidget(host(r.app, CornerScreen(round: 2, onNextRound: () => next++)));
+      final List<Stance> picked = <Stance>[];
+      await t.pumpWidget(corner(r.app, onStance: picked.add, onNext: () => next++));
       await t.pump();
       await t.pump();
       expect(find.text('Round 2 complete'), findsOneWidget);
       expect(find.text('Stamina restored'), findsOneWidget);
+      await t.tap(find.text('Bold'));
+      expect(picked, <Stance>[Stance.bold]);
       await t.tap(find.text('Next round'));
       expect(next, 1);
-      await t.pumpWidget(host(r.app, CornerScreen(round: 1, onNextRound: () {}), scale: 2, dir: TextDirection.rtl));
+    });
+
+    testWidgets('portrait, landscape, large text and right-to-left all fit', (WidgetTester t) async {
+      final Rigging r = await makeApp();
+      await t.pumpWidget(corner(r.app, scale: 2, dir: TextDirection.rtl));
+      await t.pump();
+      expect(t.takeException(), isNull);
+      await t.pumpWidget(corner(r.app, size: const Size(740, 360)));
+      await t.pump();
+      await t.pump();
+      expect(t.takeException(), isNull);
+      expect(find.text('Next round'), findsOneWidget);
+      await t.pumpWidget(corner(r.app, size: const Size(740, 360), scale: 1.5));
+      await t.pump();
       expect(t.takeException(), isNull);
     });
   });
@@ -328,6 +350,18 @@ void main() {
         await t.pump();
       }
       expect(rose, <int>[1]);
+    });
+
+    testWidgets('fits in landscape and with large text', (WidgetTester t) async {
+      final Rigging r = await makeApp();
+      await t.pumpWidget(host(r.app, TenCountScreen(onRise: (int n) {}), size: const Size(740, 360)));
+      await t.pump();
+      await t.pump();
+      expect(t.takeException(), isNull);
+      expect(find.text('Tap'), findsOneWidget);
+      await t.pumpWidget(host(r.app, TenCountScreen(onRise: (int n) {}), size: const Size(740, 360), scale: 1.5));
+      await t.pump();
+      expect(t.takeException(), isNull);
     });
 
     testWidgets('Stand up and the time limit end it once with the good taps so far', (WidgetTester t) async {
@@ -395,12 +429,27 @@ void main() {
   });
 
   group('FightScreen', () {
+    testWidgets('asks for landscape while it is open and portrait when it closes', (WidgetTester t) async {
+      final Rigging r = await makeApp();
+      r.app.fight.start(journeyConfig(first));
+      final List<List<DeviceOrientation>> asked = <List<DeviceOrientation>>[];
+      Future<void> record(List<DeviceOrientation> o) async => asked.add(o);
+      await t.pumpWidget(host(r.app, FightScreen(onFinished: () {}, onLeave: () {}, setOrientations: record), size: const Size(740, 360)));
+      await t.pump(const Duration(milliseconds: 100));
+      await t.pump(const Duration(milliseconds: 100));
+      expect(asked, <List<DeviceOrientation>>[FightScreen.fightOrientations]);
+      expect(t.takeException(), isNull);
+      expect(find.bySemanticsLabel('Pause'), findsOneWidget);
+      await t.pumpWidget(const SizedBox());
+      expect(asked.last, FightScreen.menuOrientations);
+    });
+
     testWidgets('pause offers resume, and leaving asks first then records nothing', (WidgetTester t) async {
       final Rigging r = await makeApp();
       r.app.fight.start(journeyConfig(first));
       int left = 0;
       int finished = 0;
-      await t.pumpWidget(host(r.app, FightScreen(onFinished: () => finished++, onLeave: () => left++)));
+      await t.pumpWidget(host(r.app, FightScreen(onFinished: () => finished++, onLeave: () => left++, setOrientations: (List<DeviceOrientation> o) async {})));
       await t.pump(const Duration(milliseconds: 100));
       await t.pump(const Duration(milliseconds: 100));
       await t.tap(find.bySemanticsLabel('Pause'));

@@ -15,6 +15,7 @@ import '../core/models/exchange_record.dart';
 import '../core/models/fight_config.dart';
 import '../core/models/fight_state.dart';
 import '../core/models/move_def.dart';
+import '../core/models/stance.dart';
 import '../core/models/struggle_def.dart';
 import '../core/ports/clock_port.dart';
 import '../core/logic/daily_seed.dart';
@@ -39,9 +40,26 @@ abstract final class DifficultyTuning {
   }
 }
 
+/// A stance change made in the corner. Recorded with the bout so the same
+/// config, the same inputs and the same changes always give the same bout.
+class StanceChange {
+  const StanceChange({required this.exchangeIndex, required this.stance});
+
+  /// The index of the next exchange when the change was made.
+  final int exchangeIndex;
+  final Stance stance;
+}
+
 /// One snapshot of a bout in progress, for the screen and the Flame world.
 class FightView {
-  const FightView({required this.config, required this.struggle, required this.state, required this.history, required this.move});
+  const FightView({
+    required this.config,
+    required this.struggle,
+    required this.state,
+    required this.history,
+    required this.move,
+    this.stanceChanges = const <StanceChange>[],
+  });
 
   final FightConfig config;
   final StruggleDef struggle;
@@ -50,6 +68,12 @@ class FightView {
 
   /// The struggle's current move, or null in a pause (corner, ten-count, end).
   final MoveDef? move;
+
+  /// Stance changes made in the corner, in order.
+  final List<StanceChange> stanceChanges;
+
+  /// The stance in force now.
+  Stance get stance => stanceChanges.isEmpty ? config.stance : stanceChanges.last.stance;
 
   bool get finished => state.isFinished;
   bool get won => ProgressionRules.isWin(state.end);
@@ -117,6 +141,7 @@ class FightProvider extends ValueNotifier<FightView?> {
       state: state,
       history: history,
       move: needsMove ? _pick(v.struggle, history) : null,
+      stanceChanges: v.stanceChanges,
     );
   }
 
@@ -196,6 +221,28 @@ class FightProvider extends ValueNotifier<FightView?> {
     _set(FightRules.endCorner(v.state, v.struggle), v.history);
   }
 
+  /// Changes stance in the corner, for the rest of the bout. The change is
+  /// recorded in the view. Returns false outside the corner.
+  bool changeStance(Stance stance) {
+    final FightView? v = value;
+    if (v == null || v.state.phase != FightPhase.corner) {
+      return false;
+    }
+    if (stance == v.stance) {
+      return true;
+    }
+    _modifiers = Modifiers.from(cardIds: v.config.cardIds, stance: stance);
+    value = FightView(
+      config: v.config,
+      struggle: v.struggle,
+      state: v.state,
+      history: v.history,
+      move: v.move,
+      stanceChanges: <StanceChange>[...v.stanceChanges, StanceChange(exchangeIndex: v.state.exchangeIndex, stance: stance)],
+    );
+    return true;
+  }
+
   /// Uses a Breath: Stamina back to full. Does nothing with none left.
   void breathe() {
     final FightView? v = value;
@@ -204,7 +251,7 @@ class FightProvider extends ValueNotifier<FightView?> {
     }
     final FightState next = FightRules.breathe(v.state);
     if (next != v.state) {
-      value = FightView(config: v.config, struggle: v.struggle, state: next, history: v.history, move: v.move);
+      value = FightView(config: v.config, struggle: v.struggle, state: next, history: v.history, move: v.move, stanceChanges: v.stanceChanges);
     }
   }
 

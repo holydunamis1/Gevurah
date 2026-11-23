@@ -89,27 +89,58 @@ class _TenCountScreenState extends State<TenCountScreen> {
   Widget build(BuildContext context) {
     final AppLocalizations l = AppLocalizations.of(context);
     final AppTheme theme = AppTheme.of(context);
+    final Widget verse = SingleChildScrollView(child: VerseBlock(load: (verses) => verses.forMoment(VerseMoment.tenCount, seed: 7)));
+    final Widget controls = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Semantics(
+            liveRegion: true,
+            child: Text(l.tenProgress(_taps, TenCountScreen.targetTaps), textAlign: TextAlign.center, style: theme.text.title2),
+          ),
+          const SizedBox(height: Sp.md),
+          PrimaryButton(label: l.tenTap, icon: AppIcons.strike, onPressed: _tap),
+          const SizedBox(height: Sp.sm),
+          PrimaryButton(label: l.tenStand, onPressed: _finish),
+        ],
+      ),
+    );
     return ColoredBox(
       color: theme.palette.bgPrimary,
       child: Padding(
         padding: const EdgeInsets.all(Sp.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(l.tenTitle, style: theme.text.headline),
-            const SizedBox(height: Sp.xs),
-            Text(l.tenBody, style: theme.text.callout.copyWith(color: theme.palette.textSecondary)),
-            const SizedBox(height: Sp.lg),
-            Expanded(child: SingleChildScrollView(child: VerseBlock(load: (verses) => verses.forMoment(VerseMoment.tenCount, seed: 7)))),
-            Semantics(
-              liveRegion: true,
-              child: Text(l.tenProgress(_taps, TenCountScreen.targetTaps), textAlign: TextAlign.center, style: theme.text.title2),
-            ),
-            const SizedBox(height: Sp.md),
-            PrimaryButton(label: l.tenTap, icon: AppIcons.strike, onPressed: _tap),
-            const SizedBox(height: Sp.sm),
-            PrimaryButton(label: l.tenStand, onPressed: _finish),
-          ],
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints box) {
+            final Widget heading = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(l.tenTitle, style: theme.text.headline),
+                const SizedBox(height: Sp.xs),
+                Text(l.tenBody, style: theme.text.callout.copyWith(color: theme.palette.textSecondary)),
+              ],
+            );
+            if (box.maxWidth > box.maxHeight) {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[heading, const SizedBox(height: Sp.md), Expanded(child: verse)],
+                    ),
+                  ),
+                  const SizedBox(width: Sp.lg),
+                  Expanded(child: Center(child: controls)),
+                ],
+              );
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[heading, const SizedBox(height: Sp.lg), Expanded(child: verse), const SizedBox(height: Sp.md), controls],
+            );
+          },
         ),
       ),
     );

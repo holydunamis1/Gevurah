@@ -657,5 +657,9 @@
   "cardsStance": "Stance",
   "@cardsStance": {
     "description": "Card picker section"
+  },
+  "cornerStance": "Stance for the next rounds",
+  "@cornerStance": {
+    "description": "Corner screen section"
   }
 }

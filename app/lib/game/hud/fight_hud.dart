@@ -64,17 +64,36 @@ class FightHud extends StatelessWidget {
         }
         final FightState s = v.state;
         final PlayerState p = s.player;
-        return Padding(
-          padding: const EdgeInsets.all(Sp.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              FightMeter(kind: MeterKind.weight, value: s.weight, max: s.startingWeight <= 0 ? 1 : s.startingWeight, label: labels.weight, valueText: formatNumber(s.weight, locale)),
-              const SizedBox(height: Sp.sm),
-              FightMeter(kind: MeterKind.resolve, value: p.resolve, max: PlayerState.maxResolve, label: labels.resolve, valueText: formatNumber(p.resolve, locale)),
-              const SizedBox(height: Sp.sm),
-              FightMeter(kind: MeterKind.stamina, value: p.stamina, max: PlayerState.maxStamina, label: labels.stamina, valueText: formatNumber(p.stamina, locale)),
-              const SizedBox(height: Sp.sm),
+        final Widget weight = FightMeter(kind: MeterKind.weight, value: s.weight, max: s.startingWeight <= 0 ? 1 : s.startingWeight, label: labels.weight, valueText: formatNumber(s.weight, locale));
+        final Widget resolve = FightMeter(kind: MeterKind.resolve, value: p.resolve, max: PlayerState.maxResolve, label: labels.resolve, valueText: formatNumber(p.resolve, locale));
+        final Widget stamina = FightMeter(kind: MeterKind.stamina, value: p.stamina, max: PlayerState.maxStamina, label: labels.stamina, valueText: formatNumber(p.stamina, locale));
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints box) {
+            final bool wide = box.maxWidth > box.maxHeight;
+            return Padding(
+              padding: const EdgeInsets.all(Sp.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  if (wide)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(child: weight),
+                        const SizedBox(width: Sp.md),
+                        Expanded(child: resolve),
+                        const SizedBox(width: Sp.md),
+                        Expanded(child: stamina),
+                      ],
+                    )
+                  else ...<Widget>[
+                    weight,
+                    const SizedBox(height: Sp.sm),
+                    resolve,
+                    const SizedBox(height: Sp.sm),
+                    stamina,
+                  ],
+                  const SizedBox(height: Sp.sm),
               Row(
                 children: <Widget>[
                   Expanded(child: Align(alignment: AlignmentDirectional.centerStart, child: AppChip(label: labels.roundLabel(s.round)))),
@@ -102,8 +121,10 @@ class FightHud extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+                ],
+              ),
+            );
+          },
         );
       },
     );

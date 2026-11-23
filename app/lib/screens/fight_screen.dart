@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../core/input/tap_swipe_strategy.dart';
@@ -24,7 +25,22 @@ import 'ten_count_screen.dart';
 /// over it as pauses; the pause sheet offers Resume or Leave. Scripture only
 /// ever appears in those pauses, never over live action.
 class FightScreen extends StatefulWidget {
-  const FightScreen({super.key, required this.onFinished, required this.onLeave});
+  const FightScreen({
+    super.key,
+    required this.onFinished,
+    required this.onLeave,
+    this.setOrientations = SystemChrome.setPreferredOrientations,
+  });
+
+  /// Asks the device to hold these orientations. The fight is landscape; the
+  /// rest of the app is portrait. Replaceable for tests.
+  final Future<void> Function(List<DeviceOrientation> orientations) setOrientations;
+
+  /// The fight is played in landscape.
+  static const List<DeviceOrientation> fightOrientations = <DeviceOrientation>[DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight];
+
+  /// The rest of the app is portrait.
+  static const List<DeviceOrientation> menuOrientations = <DeviceOrientation>[DeviceOrientation.portraitUp];
 
   /// The bout ended; the result screen takes over.
   final VoidCallback onFinished;
@@ -44,6 +60,12 @@ class _FightScreenState extends State<FightScreen> {
   StreamSubscription<FightEvent>? _sub;
   _Pause _pause = _Pause.none;
   bool _sheetOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(widget.setOrientations(FightScreen.fightOrientations));
+  }
 
   FightController _ensure(AppProviders app) {
     final FightController? existing = _controller;
@@ -167,11 +189,19 @@ class _FightScreenState extends State<FightScreen> {
           children: <Widget>[
             FightArena(game: game, controller: c, labels: labels, locale: app.locale.value, onPause: () => unawaited(_showPause(l, c))),
             if (_pause == _Pause.corner)
-              CornerScreen(
-                round: view.state.round,
-                onNextRound: () {
-                  app.fight.endCorner();
-                  c.resume();
+              ListenableBuilder(
+                listenable: app.fight,
+                builder: (BuildContext context, Widget? _) {
+                  final FightView now = app.fight.value ?? view;
+                  return CornerScreen(
+                    round: now.state.round,
+                    stance: now.stance,
+                    onStance: app.fight.changeStance,
+                    onNextRound: () {
+                      app.fight.endCorner();
+                      c.resume();
+                    },
+                  );
                 },
               ),
             if (_pause == _Pause.tenCount)
@@ -191,6 +221,7 @@ class _FightScreenState extends State<FightScreen> {
   void dispose() {
     unawaited(_sub?.cancel());
     unawaited(_controller?.dispose());
+    unawaited(widget.setOrientations(FightScreen.menuOrientations));
     super.dispose();
   }
 }

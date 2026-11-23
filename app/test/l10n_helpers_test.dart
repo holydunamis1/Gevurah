@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gevurah/core/logic/achievements_engine.dart';
+import 'package:gevurah/core/models/achievement_def.dart';
+import 'package:gevurah/core/models/fight_config.dart';
 import 'package:gevurah/core/catalog/card_catalog.dart';
 import 'package:gevurah/core/catalog/struggle_catalog.dart';
 import 'package:gevurah/core/models/move_def.dart';
@@ -68,5 +71,21 @@ void main() {
     expect(l.roundLabel(2, 3), 'Round 2 of 3');
     expect(l.tierLabel(4), 'Tier 4');
     expect(l.hudBreath, 'Breath');
+  });
+  test('every achievement, mode and difficulty has text', () {
+    for (final AchievementDef a in AchievementCatalog.all) {
+      expect(l.achievementName(a.id), isNot(a.id), reason: a.id);
+      expect(l.achievementDescription(a.id), isNot(a.id), reason: a.id);
+    }
+    for (final FightMode m in FightMode.values) {
+      expect(l.modeName(m), isNotEmpty);
+      expect(l.modeDescription(m), isNotEmpty);
+    }
+    expect(l.modeUnlockHint(FightMode.trials), isNotEmpty);
+    expect(l.modeUnlockHint(FightMode.journey), isEmpty);
+    for (final Difficulty d in Difficulty.values) {
+      expect(l.difficultyName(d), isNotEmpty);
+    }
+    expect(l.achievementsProgress(3, 15), '3 of 15');
   });
 }

@@ -661,5 +661,277 @@
   "cornerStance": "Stance for the next rounds",
   "@cornerStance": {
     "description": "Corner screen section"
+  },
+  "journeyTitle": "Journey",
+  "@journeyTitle": {
+    "description": "Journey map title"
+  },
+  "journeyFinal": "Still Standing",
+  "@journeyFinal": {
+    "description": "Label for the final bout"
+  },
+  "stateLocked": "Locked",
+  "@stateLocked": {
+    "description": "State of a struggle or mode that is not open"
+  },
+  "stateReady": "Ready",
+  "@stateReady": {
+    "description": "State of a struggle that is open and not yet overcome"
+  },
+  "stateOvercome": "Overcome",
+  "@stateOvercome": {
+    "description": "State of a struggle already overcome"
+  },
+  "tierCleared": "Tier cleared",
+  "@tierCleared": {
+    "description": "State of a tier whose struggles are all overcome"
+  },
+  "trialsTitle": "Trials",
+  "@trialsTitle": {
+    "description": "Trials screen title"
+  },
+  "trialsLocked": "Clear tier 1 of the Journey to open the Trials.",
+  "@trialsLocked": {
+    "description": "Trials locked message"
+  },
+  "modesTitle": "Modes",
+  "@modesTitle": {
+    "description": "Modes screen title"
+  },
+  "mode_journey": "Journey",
+  "@mode_journey": {
+    "description": "Mode name"
+  },
+  "modeDesc_journey": "Sixteen struggles in four tiers, ending with Still Standing.",
+  "@modeDesc_journey": {
+    "description": "Mode description"
+  },
+  "mode_trials": "Trials",
+  "@mode_trials": {
+    "description": "Mode name"
+  },
+  "modeDesc_trials": "Ten more struggles as a second track.",
+  "@modeDesc_trials": {
+    "description": "Mode description"
+  },
+  "modeUnlock_trials": "Clear tier 1 to open",
+  "@modeUnlock_trials": {
+    "description": "How a locked mode opens"
+  },
+  "mode_sparring": "Sparring",
+  "@mode_sparring": {
+    "description": "Mode name"
+  },
+  "modeDesc_sparring": "Rematch any struggle you have met, at a difficulty you choose.",
+  "@modeDesc_sparring": {
+    "description": "Mode description"
+  },
+  "modeUnlock_sparring": "Win your first bout to open",
+  "@modeUnlock_sparring": {
+    "description": "How a locked mode opens"
+  },
+  "mode_daily": "Daily Bout",
+  "@mode_daily": {
+    "description": "Mode name"
+  },
+  "modeDesc_daily": "One bout each day, the same for everyone.",
+  "@modeDesc_daily": {
+    "description": "Mode description"
+  },
+  "mode_endurance": "Endurance",
+  "@mode_endurance": {
+    "description": "Mode name"
+  },
+  "modeDesc_endurance": "Answer as many exchanges as you can as the pace rises.",
+  "@modeDesc_endurance": {
+    "description": "Mode description"
+  },
+  "modeUnlock_endurance": "Clear tier 2 to open",
+  "@modeUnlock_endurance": {
+    "description": "How a locked mode opens"
+  },
+  "mode_training": "Training",
+  "@mode_training": {
+    "description": "Mode name"
+  },
+  "modeDesc_training": "Learn each tell and the timing windows. No pressure and no stars.",
+  "@modeDesc_training": {
+    "description": "Mode description"
+  },
+  "modeIntroChoose": "Choose a struggle",
+  "@modeIntroChoose": {
+    "description": "Mode intro list heading"
+  },
+  "modeEmptySparring": "Win a bout to rematch it here.",
+  "@modeEmptySparring": {
+    "description": "Sparring with nothing to rematch"
+  },
+  "modeStart": "Start",
+  "@modeStart": {
+    "description": "Mode intro start button"
+  },
+  "difficultyTitle": "Difficulty",
+  "@difficultyTitle": {
+    "description": "Sparring difficulty heading"
+  },
+  "difficultyHint": "Difficulty changes how much Weight the struggle carries.",
+  "@difficultyHint": {
+    "description": "Sparring difficulty hint"
+  },
+  "difficulty_gentle": "Gentle",
+  "@difficulty_gentle": {
+    "description": "Difficulty name"
+  },
+  "difficulty_standard": "Standard",
+  "@difficulty_standard": {
+    "description": "Difficulty name"
+  },
+  "difficulty_hard": "Hard",
+  "@difficulty_hard": {
+    "description": "Difficulty name"
+  },
+  "achievementsTitle": "Achievements",
+  "@achievementsTitle": {
+    "description": "Achievements screen title"
+  },
+  "achievementsProgress": "{count} of {total}",
+  "@achievementsProgress": {
+    "description": "Achievements unlocked count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementUnlocked": "Unlocked",
+  "@achievementUnlocked": {
+    "description": "Achievement state"
+  },
+  "achievementLocked": "Locked",
+  "@achievementLocked": {
+    "description": "Achievement state"
+  },
+  "achievement_first_win": "First bout won",
+  "@achievement_first_win": {
+    "description": "Achievement name"
+  },
+  "achievement_first_win_desc": "Win a bout.",
+  "@achievement_first_win_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_no_downs": "Never down",
+  "@achievement_no_downs": {
+    "description": "Achievement name"
+  },
+  "achievement_no_downs_desc": "Win a bout without being knocked down.",
+  "@achievement_no_downs_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_perfect_run": "In rhythm",
+  "@achievement_perfect_run": {
+    "description": "Achievement name"
+  },
+  "achievement_perfect_run_desc": "Make five perfect responses in a row.",
+  "@achievement_perfect_run_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_three_stars": "Three stars",
+  "@achievement_three_stars": {
+    "description": "Achievement name"
+  },
+  "achievement_three_stars_desc": "Win a bout with three stars.",
+  "@achievement_three_stars_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_got_back_up": "Back up",
+  "@achievement_got_back_up": {
+    "description": "Achievement name"
+  },
+  "achievement_got_back_up_desc": "Get back up after a knockdown.",
+  "@achievement_got_back_up_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_tier_1": "Tier 1 cleared",
+  "@achievement_tier_1": {
+    "description": "Achievement name"
+  },
+  "achievement_tier_1_desc": "Overcome every struggle in tier 1.",
+  "@achievement_tier_1_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_tier_2": "Tier 2 cleared",
+  "@achievement_tier_2": {
+    "description": "Achievement name"
+  },
+  "achievement_tier_2_desc": "Overcome every struggle in tier 2.",
+  "@achievement_tier_2_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_tier_3": "Tier 3 cleared",
+  "@achievement_tier_3": {
+    "description": "Achievement name"
+  },
+  "achievement_tier_3_desc": "Overcome every struggle in tier 3.",
+  "@achievement_tier_3_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_tier_4": "Tier 4 cleared",
+  "@achievement_tier_4": {
+    "description": "Achievement name"
+  },
+  "achievement_tier_4_desc": "Overcome every struggle in tier 4.",
+  "@achievement_tier_4_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_still_standing": "Still Standing",
+  "@achievement_still_standing": {
+    "description": "Achievement name"
+  },
+  "achievement_still_standing_desc": "Win the final bout.",
+  "@achievement_still_standing_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_trials_done": "Trials complete",
+  "@achievement_trials_done": {
+    "description": "Achievement name"
+  },
+  "achievement_trials_done_desc": "Overcome all ten Trials.",
+  "@achievement_trials_done_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_ten_cards": "Ten cards",
+  "@achievement_ten_cards": {
+    "description": "Achievement name"
+  },
+  "achievement_ten_cards_desc": "Earn ten verse cards.",
+  "@achievement_ten_cards_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_twenty_stars": "Twenty stars",
+  "@achievement_twenty_stars": {
+    "description": "Achievement name"
+  },
+  "achievement_twenty_stars_desc": "Earn twenty stars in total.",
+  "@achievement_twenty_stars_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_daily_3": "Three days",
+  "@achievement_daily_3": {
+    "description": "Achievement name"
+  },
+  "achievement_daily_3_desc": "Complete the Daily Bout three days in a row.",
+  "@achievement_daily_3_desc": {
+    "description": "Achievement description"
+  },
+  "achievement_daily_7": "A full week",
+  "@achievement_daily_7": {
+    "description": "Achievement name"
+  },
+  "achievement_daily_7_desc": "Complete the Daily Bout seven days in a row.",
+  "@achievement_daily_7_desc": {
+    "description": "Achievement description"
   }
 }

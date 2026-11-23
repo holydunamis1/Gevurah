@@ -10,7 +10,10 @@ import 'package:gevurah/core/models/beat_offset.dart';
 import 'package:gevurah/core/models/exchange_record.dart';
 import 'package:gevurah/core/models/fight_config.dart';
 import 'package:gevurah/core/models/fight_state.dart';
+import 'package:gevurah/core/models/progress.dart';
 import 'package:gevurah/core/models/stance.dart';
+import 'package:gevurah/core/storage/progress_codec.dart';
+import 'package:gevurah/core/storage/progress_store.dart';
 import 'package:gevurah/core/ports/consent_port.dart';
 import 'package:gevurah/core/verses/verse_repository.dart';
 import 'package:gevurah/l10n/app_localizations.dart';
@@ -37,8 +40,11 @@ class Rigging {
   final FakeAds ads;
 }
 
-Future<Rigging> makeApp({FakeStorage? storage}) async {
+Future<Rigging> makeApp({FakeStorage? storage, Progress? progress}) async {
   final FakeStorage s = storage ?? FakeStorage();
+  if (progress != null) {
+    s.files[ProgressStore.mainFile] = ProgressCodec.encode(progress);
+  }
   final FakeAds ads = FakeAds();
   final AppProviders app = AppProviders.create(
     storage: s,

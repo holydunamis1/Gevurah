@@ -1,4 +1,5 @@
 
+import '../core/models/fight_config.dart';
 import '../core/models/move_def.dart';
 import '../core/models/stance.dart';
 import '../core/models/verse_card_def.dart';
@@ -214,5 +215,140 @@ extension AppStrings on AppLocalizations {
     final String name = bookName(ref.book.toString());
     final String book = name.isEmpty ? canonBooks[ref.book - 1] : name;
     return verseReference(book, ref.chapter, ref.verse);
+  }
+
+  String achievementName(String id) {
+    switch (id) {
+      case 'first_win':
+        return achievement_first_win;
+      case 'no_downs':
+        return achievement_no_downs;
+      case 'perfect_run':
+        return achievement_perfect_run;
+      case 'three_stars':
+        return achievement_three_stars;
+      case 'got_back_up':
+        return achievement_got_back_up;
+      case 'tier_1':
+        return achievement_tier_1;
+      case 'tier_2':
+        return achievement_tier_2;
+      case 'tier_3':
+        return achievement_tier_3;
+      case 'tier_4':
+        return achievement_tier_4;
+      case 'still_standing':
+        return achievement_still_standing;
+      case 'trials_done':
+        return achievement_trials_done;
+      case 'ten_cards':
+        return achievement_ten_cards;
+      case 'twenty_stars':
+        return achievement_twenty_stars;
+      case 'daily_3':
+        return achievement_daily_3;
+      case 'daily_7':
+        return achievement_daily_7;
+      default:
+        return id;
+    }
+  }
+
+  String achievementDescription(String id) {
+    switch (id) {
+      case 'first_win':
+        return achievement_first_win_desc;
+      case 'no_downs':
+        return achievement_no_downs_desc;
+      case 'perfect_run':
+        return achievement_perfect_run_desc;
+      case 'three_stars':
+        return achievement_three_stars_desc;
+      case 'got_back_up':
+        return achievement_got_back_up_desc;
+      case 'tier_1':
+        return achievement_tier_1_desc;
+      case 'tier_2':
+        return achievement_tier_2_desc;
+      case 'tier_3':
+        return achievement_tier_3_desc;
+      case 'tier_4':
+        return achievement_tier_4_desc;
+      case 'still_standing':
+        return achievement_still_standing_desc;
+      case 'trials_done':
+        return achievement_trials_done_desc;
+      case 'ten_cards':
+        return achievement_ten_cards_desc;
+      case 'twenty_stars':
+        return achievement_twenty_stars_desc;
+      case 'daily_3':
+        return achievement_daily_3_desc;
+      case 'daily_7':
+        return achievement_daily_7_desc;
+      default:
+        return id;
+    }
+  }
+
+  String modeName(FightMode mode) {
+    switch (mode) {
+      case FightMode.journey:
+        return mode_journey;
+      case FightMode.trials:
+        return mode_trials;
+      case FightMode.sparring:
+        return mode_sparring;
+      case FightMode.daily:
+        return mode_daily;
+      case FightMode.endurance:
+        return mode_endurance;
+      case FightMode.training:
+        return mode_training;
+    }
+  }
+
+  String modeDescription(FightMode mode) {
+    switch (mode) {
+      case FightMode.journey:
+        return modeDesc_journey;
+      case FightMode.trials:
+        return modeDesc_trials;
+      case FightMode.sparring:
+        return modeDesc_sparring;
+      case FightMode.daily:
+        return modeDesc_daily;
+      case FightMode.endurance:
+        return modeDesc_endurance;
+      case FightMode.training:
+        return modeDesc_training;
+    }
+  }
+
+  /// How a locked mode opens; empty for modes that are always open.
+  String modeUnlockHint(FightMode mode) {
+    switch (mode) {
+      case FightMode.trials:
+        return modeUnlock_trials;
+      case FightMode.sparring:
+        return modeUnlock_sparring;
+      case FightMode.endurance:
+        return modeUnlock_endurance;
+      case FightMode.journey:
+      case FightMode.daily:
+      case FightMode.training:
+        return '';
+    }
+  }
+
+  String difficultyName(Difficulty d) {
+    switch (d) {
+      case Difficulty.gentle:
+        return difficulty_gentle;
+      case Difficulty.standard:
+        return difficulty_standard;
+      case Difficulty.hard:
+        return difficulty_hard;
+    }
   }
 }

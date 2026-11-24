@@ -6,8 +6,13 @@ abstract final class AppConfig {
   /// The one non-consumable product, registered in both stores before release.
   static const String removeAdsProductId = 'remove_ads';
 
-  /// The website, set when Cloudflare Pages is live. Empty until then.
-  static const String websiteUrl = '';
+  /// The live website (Cloudflare). The privacy and support pages sit under it.
+  static const String websiteUrl = 'https://gevurah.holydunamis1.workers.dev';
+
+  static const String privacyUrl = '$websiteUrl/privacy';
+
+  /// The support page carries the support email; no other page does.
+  static const String supportUrl = '$websiteUrl/support';
 
   /// Where flags.json lives (https only). Empty means no request is ever made.
   static const String flagsUrl = '';

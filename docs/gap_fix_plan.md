@@ -9,7 +9,7 @@ All new player-facing text lands before p6b, so the ten translations are written
 | Order | Batch | Fixes | Needs from Holy |
 | --- | --- | --- | --- |
 | 1 | p6a-2 Runtime hardening | 4, 5, 7, smoke-test bout, 11, record 8 | nothing |
-| 2 | p6a-3 Repo hygiene | 10, 9, 12 | run `resolve_deps` once; later connect Cloudflare Pages |
+| 2 | p6a-3 Repo hygiene | 10, 9, 12 | nothing; the website is already live |
 | 3 | p6a-4 Sound pulled forward | 13 | nothing |
 | 4 | p6a-5 How to play and guided Training | 1 | approve the lesson list |
 | | **Test APK 1** | first real feel test, with sound and instructions | build it, report timing feel |
@@ -45,7 +45,7 @@ Item 10, `pubspec.lock`. Holy has no toolchain, so a runner does it: extend `res
 
 Item 9, coverage gates. Add `tools/check_coverage.py` that reads `coverage/lcov.info` and fails below core 90, providers 80, overall 75. First run reports only; the batch measures, then sets the gate at the real number if it is below target and records the shortfall with a test-writing task, so a gate never blocks `main` on day one without a plan.
 
-Item 12, URLs. Nothing can open a page that does not exist yet. Until `AppConfig.websiteUrl` is set, the Privacy policy and Support-page rows are hidden and Contact support (email) stays. A release gate in the p7b workflow fails a release build if the URL is empty. Holy's action: connect Cloudflare Pages (production branch `main`, no build command, output `website`) and send the URL; the privacy page must be live before any store submission.
+Item 12, URLs. The website is live at https://gevurah.holydunamis1.workers.dev (privacy and support pages). The app's Privacy policy and Contact support rows open those pages (`AppConfig.privacyUrl`, `supportUrl`); nothing is hidden. The support email appears only on the support page; the privacy page links to it. A release gate in the p7b workflow fails a release build if the website URL is empty. The flags URL stays empty until a flags file is published.
 
 ## p6a-4 Sound pulled forward (item 13)
 

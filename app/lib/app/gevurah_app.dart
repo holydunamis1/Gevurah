@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../core/config/app_config.dart';
 import '../core/models/daily_challenge.dart';
 import '../core/models/fight_config.dart';
 import '../l10n/app_localizations.dart';
@@ -301,14 +302,11 @@ class _GevurahAppState extends State<GevurahApp> {
           onBack: _pop,
           onAchievements: _openAchievements,
           onUpgrade: _openUpgrade,
-          onSupport: () => unawaited(widget.urls.openMail()),
-          onPrivacyPolicy: () => unawaited(widget.urls.openLink(_privacyUrl)),
+          onSupport: () => unawaited(widget.urls.openLink(AppConfig.supportUrl)),
+          onPrivacyPolicy: () => unawaited(widget.urls.openLink(AppConfig.privacyUrl)),
           onLicenses: _openLicenses,
         ),
       );
-
-  /// The privacy policy page; empty until the website is live.
-  static const String _privacyUrl = '';
 
   Widget _first() {
     return ListenableBuilder(

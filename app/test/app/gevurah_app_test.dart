@@ -218,4 +218,24 @@ void main() {
     playOut(r.app);
     expect(r.app.fight.value!.finished, isTrue);
   });
+
+  testWidgets('Settings opens the live privacy and support pages', (WidgetTester t) async {
+    final SemanticsHandle h = t.ensureSemantics();
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    final List<String> opened = <String>[];
+    await pumpApp(t, r, opened: opened);
+    await t.tap(find.bySemanticsLabel(l.homeSettings));
+    await go(t);
+    for (final String label in <String>[l.settingsPrivacy, l.settingsSupport]) {
+      final Finder f = find.text(label);
+      await t.scrollUntilVisible(f, 200, scrollable: find.byType(Scrollable).first);
+      await t.ensureVisible(f);
+      await t.pumpAndSettle();
+      await t.tap(f);
+      await t.pump();
+    }
+    expect(opened, <String>['https://gevurah.holydunamis1.workers.dev/privacy', 'https://gevurah.holydunamis1.workers.dev/support']);
+    h.dispose();
+  });
 }

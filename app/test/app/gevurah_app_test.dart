@@ -217,6 +217,7 @@ void main() {
     expect(find.byType(FightScreen), findsOneWidget);
     playOut(r.app);
     for (int i = 0; i < 40 && find.byType(ResultScreen).evaluate().isEmpty; i++) {
+      await t.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
       await t.pump(const Duration(milliseconds: 100));
     }
     await t.pump(const Duration(milliseconds: 600));

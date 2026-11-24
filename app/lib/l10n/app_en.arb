@@ -1040,5 +1040,202 @@
   "reminderBody": "Today's bout is ready.",
   "@reminderBody": {
     "description": "Reminder notification text"
+  },
+  "commonDismiss": "Dismiss",
+  "@commonDismiss": {
+    "description": "Dismiss a message"
+  },
+  "onboardingPromise": "Face life's struggles one exchange at a time, with verses as your strategy.",
+  "@onboardingPromise": {
+    "description": "First-run promise"
+  },
+  "onboardingLanguage": "Language",
+  "@onboardingLanguage": {
+    "description": "First-run language heading"
+  },
+  "onboardingPlay": "Play",
+  "@onboardingPlay": {
+    "description": "First-run button"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Settings title"
+  },
+  "settingsAchievements": "Achievements",
+  "@settingsAchievements": {
+    "description": "Settings row"
+  },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "Settings row"
+  },
+  "settingsLanguagePhone": "Phone's language",
+  "@settingsLanguagePhone": {
+    "description": "Follow the phone language"
+  },
+  "settingsTheme": "Appearance",
+  "@settingsTheme": {
+    "description": "Settings section"
+  },
+  "theme_system": "Match phone",
+  "@theme_system": {
+    "description": "Theme choice"
+  },
+  "theme_light": "Light",
+  "@theme_light": {
+    "description": "Theme choice"
+  },
+  "theme_dark": "Dark",
+  "@theme_dark": {
+    "description": "Theme choice"
+  },
+  "settingsPlay": "Play",
+  "@settingsPlay": {
+    "description": "Settings section"
+  },
+  "settingsTimingAssist": "Timing assist",
+  "@settingsTimingAssist": {
+    "description": "Settings switch"
+  },
+  "settingsTimingAssistHint": "Gives every timing window 40 ms more room.",
+  "@settingsTimingAssistHint": {
+    "description": "Settings switch hint"
+  },
+  "settingsSound": "Sound effects",
+  "@settingsSound": {
+    "description": "Settings switch"
+  },
+  "settingsMusic": "Music",
+  "@settingsMusic": {
+    "description": "Settings switch"
+  },
+  "settingsHaptics": "Vibration",
+  "@settingsHaptics": {
+    "description": "Settings switch"
+  },
+  "settingsReminder": "Daily reminder",
+  "@settingsReminder": {
+    "description": "Settings section"
+  },
+  "settingsStore": "Ads and purchases",
+  "@settingsStore": {
+    "description": "Settings section"
+  },
+  "settingsRemoveAds": "Remove Ads",
+  "@settingsRemoveAds": {
+    "description": "Settings row"
+  },
+  "settingsAdsRemoved": "Ads removed",
+  "@settingsAdsRemoved": {
+    "description": "Badge when ads are removed"
+  },
+  "settingsRestore": "Restore purchase",
+  "@settingsRestore": {
+    "description": "Settings row"
+  },
+  "settingsPrivacyOptions": "Privacy choices",
+  "@settingsPrivacyOptions": {
+    "description": "Settings row"
+  },
+  "settingsAbout": "About",
+  "@settingsAbout": {
+    "description": "Settings section"
+  },
+  "settingsSupport": "Contact support",
+  "@settingsSupport": {
+    "description": "Settings row"
+  },
+  "settingsPrivacy": "Privacy policy",
+  "@settingsPrivacy": {
+    "description": "Settings row"
+  },
+  "settingsLicenses": "Licenses",
+  "@settingsLicenses": {
+    "description": "Settings row"
+  },
+  "upgradeTitle": "Remove Ads",
+  "@upgradeTitle": {
+    "description": "Upgrade title"
+  },
+  "upgradeBody": "A one-time purchase that removes banner and full-screen ads. It does not unlock anything in the game, which is free to play.",
+  "@upgradeBody": {
+    "description": "Upgrade explanation"
+  },
+  "upgradeBuy": "Remove Ads for {price}",
+  "@upgradeBuy": {
+    "description": "Upgrade button",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "upgradeBuyNoPrice": "Remove Ads",
+  "@upgradeBuyNoPrice": {
+    "description": "Upgrade button when no price is known"
+  },
+  "upgradeUnavailable": "The store is not available right now.",
+  "@upgradeUnavailable": {
+    "description": "Upgrade store unavailable"
+  },
+  "upgradeOwned": "Ads are removed. Thank you.",
+  "@upgradeOwned": {
+    "description": "Upgrade already owned"
+  },
+  "purchaseDone": "Thank you. Ads are removed.",
+  "@purchaseDone": {
+    "description": "Purchase outcome"
+  },
+  "purchaseRestored": "Your purchase was restored.",
+  "@purchaseRestored": {
+    "description": "Purchase outcome"
+  },
+  "purchaseNothing": "No earlier purchase was found.",
+  "@purchaseNothing": {
+    "description": "Purchase outcome"
+  },
+  "purchaseFailed": "Something went wrong. Please try again.",
+  "@purchaseFailed": {
+    "description": "Purchase outcome"
+  },
+  "purchasePending": "Your purchase is pending.",
+  "@purchasePending": {
+    "description": "Purchase outcome"
+  },
+  "purchaseCancelled": "The purchase was cancelled.",
+  "@purchaseCancelled": {
+    "description": "Purchase outcome"
+  },
+  "licensesTitle": "Licenses",
+  "@licensesTitle": {
+    "description": "Licenses title"
+  },
+  "licensesIntro": "Scripture in this app comes from the sources below.",
+  "@licensesIntro": {
+    "description": "Licenses intro"
+  },
+  "licensesLink": "Open license page",
+  "@licensesLink": {
+    "description": "Licenses link"
+  },
+  "licensesEmpty": "No notices could be loaded.",
+  "@licensesEmpty": {
+    "description": "Licenses empty"
+  },
+  "errorTitle": "Something went wrong",
+  "@errorTitle": {
+    "description": "Error screen title"
+  },
+  "errorMessage": "The app hit a problem. You can try again, or send a report by email.",
+  "@errorMessage": {
+    "description": "Error screen text"
+  },
+  "errorRetry": "Try again",
+  "@errorRetry": {
+    "description": "Error screen button"
+  },
+  "errorReport": "Send a report",
+  "@errorReport": {
+    "description": "Error screen link"
   }
 }

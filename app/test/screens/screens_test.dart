@@ -41,7 +41,7 @@ class Rigging {
   final FakeNotifications notifications;
 }
 
-Future<Rigging> makeApp({FakeStorage? storage, Progress? progress}) async {
+Future<Rigging> makeApp({FakeStorage? storage, Progress? progress, FakeBilling? billing, FakeConsent? consent}) async {
   final FakeStorage s = storage ?? FakeStorage();
   if (progress != null) {
     s.files[ProgressStore.mainFile] = ProgressCodec.encode(progress);
@@ -51,8 +51,8 @@ Future<Rigging> makeApp({FakeStorage? storage, Progress? progress}) async {
   final AppProviders app = AppProviders.create(
     storage: s,
     clock: FakeClock(DateTime(2026, 11, 22, 9)),
-    billing: FakeBilling(),
-    consent: FakeConsent(const ConsentState(canRequestAds: true, privacyOptionsRequired: false)),
+    billing: billing ?? FakeBilling(),
+    consent: consent ?? FakeConsent(const ConsentState(canRequestAds: true, privacyOptionsRequired: false)),
     ads: ads,
     notifications: notes,
     verseRepository: VerseRepository(fromDisk),

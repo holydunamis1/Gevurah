@@ -1,6 +1,8 @@
 
 import '../core/models/fight_config.dart';
+import '../core/ports/billing_port.dart';
 import '../core/models/move_def.dart';
+import '../core/models/settings_model.dart';
 import '../core/models/stance.dart';
 import '../core/models/verse_card_def.dart';
 import '../core/models/verse_ref.dart';
@@ -349,6 +351,34 @@ extension AppStrings on AppLocalizations {
         return difficulty_standard;
       case Difficulty.hard:
         return difficulty_hard;
+    }
+  }
+
+  String purchaseMessage(PurchaseOutcome outcome) {
+    switch (outcome) {
+      case PurchaseOutcome.purchased:
+        return purchaseDone;
+      case PurchaseOutcome.restored:
+        return purchaseRestored;
+      case PurchaseOutcome.nothingToRestore:
+        return purchaseNothing;
+      case PurchaseOutcome.failed:
+        return purchaseFailed;
+      case PurchaseOutcome.pending:
+        return purchasePending;
+      case PurchaseOutcome.cancelled:
+        return purchaseCancelled;
+    }
+  }
+
+  String themeName(ThemeChoice choice) {
+    switch (choice) {
+      case ThemeChoice.system:
+        return theme_system;
+      case ThemeChoice.light:
+        return theme_light;
+      case ThemeChoice.dark:
+        return theme_dark;
     }
   }
 }

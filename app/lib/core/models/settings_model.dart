@@ -14,6 +14,7 @@ class SettingsModel {
     this.hapticsOn = true,
     this.remindersOn = false,
     this.reminderMinuteOfDay = defaultReminderMinute,
+    this.onboardingDone = false,
   });
 
   factory SettingsModel.fromJson(Map<String, Object?> json) {
@@ -30,6 +31,7 @@ class SettingsModel {
       hapticsOn: readBool(json, 'hapticsOn'),
       remindersOn: readBool(json, 'remindersOn'),
       reminderMinuteOfDay: minute,
+      onboardingDone: json['onboardingDone'] == true,
     );
   }
 
@@ -51,6 +53,10 @@ class SettingsModel {
   final bool remindersOn;
   final int reminderMinuteOfDay;
 
+  /// Whether the first-run screen has been completed. Optional in older
+  /// saves, which read as not done.
+  final bool onboardingDone;
+
   SettingsModel copyWith({
     ThemeChoice? themeChoice,
     String? localeCode,
@@ -61,6 +67,7 @@ class SettingsModel {
     bool? hapticsOn,
     bool? remindersOn,
     int? reminderMinuteOfDay,
+    bool? onboardingDone,
   }) {
     return SettingsModel(
       themeChoice: themeChoice ?? this.themeChoice,
@@ -71,6 +78,7 @@ class SettingsModel {
       hapticsOn: hapticsOn ?? this.hapticsOn,
       remindersOn: remindersOn ?? this.remindersOn,
       reminderMinuteOfDay: reminderMinuteOfDay ?? this.reminderMinuteOfDay,
+      onboardingDone: onboardingDone ?? this.onboardingDone,
     );
   }
 
@@ -83,6 +91,7 @@ class SettingsModel {
         'hapticsOn': hapticsOn,
         'remindersOn': remindersOn,
         'reminderMinuteOfDay': reminderMinuteOfDay,
+        'onboardingDone': onboardingDone,
       };
 
   @override
@@ -95,7 +104,8 @@ class SettingsModel {
       other.musicOn == musicOn &&
       other.hapticsOn == hapticsOn &&
       other.remindersOn == remindersOn &&
-      other.reminderMinuteOfDay == reminderMinuteOfDay;
+      other.reminderMinuteOfDay == reminderMinuteOfDay &&
+      other.onboardingDone == onboardingDone;
 
   @override
   int get hashCode => Object.hash(
@@ -107,5 +117,6 @@ class SettingsModel {
         hapticsOn,
         remindersOn,
         reminderMinuteOfDay,
+        onboardingDone,
       );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../core/models/curated_verse.dart';
+import '../core/models/license_notice.dart';
 import '../core/logic/seeded_rng.dart';
 import '../core/models/verse.dart';
 import '../core/verses/verse_repository.dart';
@@ -49,6 +50,15 @@ class VerseProvider extends ValueNotifier<String> {
       return await _repo.byMoment(moment, value);
     } on Object {
       return const <Verse>[];
+    }
+  }
+
+  /// The license notice for every bundled source; empty if they cannot be read.
+  Future<List<LicenseNotice>> notices() async {
+    try {
+      return await _repo.allNotices();
+    } on Object {
+      return const <LicenseNotice>[];
     }
   }
 

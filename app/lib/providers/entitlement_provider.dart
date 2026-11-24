@@ -78,6 +78,9 @@ class EntitlementProvider extends ValueNotifier<EntitlementState> {
     );
   }
 
+  /// Clears the message about the last purchase or restore.
+  void dismissOutcome() => value = value.copyWith(clearOutcome: true);
+
   Future<PurchaseOutcome> buy() async {
     if (value.activity != EntitlementActivity.idle) {
       return PurchaseOutcome.pending;

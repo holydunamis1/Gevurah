@@ -126,6 +126,8 @@ void main() {
       await tapText(t, 'Reminder time');
       await t.pump(const Duration(milliseconds: 50));
       await t.pump(const Duration(seconds: 1));
+      await t.ensureVisible(find.text('18:00'));
+      await t.pump(const Duration(milliseconds: 50));
       await t.tap(find.text('18:00'));
       await t.pump(const Duration(milliseconds: 50));
       await t.pump(const Duration(seconds: 1));

@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../core/config/app_config.dart';
-import '../core/config/remote_flags.dart';
 import '../core/models/settings_model.dart';
 import '../core/ports/clock_port.dart';
 import '../core/ports/log_port.dart';

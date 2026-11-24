@@ -104,7 +104,7 @@ class _GevurahAppState extends State<GevurahApp> {
 
   NavigatorState get _nav => _navigator.currentState!;
 
-  Route<T> _route<T>(String name, WidgetBuilder builder) => PageRouteBuilder<T>(
+  PageRoute<T> _route<T>(String name, WidgetBuilder builder) => PageRouteBuilder<T>(
         settings: RouteSettings(name: name),
         pageBuilder: (BuildContext c, Animation<double> a, Animation<double> s) => builder(c),
         transitionDuration: const Duration(milliseconds: 180),

@@ -46,6 +46,11 @@ jobs:
             echo "No tools/scripture yet"
           fi
 
+      - name: Strings in widget files
+        run: |
+          python3 -m unittest discover -s tools -p 'test_check_strings.py'
+          python3 tools/check_strings.py
+
       - name: Detect Flutter app
         id: app
         run: |

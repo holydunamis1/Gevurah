@@ -106,7 +106,12 @@ class BootstrapApp extends StatefulWidget {
 class _BootstrapAppState extends State<BootstrapApp> {
   late Future<AppRuntime> _future = widget.build();
 
-  void _retry() => setState(() => _future = widget.build());
+  void _retry() {
+    final Future<AppRuntime> next = widget.build();
+    setState(() {
+      _future = next;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

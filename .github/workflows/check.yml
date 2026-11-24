@@ -76,7 +76,13 @@ jobs:
       - name: Pub get
         if: steps.app.outputs.present == 'true'
         working-directory: app
-        run: flutter pub get
+        run: |
+          if [ -f pubspec.lock ]; then
+            flutter pub get --enforce-lockfile
+          else
+            echo "pubspec.lock is missing (decision 020): run the lock_pubspec workflow"
+            exit 1
+          fi
 
       - name: Generate localizations
         if: steps.app.outputs.present == 'true'
@@ -97,3 +103,9 @@ jobs:
           else
             echo "No tests yet"
           fi
+
+      - name: Coverage gates
+        if: steps.app.outputs.present == 'true'
+        run: |
+          python3 -m unittest discover -s tools -p 'test_check_coverage.py'
+          python3 tools/check_coverage.py . --report

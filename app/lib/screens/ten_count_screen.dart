@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 
 import '../core/models/curated_verse.dart';
 import '../game/fight_controller.dart';
+import '../game/tuning.dart';
 import '../l10n/app_localizations.dart';
+import '../providers/app_scope.dart';
 import '../theme/app_theme.dart';
 import '../theme/icon_aliases.dart';
 import '../theme/tokens.dart';
@@ -64,6 +66,7 @@ class _TenCountScreenState extends State<TenCountScreen> {
     if (_done) {
       return;
     }
+    unawaited(AppScope.of(context).audio?.play(GameTuning.soundCount));
     final double now = _now();
     final double? last = _last;
     final bool steady = last == null || TenCountScreen.isSteady(now - last);

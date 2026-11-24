@@ -1,3 +1,5 @@
+import '../core/models/move_def.dart';
+
 /// The single tuning file for the fight scene: controller timing, animation
 /// timings, layout and sound ids. Rules and damage live in core; nothing here
 /// changes an outcome except the timing windows' surroundings (how long a
@@ -43,7 +45,7 @@ abstract final class GameTuning {
   static const double shadowX = 0.74;
   static const double figureHeight = 0.42;
 
-  // Sound ids, played through the audio port. The files arrive with the audio batch.
+  // Sound ids, played through the audio port. The files are in assets/audio.
   static const String soundTell = 'tell';
   static const String soundHit = 'hit';
   static const String soundPerfect = 'perfect';
@@ -51,5 +53,27 @@ abstract final class GameTuning {
   static const String soundSlip = 'slip';
   static const String soundDown = 'down';
   static const String soundDefeat = 'defeat';
-  static const List<String> allSounds = <String>[soundTell, soundHit, soundPerfect, soundGuard, soundSlip, soundDown, soundDefeat];
+  static const String soundTellHeavy = 'tell_heavy';
+  static const String soundTellFlurry = 'tell_flurry';
+  static const String soundCount = 'count';
+  static const List<String> allSounds = <String>[
+    soundTell,
+    soundTellHeavy,
+    soundTellFlurry,
+    soundHit,
+    soundPerfect,
+    soundGuard,
+    soundSlip,
+    soundDown,
+    soundDefeat,
+    soundCount,
+  ];
+
+  /// The tell's sound by move. A fake and a bait sound like the strike they
+  /// imitate, so the ear cannot give them away any more than the eye can.
+  static String tellSound(MoveKind kind) => switch (kind) {
+        MoveKind.heavy => soundTellHeavy,
+        MoveKind.flurry => soundTellFlurry,
+        MoveKind.strike || MoveKind.ping || MoveKind.fake || MoveKind.bait || MoveKind.drain => soundTell,
+      };
 }

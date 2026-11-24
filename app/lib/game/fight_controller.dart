@@ -222,7 +222,7 @@ class FightController {
     input.beginResponse(_beat);
     _phase = ControllerPhase.waitingResponse;
     _haptic(HapticKind.tellPulse);
-    _sound(GameTuning.soundTell);
+    _sound(GameTuning.tellSound(move.kind));
     _emit(TelegraphStarted(move, _telegraphMs));
   }
 

@@ -50,6 +50,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tools -p 'test_check_strings.py'
           python3 tools/check_strings.py
+          python3 -m unittest discover -s tools/audio -p 'test_make_sfx.py'
 
       - name: Detect Flutter app
         id: app

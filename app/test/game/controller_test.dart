@@ -272,7 +272,7 @@ void main() {
     final Rig r = Rig()..run();
     expect(r.haptics.played, contains(HapticKind.tellPulse));
     expect(r.haptics.played, contains(HapticKind.perfect));
-    expect(r.audio.played, contains(GameTuning.soundTell));
+    expect(r.audio.played.any(<String>[GameTuning.soundTell, GameTuning.soundTellHeavy, GameTuning.soundTellFlurry].contains), isTrue);
     expect(r.audio.played, contains(GameTuning.soundGuard));
     expect(r.audio.preloaded, GameTuning.allSounds);
   });

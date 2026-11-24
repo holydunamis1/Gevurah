@@ -104,10 +104,13 @@ class BootstrapApp extends StatefulWidget {
 }
 
 class _BootstrapAppState extends State<BootstrapApp> {
-  late Future<AppRuntime> _future = widget.build();
+  late Future<AppRuntime> _future = _start();
+
+  /// A failure is shown by the builder below, so the future counts as handled.
+  Future<AppRuntime> _start() => widget.build()..ignore();
 
   void _retry() {
-    final Future<AppRuntime> next = widget.build();
+    final Future<AppRuntime> next = _start();
     setState(() {
       _future = next;
     });

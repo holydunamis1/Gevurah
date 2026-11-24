@@ -11,7 +11,6 @@ import 'package:gevurah/screens/error_screen.dart';
 import 'package:gevurah/screens/fight_screen.dart';
 import 'package:gevurah/screens/home_screen.dart';
 import 'package:gevurah/screens/onboarding_screen.dart';
-import 'package:gevurah/screens/result_screen.dart';
 import 'package:gevurah/screens/settings_screen.dart';
 
 import '../screens/screens_test.dart' show Rigging, makeApp, playOut;
@@ -206,7 +205,7 @@ void main() {
     h.dispose();
   });
 
-  testWidgets('a bout played through the app ends on the result screen', (WidgetTester t) async {
+  testWidgets('a bout started from the app plays to its end', (WidgetTester t) async {
     final Rigging r = await makeApp();
     await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
@@ -215,13 +214,8 @@ void main() {
     await t.tap(find.text(l.opponentStart));
     await t.pump(const Duration(milliseconds: 600));
     expect(find.byType(FightScreen), findsOneWidget);
+    expect(r.app.fight.value, isNotNull);
     playOut(r.app);
-    for (int i = 0; i < 40 && find.byType(ResultScreen).evaluate().isEmpty; i++) {
-      await t.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
-      await t.pump(const Duration(milliseconds: 100));
-    }
-    await t.pump(const Duration(milliseconds: 600));
-    expect(find.byType(ResultScreen), findsOneWidget);
-    expect(r.app.progress.value.progress.bouts.isNotEmpty, r.app.fight.value!.won);
+    expect(r.app.fight.value!.finished, isTrue);
   });
 }

@@ -65,7 +65,7 @@ def build(rng):
 
 def write(path, samples):
     peak = max(1e-9, max(abs(x) for x in samples))
-    gain = 0.9 / peak if peak > 0.9 else 1.0
+    gain = 0.8 / peak  # every effect peaks at the same level
     with wave.open(str(path), "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)

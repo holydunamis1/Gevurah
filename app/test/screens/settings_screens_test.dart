@@ -76,6 +76,7 @@ void main() {
       final Rigging r = await makeApp();
       await t.pumpWidget(host(r.app, settingsScreen(<String>[])));
       await t.pump();
+      await t.scrollUntilVisible(find.text('Restore purchase'), 200, scrollable: find.byType(Scrollable).first);
       expect(find.text('Restore purchase'), findsOneWidget);
       expect(find.text('Privacy choices'), findsNothing);
     });

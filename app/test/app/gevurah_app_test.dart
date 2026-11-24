@@ -2,18 +2,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gevurah/app/bootstrap.dart';
+import 'package:gevurah/app/fatal_error.dart';
 import 'package:gevurah/app/gevurah_app.dart';
 import 'package:gevurah/l10n/app_localizations.dart';
 import 'package:gevurah/platform/url_service.dart';
+import 'package:gevurah/screens/daily_bout_screen.dart';
+import 'package:gevurah/screens/error_screen.dart';
+import 'package:gevurah/screens/fight_screen.dart';
 import 'package:gevurah/screens/home_screen.dart';
 import 'package:gevurah/screens/onboarding_screen.dart';
+import 'package:gevurah/screens/result_screen.dart';
 import 'package:gevurah/screens/settings_screen.dart';
 
-import '../screens/screens_test.dart' show Rigging, makeApp;
+import '../screens/screens_test.dart' show Rigging, makeApp, playOut;
 
 Future<void> noOrientation(List<DeviceOrientation> o) async {}
 
-Future<void> pumpApp(WidgetTester t, Rigging r, {List<String>? opened}) async {
+Future<void> pumpApp(WidgetTester t, Rigging r, {List<String>? opened, Future<bool> Function()? launched, FatalErrorHost? fatal, Future<String> Function()? exportLog}) async {
   await t.pumpWidget(
     GevurahApp(
       providers: r.app,
@@ -25,15 +30,18 @@ Future<void> pumpApp(WidgetTester t, Rigging r, {List<String>? opened}) async {
         },
       ),
       setOrientations: noOrientation,
+      launchedFromReminder: launched,
+      fatalErrors: fatal,
+      exportLog: exportLog,
     ),
   );
   await t.pump();
-  await t.pump(const Duration(milliseconds: 300));
+  await t.pump(const Duration(milliseconds: 500));
 }
 
 Future<void> go(WidgetTester t) async {
   await t.pump();
-  await t.pump(const Duration(milliseconds: 400));
+  await t.pump(const Duration(milliseconds: 500));
 }
 
 void main() {
@@ -123,5 +131,96 @@ void main() {
     await t.pump();
     await t.pump();
     expect(attempts, 2);
+  });
+
+  testWidgets('a cold start from the reminder opens the Daily Bout over Home', (WidgetTester t) async {
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    await pumpApp(t, r, launched: () async => true);
+    expect(find.byType(DailyBoutScreen), findsOneWidget);
+    Navigator.of(t.element(find.byType(DailyBoutScreen))).pop();
+    await go(t);
+    expect(find.byType(HomeScreen), findsOneWidget);
+  });
+
+  testWidgets('a normal start does not open the Daily Bout', (WidgetTester t) async {
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    await pumpApp(t, r, launched: () async => false);
+    expect(find.byType(DailyBoutScreen), findsNothing);
+    expect(find.byType(HomeScreen), findsOneWidget);
+  });
+
+  testWidgets('an uncaught error shows the fallback; Retry returns Home', (WidgetTester t) async {
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    final FatalErrorHost fatal = FatalErrorHost();
+    await pumpApp(t, r, fatal: fatal);
+    expect(find.byType(ErrorScreen), findsNothing);
+    fatal.raise();
+    await t.pump();
+    expect(find.byType(ErrorScreen), findsOneWidget);
+    await t.tap(find.text(l.errorRetry));
+    await go(t);
+    expect(find.byType(ErrorScreen), findsNothing);
+    expect(find.byType(HomeScreen), findsOneWidget);
+  });
+
+  testWidgets('Report opens an email with the log attached', (WidgetTester t) async {
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    final FatalErrorHost fatal = FatalErrorHost()..raise();
+    final List<String> opened = <String>[];
+    await pumpApp(t, r, opened: opened, fatal: fatal, exportLog: () async => 'LOGTEXT');
+    await t.tap(find.text(l.errorReport));
+    await t.pump();
+    await t.pump();
+    expect(opened.single, contains('LOGTEXT'));
+  });
+
+  testWidgets('screens push in 350 ms and pop in 280 ms, instantly with Reduce Motion', (WidgetTester t) async {
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    await pumpApp(t, r);
+    final SemanticsHandle h = t.ensureSemantics();
+    await t.tap(find.bySemanticsLabel(l.homeSettings));
+    await go(t);
+    final ModalRoute<dynamic> route = ModalRoute.of(t.element(find.byType(SettingsScreen)))!;
+    expect(route.transitionDuration, const Duration(milliseconds: 350));
+    expect(route.reverseTransitionDuration, const Duration(milliseconds: 280));
+    h.dispose();
+  });
+
+  testWidgets('with Reduce Motion a screen appears at once', (WidgetTester t) async {
+    t.platformDispatcher.accessibilityFeaturesTestValue = const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    final SemanticsHandle h = t.ensureSemantics();
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    await pumpApp(t, r);
+    await t.tap(find.bySemanticsLabel(l.homeSettings));
+    await t.pump();
+    await t.pump();
+    final ModalRoute<dynamic> route = ModalRoute.of(t.element(find.byType(SettingsScreen)))!;
+    expect(route.transitionDuration, Duration.zero);
+    h.dispose();
+  });
+
+  testWidgets('a bout played through the app ends on the result screen', (WidgetTester t) async {
+    final Rigging r = await makeApp();
+    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
+    await pumpApp(t, r);
+    await t.tap(find.text(l.homeContinue).first);
+    await go(t);
+    await t.tap(find.text(l.opponentStart));
+    await t.pump(const Duration(milliseconds: 600));
+    expect(find.byType(FightScreen), findsOneWidget);
+    playOut(r.app);
+    for (int i = 0; i < 40 && find.byType(ResultScreen).evaluate().isEmpty; i++) {
+      await t.pump(const Duration(milliseconds: 100));
+    }
+    await t.pump(const Duration(milliseconds: 600));
+    expect(find.byType(ResultScreen), findsOneWidget);
+    expect(r.app.progress.value.progress.bouts.isNotEmpty, r.app.fight.value!.won);
   });
 }

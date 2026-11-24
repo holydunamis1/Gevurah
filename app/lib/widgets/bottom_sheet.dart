@@ -63,7 +63,7 @@ Future<T?> showAppBottomSheet<T>(
     barrierDismissible: dismissible,
     barrierLabel: barrierLabel,
     barrierColor: const Color(0x8A000000),
-    transitionDuration: reduce ? Duration.zero : const Duration(milliseconds: 400),
+    transitionDuration: reduce ? Duration.zero : const Duration(milliseconds: Motion.sheetMs),
     pageBuilder: (BuildContext ctx, Animation<double> a, Animation<double> s) {
       return AppTheme(
         palette: theme.palette,

@@ -135,3 +135,12 @@ class AppPalette {
     verseCardSurface: Color(0xFF23212B),
   );
 }
+
+/// Motion durations in milliseconds and the page slide distance (blueprint
+/// section 6). With Reduce Motion every duration is zero.
+abstract final class Motion {
+  static const int pushMs = 350;
+  static const int popMs = 280;
+  static const int sheetMs = 400;
+  static const double slidePx = 20;
+}

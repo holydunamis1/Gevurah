@@ -26,7 +26,10 @@ import '../screens/settings_screen.dart';
 import '../screens/trials_screen.dart';
 import '../screens/upgrade_screen.dart';
 import '../screens/verse_library_screen.dart';
+import '../screens/error_screen.dart';
 import '../theme/app_theme.dart';
+import '../theme/tokens.dart';
+import 'fatal_error.dart';
 
 /// Route names the flow relies on.
 abstract final class RouteNames {
@@ -46,6 +49,9 @@ class GevurahApp extends StatefulWidget {
     required this.urls,
     this.setOrientations = SystemChrome.setPreferredOrientations,
     this.dailyTaps,
+    this.launchedFromReminder,
+    this.fatalErrors,
+    this.exportLog,
   });
 
   final AppProviders providers;
@@ -56,6 +62,15 @@ class GevurahApp extends StatefulWidget {
 
   /// Emits when the player taps the daily reminder while the app runs.
   final Stream<void>? dailyTaps;
+
+  /// Tells whether the app was opened by tapping the reminder while closed.
+  final Future<bool> Function()? launchedFromReminder;
+
+  /// Shows the full-screen fallback while it is raised.
+  final FatalErrorHost? fatalErrors;
+
+  /// The recent local log as text, attached to the email report.
+  final Future<String> Function()? exportLog;
 
   @override
   State<GevurahApp> createState() => _GevurahAppState();
@@ -73,6 +88,7 @@ class _GevurahAppState extends State<GevurahApp> {
     super.initState();
     unawaited(widget.setOrientations(FightScreen.menuOrientations));
     _taps = widget.dailyTaps?.listen((_) => _openDaily());
+    unawaited(_openDailyIfColdStart());
     app.locale.addListener(_syncReminder);
     _syncReminder();
   }
@@ -83,6 +99,37 @@ class _GevurahAppState extends State<GevurahApp> {
     unawaited(_taps?.cancel());
     super.dispose();
   }
+
+  /// A tap on the reminder while the app was closed opens the Daily Bout over
+  /// Home, so Back lands on Home.
+  Future<void> _openDailyIfColdStart() async {
+    final Future<bool> Function()? launched = widget.launchedFromReminder;
+    if (launched == null) {
+      return;
+    }
+    bool fromReminder = false;
+    try {
+      fromReminder = await launched();
+    } on Object {
+      fromReminder = false;
+    }
+    if (fromReminder && mounted && app.settings.settings.onboardingDone) {
+      _openDaily();
+    }
+  }
+
+  Future<void> _retryAfterFatal() async {
+    widget.fatalErrors?.clear();
+    _home();
+  }
+
+  Future<void> _reportFatal() async {
+    final String log = await widget.exportLog?.call() ?? '';
+    await widget.urls.openMail(subject: _reportSubject, body: log);
+  }
+
+  /// Subject of the emailed problem report.
+  static const String _reportSubject = 'Gevurah Boxing problem';
 
   /// Re-applies the saved reminder at launch and when the language changes, so
   /// its text is in the player's language.
@@ -104,14 +151,30 @@ class _GevurahAppState extends State<GevurahApp> {
 
   NavigatorState get _nav => _navigator.currentState!;
 
-  PageRoute<T> _route<T>(String name, WidgetBuilder builder) => PageRouteBuilder<T>(
-        settings: RouteSettings(name: name),
-        pageBuilder: (BuildContext c, Animation<double> a, Animation<double> s) => builder(c),
-        transitionDuration: const Duration(milliseconds: 180),
-        reverseTransitionDuration: const Duration(milliseconds: 140),
-        transitionsBuilder: (BuildContext c, Animation<double> a, Animation<double> s, Widget child) =>
-            MediaQuery.disableAnimationsOf(c) ? child : FadeTransition(opacity: a, child: child),
-      );
+  PageRoute<T> _route<T>(String name, WidgetBuilder builder) {
+    final bool reduce = WidgetsBinding.instance.platformDispatcher.accessibilityFeatures.disableAnimations;
+    return PageRouteBuilder<T>(
+      settings: RouteSettings(name: name),
+      pageBuilder: (BuildContext c, Animation<double> a, Animation<double> s) => builder(c),
+      transitionDuration: reduce ? Duration.zero : const Duration(milliseconds: Motion.pushMs),
+      reverseTransitionDuration: reduce ? Duration.zero : const Duration(milliseconds: Motion.popMs),
+      transitionsBuilder: (BuildContext c, Animation<double> a, Animation<double> s, Widget child) {
+        final Animation<double> eased = CurvedAnimation(parent: a, curve: Curves.easeInOut);
+        if (reduce) {
+          return child;
+        }
+        final double toward = Directionality.of(c) == TextDirection.rtl ? -1 : 1;
+        return FadeTransition(
+          opacity: eased,
+          child: AnimatedBuilder(
+            animation: eased,
+            builder: (BuildContext _, Widget? inner) => Transform.translate(offset: Offset(toward * Motion.slidePx * (1 - eased.value), 0), child: inner),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
 
   void _push(String name, WidgetBuilder builder) => unawaited(_nav.push<void>(_route<void>(name, builder)));
 
@@ -267,6 +330,25 @@ class _GevurahAppState extends State<GevurahApp> {
     );
   }
 
+  Widget _withFallback(Widget child) {
+    final FatalErrorHost? host = widget.fatalErrors;
+    if (host == null) {
+      return child;
+    }
+    return ListenableBuilder(
+      listenable: host,
+      builder: (BuildContext context, Widget? _) => Stack(
+        children: <Widget>[
+          Positioned.fill(child: child),
+          if (host.value)
+            Positioned.fill(
+              child: ErrorScreen(onRetry: () => unawaited(_retryAfterFatal()), onReport: () => unawaited(_reportFatal())),
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -293,7 +375,7 @@ class _GevurahAppState extends State<GevurahApp> {
                 textDirection: app.locale.isRightToLeft ? TextDirection.rtl : TextDirection.ltr,
                 child: AppTheme.forBrightness(
                   brightness: dark ? Brightness.dark : Brightness.light,
-                  child: child ?? const SizedBox.shrink(),
+                  child: _withFallback(child ?? const SizedBox.shrink()),
                 ),
               ),
             );

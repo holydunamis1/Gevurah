@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import '../core/config/app_config.dart';
 import '../core/models/settings_model.dart';
 import '../core/ports/clock_port.dart';
-import '../core/ports/log_port.dart';
 import '../core/verses/verse_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../platform/ad_service.dart';
@@ -25,23 +24,27 @@ import '../platform/url_service.dart';
 import '../providers/app_providers.dart';
 import '../screens/error_screen.dart';
 import '../theme/app_theme.dart';
+import '../utils/global_error_handler.dart';
+import 'fatal_error.dart';
 import 'gevurah_app.dart';
 
 /// Everything the running app owns.
 class AppRuntime {
-  AppRuntime({required this.providers, required this.urls, required this.notifications, required this.log});
+  AppRuntime({required this.providers, required this.urls, required this.notifications, required this.log, required this.fatal});
 
   final AppProviders providers;
   final UrlService urls;
   final NotificationService notifications;
   final LogService log;
+  final FatalErrorHost fatal;
 }
 
 /// Builds the real adapters and the providers, and starts them up.
 Future<AppRuntime> buildRuntime() async {
   const SystemClock clock = SystemClock();
   final LogService log = LogService(directory: getApplicationSupportDirectory);
-  installErrorLogging(log);
+  final FatalErrorHost fatal = FatalErrorHost();
+  GlobalErrorHandler.install(fatalErrorSink(fatal, log));
   final StorageService storage = StorageService.create();
   final NotificationService notifications = NotificationService();
   await notifications.initialize();
@@ -89,6 +92,7 @@ Future<AppRuntime> buildRuntime() async {
     urls: UrlService(supportEmail: AppConfig.supportEmail),
     notifications: notifications,
     log: log,
+    fatal: fatal,
   );
 }
 
@@ -123,7 +127,14 @@ class _BootstrapAppState extends State<BootstrapApp> {
       builder: (BuildContext context, AsyncSnapshot<AppRuntime> snapshot) {
         final AppRuntime? runtime = snapshot.data;
         if (runtime != null) {
-          return GevurahApp(providers: runtime.providers, urls: runtime.urls, dailyTaps: runtime.notifications.dailyTaps);
+          return GevurahApp(
+            providers: runtime.providers,
+            urls: runtime.urls,
+            dailyTaps: runtime.notifications.dailyTaps,
+            launchedFromReminder: runtime.notifications.launchedFromNotification,
+            fatalErrors: runtime.fatal,
+            exportLog: runtime.log.exportText,
+          );
         }
         if (snapshot.hasError) {
           return _Plain(
@@ -160,15 +171,4 @@ class _Plain extends StatelessWidget {
       home: const SizedBox.shrink(),
     );
   }
-}
-
-/// Logs errors that reach the framework or the zone.
-void installErrorLogging(LogPort log) {
-  FlutterError.onError = (FlutterErrorDetails d) {
-    log.log(LogLevel.error, 'Flutter error: ${d.exceptionAsString()}', stack: d.stack);
-  };
-  WidgetsBinding.instance.platformDispatcher.onError = (Object e, StackTrace s) {
-    log.log(LogLevel.error, 'Unhandled error', error: e, stack: s);
-    return true;
-  };
 }

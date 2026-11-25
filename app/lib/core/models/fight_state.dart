@@ -36,11 +36,10 @@ class FightState {
   static const int roundsPerBout = 3;
 
   /// The state at the start of a bout against a struggle of [startingWeight].
-  const FightState.initial(int startingWeight, {PlayerState player = const PlayerState.initial()})
+  const FightState.initial(int startingWeight, {this.player = const PlayerState.initial()})
       : round = 1,
         startingWeight = startingWeight,
         weight = startingWeight,
-        player = player,
         exchangeIndex = 0,
         phase = FightPhase.telegraph,
         end = null,

@@ -83,7 +83,7 @@ class AppProviders {
       consent: consentProvider,
       flags: flags,
       ads: adProvider,
-      rewards: RewardsProvider(ads: adProvider, progress: progress, settings: settings, clock: clock),
+      rewards: RewardsProvider(adProvider: adProvider, progressProvider: progress, settingsProvider: settings, clockPort: clock),
       daily: DailyProvider(clock: clock, progress: progress, flags: flags),
       achievements: achievements,
       fight: FightProvider(progress: progress, achievements: achievements, clock: clock),

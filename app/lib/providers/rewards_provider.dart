@@ -24,11 +24,11 @@ enum RewardResult {
 /// for any unlock, and they stay available after Remove Ads. The ad itself is
 /// shown by [AdProvider], which checks consent and the remote flag.
 class RewardsProvider extends ChangeNotifier {
-  RewardsProvider({required AdProvider ads, required ProgressProvider progress, required SettingsProvider settings, required ClockPort clock})
-      : _ads = ads,
-        _progress = progress,
-        _settings = settings,
-        _clock = clock;
+  RewardsProvider({required AdProvider adProvider, required ProgressProvider progressProvider, required SettingsProvider settingsProvider, required ClockPort clockPort})
+      : _ads = adProvider,
+        _progress = progressProvider,
+        _settings = settingsProvider,
+        _clock = clockPort;
 
   final AdProvider _ads;
   final ProgressProvider _progress;

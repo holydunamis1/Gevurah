@@ -38,6 +38,13 @@ jobs:
           flutter gen-l10n
           flutter build apk --release
 
+      - name: Keep the APK on this run page
+        uses: actions/upload-artifact@v4
+        with:
+          name: gevurah-test-apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
+
       - name: Publish pre-release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -54,5 +61,7 @@ jobs:
           {
             echo "### Test APK published"
             echo ""
-            echo "Open the Releases page of this repository and download gevurah-test-${SHORT}.apk"
+            echo "Download: https://github.com/${{ github.repository }}/releases/download/${TAG}/gevurah-test-${SHORT}.apk"
+            echo ""
+            echo "Or open Artifacts at the top of this run page (a zip containing the APK)."
           } >> "$GITHUB_STEP_SUMMARY"

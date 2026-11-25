@@ -52,6 +52,11 @@ android {
 
     buildTypes {
         release {
+            // R8 shrinking stripped the androidx.work database class that the ads library
+            // starts at launch, so the app crashed on open. Shrinking stays off until a
+            // keep-rule set has been proven on the emulator smoke test.
+            isMinifyEnabled = false
+            isShrinkResources = false
             // Release builds are signed with key.properties when it exists (written by the
             // release workflow from repository secrets). Without it the debug key is used,
             // so unsigned local or test builds still work.

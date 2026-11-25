@@ -205,15 +205,18 @@ class _GevurahAppState extends State<GevurahApp> {
     );
   }
 
-  void _openFight() {
-    _push(
-      RouteNames.fight,
-      (BuildContext _) => FightScreen(
+  Widget _fightScreen(BuildContext _) => FightScreen(
         setOrientations: widget.setOrientations,
         onFinished: _openResult,
         onLeave: _pop,
-      ),
-    );
+      );
+
+  void _openFight() => _push(RouteNames.fight, _fightScreen);
+
+  /// The rewarded retry after a loss: the fight replaces the result screen, so
+  /// Back and the next result land where the first bout's did.
+  void _retryBout() {
+    unawaited(_nav.pushReplacement<void, void>(_route<void>(RouteNames.fight, _fightScreen)));
   }
 
   void _openResult() {
@@ -225,6 +228,7 @@ class _GevurahAppState extends State<GevurahApp> {
             onContinue: _afterResult,
             onTryAgain: _backToOpponent,
             onHome: _home,
+            onRetry: _retryBout,
           ),
         ),
       ),

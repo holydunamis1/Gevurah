@@ -10,6 +10,7 @@ import '../providers/app_providers.dart';
 import '../providers/app_scope.dart';
 import '../providers/fight_provider.dart';
 import '../theme/app_theme.dart';
+import '../theme/icon_aliases.dart';
 import '../theme/tokens.dart';
 import '../widgets/app_row.dart';
 import '../widgets/nav_bar.dart';
@@ -17,17 +18,21 @@ import '../widgets/primary_button.dart';
 import '../widgets/screen_frame.dart';
 import '../widgets/star_row.dart';
 import 'parts/app_ad_slot.dart';
+import 'parts/reward_offer.dart';
 import 'parts/verse_block.dart';
 
 /// The end of a bout: the outcome, stars, a verse, any card or achievements
 /// earned. Opening it records the bout once and, at this natural pause, offers
 /// the ad provider a chance to show an interstitial.
 class ResultScreen extends StatefulWidget {
-  const ResultScreen({super.key, required this.onContinue, required this.onTryAgain, required this.onHome});
+  const ResultScreen({super.key, required this.onContinue, required this.onTryAgain, required this.onHome, this.onRetry});
 
   final VoidCallback onContinue;
   final VoidCallback onTryAgain;
   final VoidCallback onHome;
+
+  /// Called after a rewarded retry has started a fresh bout; the caller opens the fight.
+  final VoidCallback? onRetry;
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
@@ -42,6 +47,22 @@ class _ResultScreenState extends State<ResultScreen> {
       await app.ads.maybeShowInterstitial();
     }
     return done;
+  }
+
+  /// One earned retry after a loss, in the modes with a fresh seed. Never for
+  /// the Daily Bout (same for everyone), Endurance or Training.
+  bool _canRetry(FightFinish f, bool won) {
+    final FightConfig c = f.view.config;
+    final bool mode = c.mode == FightMode.journey || c.mode == FightMode.trials || c.mode == FightMode.sparring;
+    return widget.onRetry != null && !won && mode && !c.isRetry;
+  }
+
+  void _retry(AppProviders app, FightConfig c) {
+    final int seed = app.fight.clock.now().millisecondsSinceEpoch & 0x7fffffff;
+    final bool started = app.fight.start(c.copyWith(seed: seed, isRetry: true, extraBreath: 0, extraStamina: 0));
+    if (started) {
+      widget.onRetry!();
+    }
   }
 
   @override
@@ -99,6 +120,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    if (_canRetry(f, won)) RewardOffer(label: l.rewardRetry, icon: AppIcons.retry, run: app.rewards.watch, onEarned: () => _retry(app, f.view.config)),
                     PrimaryButton(label: l.resultContinue, onPressed: widget.onContinue),
                     AppRow(label: l.resultTryAgain, onPressed: widget.onTryAgain),
                     AppRow(label: l.resultHome, onPressed: widget.onHome),

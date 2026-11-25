@@ -16,7 +16,7 @@ if (hasReleaseKeystore) {
 
 android {
     namespace = "com.zdmgold.gevurah"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

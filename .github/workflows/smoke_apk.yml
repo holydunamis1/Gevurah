@@ -1,0 +1,70 @@
+name: smoke_apk
+
+# Manual. Builds the release APK, installs it on an Android emulator, launches
+# it, taps around for a while and prints any crash from the device log, so a
+# crash on a real phone can be seen without a cable.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+      - name: Build release APK
+        working-directory: app
+        run: |
+          set -e
+          flutter pub get --enforce-lockfile
+          flutter gen-l10n
+          flutter build apk --release
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            adb install -r app/build/app/outputs/flutter-apk/app-release.apk
+            adb logcat -c
+            adb shell monkey -p com.zdmgold.gevurah -c android.intent.category.LAUNCHER 1
+            sleep 15
+            adb shell input tap 540 1200
+            sleep 5
+            adb shell monkey -p com.zdmgold.gevurah --throttle 700 --pct-syskeys 0 -s 7 300 || true
+            adb logcat -d > /tmp/logcat.txt || true
+            adb exec-out screencap -p > /tmp/screen.png || true
+            echo "=== process alive? ==="
+            adb shell pidof com.zdmgold.gevurah || echo "NOT RUNNING"
+            echo "=== crash lines ==="
+            grep -n -E "FATAL EXCEPTION|AndroidRuntime|Process: com.zdmgold|Fatal signal|SIGSEGV|ANR in|Flutter.*(Exception|Error)|E/flutter" /tmp/logcat.txt | head -60 || true
+            echo "=== context ==="
+            grep -n -A25 "FATAL EXCEPTION" /tmp/logcat.txt | head -80 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-logs
+          path: |
+            /tmp/logcat.txt
+            /tmp/screen.png
+          if-no-files-found: ignore

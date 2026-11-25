@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../core/catalog/training_lessons.dart';
 import '../core/input/tap_swipe_strategy.dart';
 import '../core/models/fight_config.dart';
+import '../core/models/player_state.dart';
+import '../core/models/settings_model.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_helpers.dart';
 import '../game/boxing_game.dart';
@@ -20,6 +23,7 @@ import '../widgets/app_dialog.dart';
 import '../widgets/app_row.dart';
 import '../widgets/bottom_sheet.dart';
 import 'corner_screen.dart';
+import 'parts/lesson_parts.dart';
 import 'ten_count_screen.dart';
 
 /// The bout. The arena runs the fight; the corner and the ten-count appear
@@ -30,6 +34,7 @@ class FightScreen extends StatefulWidget {
     super.key,
     required this.onFinished,
     required this.onLeave,
+    this.lesson,
     this.setOrientations = SystemChrome.setPreferredOrientations,
   });
 
@@ -43,6 +48,10 @@ class FightScreen extends StatefulWidget {
   /// The rest of the app is portrait.
   static const List<DeviceOrientation> menuOrientations = <DeviceOrientation>[DeviceOrientation.portraitUp];
 
+  /// Set when the bout is a Training lesson: a goal strip is drawn, the lesson
+  /// ends the moment its goal is met, and the result screen is skipped.
+  final LessonRun? lesson;
+
   /// The bout ended; the result screen takes over.
   final VoidCallback onFinished;
 
@@ -55,12 +64,15 @@ class FightScreen extends StatefulWidget {
 
 enum _Pause { none, corner, tenCount }
 
+enum _LessonEnd { none, met, notYet }
+
 class _FightScreenState extends State<FightScreen> {
   FightController? _controller;
   BoxingGame? _game;
   StreamSubscription<FightEvent>? _sub;
   _Pause _pause = _Pause.none;
   bool _sheetOpen = false;
+  _LessonEnd _lessonEnd = _LessonEnd.none;
 
   @override
   void initState() {
@@ -68,7 +80,12 @@ class _FightScreenState extends State<FightScreen> {
     unawaited(widget.setOrientations(FightScreen.fightOrientations));
   }
 
+  AppProviders? _app;
+
+  FightView? get _lessonView => _app?.fight.value;
+
   FightController _ensure(AppProviders app) {
+    _app = app;
     final FightController? existing = _controller;
     if (existing != null) {
       return existing;
@@ -82,12 +99,34 @@ class _FightScreenState extends State<FightScreen> {
     );
     _sub = c.events.listen(_onEvent);
     _controller = c;
+    if (widget.lesson != null) {
+      app.fight.addListener(_checkLesson);
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         c.begin();
       }
     });
     return c;
+  }
+
+  /// Ends the lesson the moment its goal is met.
+  void _checkLesson() {
+    final LessonRun? run = widget.lesson;
+    final FightView? v = _lessonView;
+    if (run == null || v == null || _lessonEnd != _LessonEnd.none) {
+      return;
+    }
+    final bool breathUsed = v.state.player.breathCharges < PlayerState.breathPerRound;
+    if (TrainingLessons.isMet(run.lesson, v.history, breathUsed: breathUsed)) {
+      _controller?.pause();
+      setState(() => _lessonEnd = _LessonEnd.met);
+      final AppProviders app = _app!;
+      final String id = run.lesson.id;
+      if (!app.settings.settings.trainingDone.contains(id)) {
+        unawaited(app.settings.update((SettingsModel m) => m.copyWith(trainingDone: <String>[...m.trainingDone, id])));
+      }
+    }
   }
 
   void _onEvent(FightEvent e) {
@@ -99,7 +138,11 @@ class _FightScreenState extends State<FightScreen> {
           case PauseReason.tenCount:
             setState(() => _pause = _Pause.tenCount);
           case PauseReason.finished:
-            widget.onFinished();
+            if (widget.lesson == null) {
+              widget.onFinished();
+            } else if (_lessonEnd == _LessonEnd.none) {
+              setState(() => _lessonEnd = _LessonEnd.notYet);
+            }
           case PauseReason.user:
             {}
         }
@@ -189,6 +232,15 @@ class _FightScreenState extends State<FightScreen> {
           fit: StackFit.expand,
           children: <Widget>[
             FightArena(game: game, controller: c, labels: labels, locale: app.locale.value, onPause: () => unawaited(_showPause(l, c))),
+            if (widget.lesson != null)
+              ListenableBuilder(
+                listenable: app.fight,
+                builder: (BuildContext context, Widget? _) {
+                  final FightView now = app.fight.value ?? view;
+                  final bool breathUsed = now.state.player.breathCharges < PlayerState.breathPerRound;
+                  return LessonCoach(lesson: widget.lesson!.lesson, done: TrainingLessons.progress(widget.lesson!.lesson, now.history, breathUsed: breathUsed));
+                },
+              ),
             if (_pause == _Pause.corner)
               ListenableBuilder(
                 listenable: app.fight,
@@ -212,6 +264,8 @@ class _FightScreenState extends State<FightScreen> {
                   c.resume();
                 },
               ),
+            if (widget.lesson != null && _lessonEnd != _LessonEnd.none)
+              Positioned.fill(child: LessonOverlay(run: widget.lesson!, met: _lessonEnd == _LessonEnd.met)),
           ],
         ),
       ),
@@ -220,6 +274,7 @@ class _FightScreenState extends State<FightScreen> {
 
   @override
   void dispose() {
+    _app?.fight.removeListener(_checkLesson);
     unawaited(_sub?.cancel());
     unawaited(_controller?.dispose());
     unawaited(widget.setOrientations(FightScreen.menuOrientations));

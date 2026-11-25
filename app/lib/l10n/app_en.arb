@@ -1237,5 +1237,170 @@
   "errorReport": "Send a report",
   "@errorReport": {
     "description": "Error screen link"
+  },
+  "howToTitle": "How to play",
+  "@howToTitle": {
+    "description": "How to play screen title"
+  },
+  "howToWatchTitle": "Watch the tell",
+  "@howToWatchTitle": {
+    "description": "How to play card"
+  },
+  "howToWatchBody": "Before a struggle strikes it shows a tell. Learn its shape and its sound. Some tells are fakes.",
+  "@howToWatchBody": {
+    "description": "How to play card"
+  },
+  "howToAnswerTitle": "Answer on the beat",
+  "@howToAnswerTitle": {
+    "description": "How to play card"
+  },
+  "howToAnswerBody": "Guard: tap. Slip: swipe sideways. Take it: do nothing. Answer as the ring closes.",
+  "@howToAnswerBody": {
+    "description": "How to play card"
+  },
+  "howToStrikeTitle": "Strike when it opens",
+  "@howToStrikeTitle": {
+    "description": "How to play card"
+  },
+  "howToStrikeBody": "After a good answer an opening appears. Tap to strike, or tap twice on the beat for a combo.",
+  "@howToStrikeBody": {
+    "description": "How to play card"
+  },
+  "howToBreathTitle": "Breath and Stamina",
+  "@howToBreathTitle": {
+    "description": "How to play card"
+  },
+  "howToBreathBody": "Guarding and striking use Stamina. Once a round, press Breath to pause the clock and recover. Press pause any time to leave.",
+  "@howToBreathBody": {
+    "description": "How to play card"
+  },
+  "howToStart": "Got it",
+  "@howToStart": {
+    "description": "How to play button"
+  },
+  "howToOpen": "How to play",
+  "@howToOpen": {
+    "description": "Settings and opponent card row"
+  },
+  "trainingLessons": "Lessons",
+  "@trainingLessons": {
+    "description": "Training section header"
+  },
+  "trainingPractice": "Practice",
+  "@trainingPractice": {
+    "description": "Training section header"
+  },
+  "trainingPracticeRow": "Practice against any struggle",
+  "@trainingPracticeRow": {
+    "description": "Training row"
+  },
+  "lessonDoneLabel": "Done",
+  "@lessonDoneLabel": {
+    "description": "Semantic label for a completed lesson"
+  },
+  "lessonGuardTitle": "Guard",
+  "@lessonGuardTitle": {
+    "description": "Lesson title"
+  },
+  "lessonGuardGoal": "Tap as the ring closes to guard. Guard {count} blows.",
+  "@lessonGuardGoal": {
+    "description": "Lesson goal",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonSlipTitle": "Slip",
+  "@lessonSlipTitle": {
+    "description": "Lesson title"
+  },
+  "lessonSlipGoal": "Swipe sideways to slip a heavy swing. Slip {count} swings.",
+  "@lessonSlipGoal": {
+    "description": "Lesson goal",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonStrikeTitle": "Strike",
+  "@lessonStrikeTitle": {
+    "description": "Lesson title"
+  },
+  "lessonStrikeGoal": "After a good guard or slip, tap to strike. Land {count} strikes.",
+  "@lessonStrikeGoal": {
+    "description": "Lesson goal",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonComboTitle": "Combo",
+  "@lessonComboTitle": {
+    "description": "Lesson title"
+  },
+  "lessonComboGoal": "After a good answer, tap twice on the beat. Land {count} combos.",
+  "@lessonComboGoal": {
+    "description": "Lesson goal",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonBreathTitle": "Breath",
+  "@lessonBreathTitle": {
+    "description": "Lesson title"
+  },
+  "lessonBreathGoal": "Press Breath to pause the clock and recover Stamina. Use it once.",
+  "@lessonBreathGoal": {
+    "description": "Lesson goal"
+  },
+  "lessonFakeTitle": "Read a fake",
+  "@lessonFakeTitle": {
+    "description": "Lesson title"
+  },
+  "lessonFakeGoal": "Some tells are fakes. Do nothing when you see one. Read {count} fakes.",
+  "@lessonFakeGoal": {
+    "description": "Lesson goal",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonProgress": "{done} of {total}",
+  "@lessonProgress": {
+    "description": "Lesson progress",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "lessonComplete": "Lesson complete",
+  "@lessonComplete": {
+    "description": "Lesson overlay title"
+  },
+  "lessonNotYet": "Not quite yet",
+  "@lessonNotYet": {
+    "description": "Lesson overlay title when the bout ended first"
+  },
+  "lessonNext": "Next lesson",
+  "@lessonNext": {
+    "description": "Lesson overlay button"
+  },
+  "lessonRepeat": "Repeat",
+  "@lessonRepeat": {
+    "description": "Lesson overlay button"
+  },
+  "lessonBackToLessons": "Back to lessons",
+  "@lessonBackToLessons": {
+    "description": "Lesson overlay button"
   }
 }

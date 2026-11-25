@@ -10,6 +10,7 @@ import 'package:gevurah/screens/daily_bout_screen.dart';
 import 'package:gevurah/screens/error_screen.dart';
 import 'package:gevurah/screens/fight_screen.dart';
 import 'package:gevurah/screens/home_screen.dart';
+import 'package:gevurah/screens/how_to_play_screen.dart';
 import 'package:gevurah/screens/onboarding_screen.dart';
 import 'package:gevurah/screens/settings_screen.dart';
 
@@ -54,6 +55,7 @@ void main() {
     await go(t);
     expect(find.byType(HomeScreen), findsOneWidget);
     expect(find.byType(OnboardingScreen), findsNothing);
+    expect(find.byType(HowToPlayScreen), findsOneWidget);
   });
 
   testWidgets('a returning player goes straight to Home', (WidgetTester t) async {

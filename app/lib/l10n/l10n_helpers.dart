@@ -1,4 +1,5 @@
 
+import '../core/catalog/training_lessons.dart';
 import '../core/models/fight_config.dart';
 import '../core/ports/billing_port.dart';
 import '../core/models/move_def.dart';
@@ -129,6 +130,24 @@ extension AppStrings on AppLocalizations {
         return id;
     }
   }
+
+  String lessonTitle(String id) => switch (id) {
+        'guard' => lessonGuardTitle,
+        'slip' => lessonSlipTitle,
+        'strike' => lessonStrikeTitle,
+        'combo' => lessonComboTitle,
+        'breath' => lessonBreathTitle,
+        _ => lessonFakeTitle,
+      };
+
+  String lessonGoal(TrainingLesson lesson) => switch (lesson.goal) {
+        LessonGoal.guard => lessonGuardGoal(lesson.target),
+        LessonGoal.slip => lessonSlipGoal(lesson.target),
+        LessonGoal.strike => lessonStrikeGoal(lesson.target),
+        LessonGoal.combo => lessonComboGoal(lesson.target),
+        LessonGoal.breath => lessonBreathGoal,
+        LessonGoal.readFake => lessonFakeGoal(lesson.target),
+      };
 
   String moveName(MoveKind kind) {
     switch (kind) {

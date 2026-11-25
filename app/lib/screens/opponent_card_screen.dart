@@ -34,6 +34,7 @@ class OpponentCardScreen extends StatelessWidget {
     required this.onStart,
     required this.onChangeCards,
     required this.onBack,
+    this.onHowToPlay,
     this.daily,
     this.difficulty = Difficulty.standard,
   });
@@ -45,6 +46,9 @@ class OpponentCardScreen extends StatelessWidget {
   final VoidCallback onStart;
   final VoidCallback onChangeCards;
   final VoidCallback onBack;
+
+  /// Opens How to play; offered until the player has fought a first bout.
+  final VoidCallback? onHowToPlay;
 
   void _start(AppProviders app) {
     final Loadout loadout = app.loadout.value.loadout;
@@ -88,6 +92,7 @@ class OpponentCardScreen extends StatelessWidget {
                 child: ListView(
                   padding: const EdgeInsets.all(Sp.lg),
                   children: <Widget>[
+              if (onHowToPlay != null && app.progress.value.progress.bouts.isEmpty) AppRow(label: l.howToOpen, leadingIcon: AppIcons.help, onPressed: onHowToPlay),
               if (def != null && def.track == StruggleTrack.career) Text(l.tierLabel(def.tier), style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
               if (def != null) ...<Widget>[
                 const SizedBox(height: Sp.sm),

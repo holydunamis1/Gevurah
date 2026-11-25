@@ -28,6 +28,7 @@ SettingsScreen settingsScreen(List<String> log) => SettingsScreen(
       onSupport: () => log.add('support'),
       onPrivacyPolicy: () => log.add('privacy'),
       onLicenses: () => log.add('licenses'),
+      onHowToPlay: () => log.add('howto'),
     );
 
 Future<void> rendersEverywhere(WidgetTester t, Rigging r, Widget Function() screen) async {
@@ -125,11 +126,12 @@ void main() {
       final List<String> log = <String>[];
       await t.pumpWidget(host(r.app, settingsScreen(log)));
       await t.pump();
+      await tapText(t, 'How to play');
       await tapText(t, 'Remove Ads');
       await tapText(t, 'Contact support');
       await tapText(t, 'Privacy policy');
       await tapText(t, 'Licenses');
-      expect(log, <String>['upgrade', 'support', 'privacy', 'licenses']);
+      expect(log, <String>['howto', 'upgrade', 'support', 'privacy', 'licenses']);
     });
 
     testWidgets('Restore reports its result', (WidgetTester t) async {

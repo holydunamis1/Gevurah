@@ -37,6 +37,7 @@ class SettingsScreen extends StatelessWidget {
     required this.onSupport,
     required this.onPrivacyPolicy,
     required this.onLicenses,
+    required this.onHowToPlay,
   });
 
   final VoidCallback onBack;
@@ -45,6 +46,7 @@ class SettingsScreen extends StatelessWidget {
   final VoidCallback onSupport;
   final VoidCallback onPrivacyPolicy;
   final VoidCallback onLicenses;
+  final VoidCallback onHowToPlay;
 
   Future<void> _pickLanguage(BuildContext context, AppLocalizations l, AppProviders app) async {
     await showAppBottomSheet<void>(
@@ -104,6 +106,7 @@ class SettingsScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(Sp.lg),
             children: <Widget>[
+              AppRow(label: l.howToOpen, leadingIcon: AppIcons.help, onPressed: onHowToPlay),
               AppRow(label: l.settingsAchievements, leadingIcon: AppIcons.achievement, onPressed: onAchievements),
               SectionHeader(l.settingsLanguage),
               AppRow(

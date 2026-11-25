@@ -15,6 +15,7 @@ class SettingsModel {
     this.remindersOn = false,
     this.reminderMinuteOfDay = defaultReminderMinute,
     this.onboardingDone = false,
+    this.trainingDone = const <String>[],
   });
 
   factory SettingsModel.fromJson(Map<String, Object?> json) {
@@ -32,6 +33,7 @@ class SettingsModel {
       remindersOn: readBool(json, 'remindersOn'),
       reminderMinuteOfDay: minute,
       onboardingDone: json['onboardingDone'] == true,
+      trainingDone: json['trainingDone'] is List ? readStringList(json, 'trainingDone') : const <String>[],
     );
   }
 
@@ -57,6 +59,9 @@ class SettingsModel {
   /// saves, which read as not done.
   final bool onboardingDone;
 
+  /// Ids of the Training lessons the player has completed.
+  final List<String> trainingDone;
+
   SettingsModel copyWith({
     ThemeChoice? themeChoice,
     String? localeCode,
@@ -68,6 +73,7 @@ class SettingsModel {
     bool? remindersOn,
     int? reminderMinuteOfDay,
     bool? onboardingDone,
+    List<String>? trainingDone,
   }) {
     return SettingsModel(
       themeChoice: themeChoice ?? this.themeChoice,
@@ -79,6 +85,7 @@ class SettingsModel {
       remindersOn: remindersOn ?? this.remindersOn,
       reminderMinuteOfDay: reminderMinuteOfDay ?? this.reminderMinuteOfDay,
       onboardingDone: onboardingDone ?? this.onboardingDone,
+      trainingDone: trainingDone ?? this.trainingDone,
     );
   }
 
@@ -92,6 +99,7 @@ class SettingsModel {
         'remindersOn': remindersOn,
         'reminderMinuteOfDay': reminderMinuteOfDay,
         'onboardingDone': onboardingDone,
+        'trainingDone': trainingDone,
       };
 
   @override
@@ -105,7 +113,8 @@ class SettingsModel {
       other.hapticsOn == hapticsOn &&
       other.remindersOn == remindersOn &&
       other.reminderMinuteOfDay == reminderMinuteOfDay &&
-      other.onboardingDone == onboardingDone;
+      other.onboardingDone == onboardingDone &&
+      listEq(other.trainingDone, trainingDone);
 
   @override
   int get hashCode => Object.hash(
@@ -118,5 +127,6 @@ class SettingsModel {
         remindersOn,
         reminderMinuteOfDay,
         onboardingDone,
+        listHash(trainingDone),
       );
 }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../core/catalog/training_lessons.dart';
 import '../core/config/app_config.dart';
 import '../core/models/daily_challenge.dart';
 import '../core/models/fight_config.dart';
@@ -16,6 +17,7 @@ import '../screens/card_picker_screen.dart';
 import '../screens/daily_bout_screen.dart';
 import '../screens/fight_screen.dart';
 import '../screens/home_screen.dart';
+import '../screens/how_to_play_screen.dart';
 import '../screens/journey_map_screen.dart';
 import '../screens/licenses_screen.dart';
 import '../screens/mode_intro_screen.dart';
@@ -24,6 +26,8 @@ import '../screens/onboarding_screen.dart';
 import '../screens/opponent_card_screen.dart';
 import '../screens/result_screen.dart';
 import '../screens/settings_screen.dart';
+import '../screens/parts/lesson_parts.dart';
+import '../screens/training_screen.dart';
 import '../screens/trials_screen.dart';
 import '../screens/upgrade_screen.dart';
 import '../screens/verse_library_screen.dart';
@@ -195,6 +199,7 @@ class _GevurahAppState extends State<GevurahApp> {
         difficulty: difficulty,
         onStart: _openFight,
         onChangeCards: _openCards,
+        onHowToPlay: _openHowToPlay,
         onBack: _pop,
       ),
     );
@@ -267,8 +272,9 @@ class _GevurahAppState extends State<GevurahApp> {
         _openTrials();
       case FightMode.daily:
         _openDaily();
-      case FightMode.sparring:
       case FightMode.training:
+        _openTraining();
+      case FightMode.sparring:
       case FightMode.endurance:
         _push(
           'mode-intro',
@@ -279,6 +285,67 @@ class _GevurahAppState extends State<GevurahApp> {
           ),
         );
     }
+  }
+
+  void _openHowToPlay() => _push('how-to-play', (BuildContext _) => HowToPlayScreen(onBack: _pop));
+
+  void _openTraining() => _push(
+        'training',
+        (BuildContext _) => TrainingScreen(
+          onLesson: _startLesson,
+          onPractice: _openPractice,
+          onHowToPlay: _openHowToPlay,
+          onBack: _pop,
+        ),
+      );
+
+  void _openPractice() => _push(
+        'mode-intro',
+        (BuildContext _) => ModeIntroScreen(
+          mode: FightMode.training,
+          onChoose: (String? id, Difficulty d) => _openOpponent(id ?? enduranceStruggleId, FightMode.training, difficulty: d),
+          onBack: _pop,
+        ),
+      );
+
+  /// Starts a lesson's fixed bout and opens the fight with its goal strip.
+  void _startLesson(TrainingLesson lesson) {
+    if (!app.fight.start(lesson.config)) {
+      return;
+    }
+    final TrainingLesson? next = TrainingLessons.after(lesson.id);
+    _push(
+      RouteNames.fight,
+      (BuildContext _) => FightScreen(
+        setOrientations: widget.setOrientations,
+        onFinished: _pop,
+        onLeave: _pop,
+        lesson: LessonRun(
+          lesson: lesson,
+          onNext: next == null
+              ? null
+              : () => _leaveThenStart(next),
+          onRepeat: () => _leaveThenStart(lesson),
+          onExit: () {
+            app.fight.abandon();
+            _pop();
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Leaves the lesson's fight, then starts [lesson] once the old screen is
+  /// gone, so two fight screens never share one bout.
+  void _leaveThenStart(TrainingLesson lesson) {
+    app.fight.abandon();
+    _pop();
+    final bool reduce = WidgetsBinding.instance.platformDispatcher.accessibilityFeatures.disableAnimations;
+    Timer(reduce ? Duration.zero : const Duration(milliseconds: Motion.popMs + 60), () {
+      if (mounted) {
+        _startLesson(lesson);
+      }
+    });
   }
 
   void _openLibrary() => _push('library', (BuildContext _) => VerseLibraryScreen(onBack: _pop));
@@ -305,6 +372,7 @@ class _GevurahAppState extends State<GevurahApp> {
           onSupport: () => unawaited(widget.urls.openLink(AppConfig.supportUrl)),
           onPrivacyPolicy: () => unawaited(widget.urls.openLink(AppConfig.privacyUrl)),
           onLicenses: _openLicenses,
+          onHowToPlay: _openHowToPlay,
         ),
       );
 
@@ -313,7 +381,7 @@ class _GevurahAppState extends State<GevurahApp> {
       listenable: app.settings,
       builder: (BuildContext context, Widget? _) {
         if (!app.settings.settings.onboardingDone) {
-          return OnboardingScreen(onDone: () {});
+          return OnboardingScreen(onDone: _openHowToPlay);
         }
         return HomeScreen(
           onContinue: (String id) => _openOpponent(id, FightMode.journey),

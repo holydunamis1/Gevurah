@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gevurah/core/catalog/training_lessons.dart';
 import 'package:gevurah/screens/how_to_play_screen.dart';

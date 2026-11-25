@@ -16,6 +16,7 @@ import 'achievements_provider.dart';
 import 'ad_provider.dart';
 import 'consent_provider.dart';
 import 'daily_provider.dart';
+import 'rewards_provider.dart';
 import 'entitlement_provider.dart';
 import 'fight_provider.dart';
 import 'flags_provider.dart';
@@ -39,6 +40,7 @@ class AppProviders {
     required this.consent,
     required this.flags,
     required this.ads,
+    required this.rewards,
     required this.daily,
     required this.achievements,
     required this.fight,
@@ -70,6 +72,7 @@ class AppProviders {
     final ConsentProvider consentProvider = ConsentProvider(consent);
     final FlagsProvider flags = FlagsProvider(fetchFlags);
     final AchievementsProvider achievements = AchievementsProvider(progress);
+    final AdProvider adProvider = AdProvider(ads: ads, consent: consentProvider, entitlement: entitlement, flags: flags);
     return AppProviders._(
       settings: settings,
       theme: ThemeProvider(settings),
@@ -79,7 +82,8 @@ class AppProviders {
       entitlement: entitlement,
       consent: consentProvider,
       flags: flags,
-      ads: AdProvider(ads: ads, consent: consentProvider, entitlement: entitlement, flags: flags),
+      ads: adProvider,
+      rewards: RewardsProvider(ads: adProvider, progress: progress, settings: settings, clock: clock),
       daily: DailyProvider(clock: clock, progress: progress, flags: flags),
       achievements: achievements,
       fight: FightProvider(progress: progress, achievements: achievements, clock: clock),
@@ -100,6 +104,7 @@ class AppProviders {
   final ConsentProvider consent;
   final FlagsProvider flags;
   final AdProvider ads;
+  final RewardsProvider rewards;
   final DailyProvider daily;
   final AchievementsProvider achievements;
   final FightProvider fight;
@@ -129,6 +134,7 @@ class AppProviders {
     reminder.dispose();
     verses.dispose();
     daily.dispose();
+    rewards.dispose();
     ads.dispose();
     loadout.dispose();
     theme.dispose();

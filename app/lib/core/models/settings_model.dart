@@ -16,6 +16,7 @@ class SettingsModel {
     this.reminderMinuteOfDay = defaultReminderMinute,
     this.onboardingDone = false,
     this.trainingDone = const <String>[],
+    this.dailyRestoredOn = '',
   });
 
   factory SettingsModel.fromJson(Map<String, Object?> json) {
@@ -34,6 +35,7 @@ class SettingsModel {
       reminderMinuteOfDay: minute,
       onboardingDone: json['onboardingDone'] == true,
       trainingDone: json['trainingDone'] is List ? readStringList(json, 'trainingDone') : const <String>[],
+      dailyRestoredOn: json['dailyRestoredOn'] is String ? json['dailyRestoredOn']! as String : '',
     );
   }
 
@@ -62,6 +64,9 @@ class SettingsModel {
   /// Ids of the Training lessons the player has completed.
   final List<String> trainingDone;
 
+  /// Date key of the last Daily day restored with a rewarded ad (empty if never).
+  final String dailyRestoredOn;
+
   SettingsModel copyWith({
     ThemeChoice? themeChoice,
     String? localeCode,
@@ -74,6 +79,7 @@ class SettingsModel {
     int? reminderMinuteOfDay,
     bool? onboardingDone,
     List<String>? trainingDone,
+    String? dailyRestoredOn,
   }) {
     return SettingsModel(
       themeChoice: themeChoice ?? this.themeChoice,
@@ -86,6 +92,7 @@ class SettingsModel {
       reminderMinuteOfDay: reminderMinuteOfDay ?? this.reminderMinuteOfDay,
       onboardingDone: onboardingDone ?? this.onboardingDone,
       trainingDone: trainingDone ?? this.trainingDone,
+      dailyRestoredOn: dailyRestoredOn ?? this.dailyRestoredOn,
     );
   }
 
@@ -100,6 +107,7 @@ class SettingsModel {
         'reminderMinuteOfDay': reminderMinuteOfDay,
         'onboardingDone': onboardingDone,
         'trainingDone': trainingDone,
+        'dailyRestoredOn': dailyRestoredOn,
       };
 
   @override
@@ -114,7 +122,8 @@ class SettingsModel {
       other.remindersOn == remindersOn &&
       other.reminderMinuteOfDay == reminderMinuteOfDay &&
       other.onboardingDone == onboardingDone &&
-      listEq(other.trainingDone, trainingDone);
+      listEq(other.trainingDone, trainingDone) &&
+      other.dailyRestoredOn == dailyRestoredOn;
 
   @override
   int get hashCode => Object.hash(
@@ -128,5 +137,6 @@ class SettingsModel {
         reminderMinuteOfDay,
         onboardingDone,
         listHash(trainingDone),
+        dailyRestoredOn,
       );
 }

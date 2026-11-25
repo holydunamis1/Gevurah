@@ -1402,5 +1402,45 @@
   "lessonBackToLessons": "Back to lessons",
   "@lessonBackToLessons": {
     "description": "Lesson overlay button"
+  },
+  "rewardAdTag": "Ad",
+  "@rewardAdTag": {
+    "description": "Small tag on rows that play an optional ad"
+  },
+  "rewardBreath": "Extra Breath for this bout",
+  "@rewardBreath": {
+    "description": "Rewarded ad row on the opponent card"
+  },
+  "rewardBreathReady": "Extra Breath ready",
+  "@rewardBreathReady": {
+    "description": "Shown after the Breath reward was earned"
+  },
+  "rewardStamina": "Start with +20 Stamina",
+  "@rewardStamina": {
+    "description": "Rewarded ad row on the Endurance opponent card"
+  },
+  "rewardStaminaReady": "Stamina boost ready",
+  "@rewardStaminaReady": {
+    "description": "Shown after the Stamina reward was earned"
+  },
+  "rewardRetry": "Try this bout again",
+  "@rewardRetry": {
+    "description": "Rewarded ad row on the result screen after a loss"
+  },
+  "rewardRestore": "Restore yesterday's Daily Bout",
+  "@rewardRestore": {
+    "description": "Rewarded ad row on the Daily Bout screen"
+  },
+  "rewardRestored": "Yesterday restored. Your streak goes on.",
+  "@rewardRestored": {
+    "description": "Shown after a Daily day was restored"
+  },
+  "rewardNotEarned": "No reward this time. The ad did not finish.",
+  "@rewardNotEarned": {
+    "description": "Shown when a rewarded ad was closed early or failed"
+  },
+  "rewardUnavailable": "No ad is ready right now. Try again later.",
+  "@rewardUnavailable": {
+    "description": "Shown when no rewarded ad could be shown"
   }
 }

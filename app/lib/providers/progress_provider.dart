@@ -140,6 +140,9 @@ class ProgressProvider extends ValueNotifier<ProgressState> {
   Future<bool> applyDaily(DailyChallenge challenge, {required bool completed, required int stars}) =>
       _apply(ProgressionRules.applyDaily(value.progress, challenge, completed: completed, stars: stars));
 
+  /// Marks a missed Daily day completed (the rewarded restore).
+  Future<bool> restoreDailyDay(String dayKey) => _apply(ProgressionRules.restoreDay(value.progress, dayKey));
+
   /// Adds newly earned achievements (no repeats).
   Future<bool> recordAchievements(List<String> ids) {
     final List<String> fresh = ids.where((String id) => !value.progress.achievements.contains(id)).toSet().toList();

@@ -217,6 +217,44 @@ abstract final class ProgressionRules {
     return streak;
   }
 
+  /// Days a restored Daily day must be apart (one restore per this many days).
+  static const int restoreEveryDays = 7;
+
+  /// The one missed Daily day a rewarded ad could restore: yesterday, when it
+  /// was not completed but the day before it was (so a streak was cut by exactly
+  /// one day). Null when there is nothing to restore.
+  static String? restorableDay(Progress p, String todayKey) {
+    final DateTime? today = _parseKey(todayKey);
+    if (today == null) {
+      return null;
+    }
+    final String yesterday = _key(_addDays(today, -1));
+    final String before = _key(_addDays(today, -2));
+    bool done(String k) => p.dailyHistory.any((DailyRecord d) => d.dateKey == k && d.completed);
+    return !done(yesterday) && done(before) ? yesterday : null;
+  }
+
+  /// Whether a restore is allowed on [todayKey] given the date of the last one
+  /// ([lastKey] is empty when none): at most one every seven days.
+  static bool restoreAllowed(String lastKey, String todayKey) {
+    final DateTime? last = _parseKey(lastKey);
+    final DateTime? today = _parseKey(todayKey);
+    if (today == null) {
+      return false;
+    }
+    return last == null || today.difference(last).inDays >= restoreEveryDays;
+  }
+
+  /// Marks [dayKey] completed with one star, replacing any record for it.
+  static Progress restoreDay(Progress p, String dayKey) {
+    return p.copyWith(
+      dailyHistory: <DailyRecord>[
+        ...p.dailyHistory.where((DailyRecord d) => d.dateKey != dayKey),
+        DailyRecord(dateKey: dayKey, completed: true, stars: 1),
+      ],
+    );
+  }
+
   static DateTime _addDays(DateTime d, int n) => DateTime.utc(d.year, d.month, d.day + n);
 
   static DateTime? _parseKey(String key) {

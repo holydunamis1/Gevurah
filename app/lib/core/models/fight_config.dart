@@ -18,6 +18,9 @@ class FightConfig {
     required this.seed,
     this.difficulty = Difficulty.standard,
     this.timingAssist = false,
+    this.extraBreath = 0,
+    this.extraStamina = 0,
+    this.isRetry = false,
   });
 
   final FightMode mode;
@@ -34,6 +37,14 @@ class FightConfig {
   /// The Timing assist setting: widens every timing window.
   final bool timingAssist;
 
+  /// Rewarded-ad bonuses chosen before the bout: more Breath charges, and more
+  /// starting Stamina (Endurance only). Never applied to the Daily Bout.
+  final int extraBreath;
+  final int extraStamina;
+
+  /// True for the one retry a player may earn after a loss.
+  final bool isRetry;
+
   FightConfig copyWith({
     FightMode? mode,
     String? struggleId,
@@ -42,6 +53,9 @@ class FightConfig {
     int? seed,
     Difficulty? difficulty,
     bool? timingAssist,
+    int? extraBreath,
+    int? extraStamina,
+    bool? isRetry,
   }) {
     return FightConfig(
       mode: mode ?? this.mode,
@@ -51,6 +65,9 @@ class FightConfig {
       seed: seed ?? this.seed,
       difficulty: difficulty ?? this.difficulty,
       timingAssist: timingAssist ?? this.timingAssist,
+      extraBreath: extraBreath ?? this.extraBreath,
+      extraStamina: extraStamina ?? this.extraStamina,
+      isRetry: isRetry ?? this.isRetry,
     );
   }
 
@@ -62,6 +79,9 @@ class FightConfig {
         'seed': seed,
         'difficulty': difficulty.name,
         'timingAssist': timingAssist,
+        if (extraBreath != 0) 'extraBreath': extraBreath,
+        if (extraStamina != 0) 'extraStamina': extraStamina,
+        if (isRetry) 'isRetry': isRetry,
       };
 
   factory FightConfig.fromJson(Map<String, Object?> json) {
@@ -80,6 +100,9 @@ class FightConfig {
       seed: readInt(json, 'seed'),
       difficulty: readEnum(Difficulty.values, json, 'difficulty'),
       timingAssist: readBool(json, 'timingAssist'),
+      extraBreath: json['extraBreath'] is int ? json['extraBreath']! as int : 0,
+      extraStamina: json['extraStamina'] is int ? json['extraStamina']! as int : 0,
+      isRetry: json['isRetry'] == true,
     );
   }
 
@@ -92,11 +115,14 @@ class FightConfig {
         other.stance == stance &&
         other.seed == seed &&
         other.difficulty == difficulty &&
-        other.timingAssist == timingAssist;
+        other.timingAssist == timingAssist &&
+        other.extraBreath == extraBreath &&
+        other.extraStamina == extraStamina &&
+        other.isRetry == isRetry;
   }
 
   @override
-  int get hashCode => Object.hash(mode, struggleId, listHash(cardIds), stance, seed, difficulty, timingAssist);
+  int get hashCode => Object.hash(mode, struggleId, listHash(cardIds), stance, seed, difficulty, timingAssist, extraBreath, extraStamina, isRetry);
 
   @override
   String toString() => 'FightConfig(${mode.name}, $struggleId, seed $seed)';

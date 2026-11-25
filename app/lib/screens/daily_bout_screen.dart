@@ -18,6 +18,7 @@ import '../widgets/section_header.dart';
 import '../widgets/star_row.dart';
 import 'parts/app_ad_slot.dart';
 import 'parts/reminder_controls.dart';
+import 'parts/reward_offer.dart';
 import 'parts/verse_block.dart';
 
 /// Today's seeded bout, the same for everyone, with the streak, the daily verse
@@ -69,6 +70,13 @@ class DailyBoutScreen extends StatelessWidget {
                     ],
                     const SizedBox(height: Sp.lg),
                     VerseBlock(load: (verses) => verses.forMoment(VerseMoment.daily, seed: daily.challenge.seed)),
+                    RewardOffer(
+                      label: l.rewardRestore,
+                      icon: AppIcons.daily,
+                      run: app.rewards.restoreDailyDay,
+                      enabled: app.rewards.restorableDay != null,
+                      doneLabel: l.rewardRestored,
+                    ),
                     SectionHeader(l.homeDaily),
                     const ReminderControls(),
                   ],

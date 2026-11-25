@@ -8,6 +8,10 @@ abstract final class FightTuning {
   static const int exchangesPerRound = 18;
   static const int downsToEnd = 3;
 
+  /// Extra starting Stamina (and cap) from the Endurance rewarded ad. A
+  /// starting number for tuning.
+  static const int rewardStamina = 20;
+
   /// Percent of the struggle's starting Weight it gets back when it rises once.
   static const int riseRestorePercent = 30;
 
@@ -44,7 +48,7 @@ abstract final class FightRules {
     int weight = state.weight - record.outcome.damageDealt;
     PlayerState player = state.player.copyWith(
       resolve: state.player.resolve - record.outcome.damageTaken,
-      stamina: (state.player.stamina + record.outcome.staminaChange).clamp(0, PlayerState.maxStamina),
+      stamina: (state.player.stamina + record.outcome.staminaChange).clamp(0, state.player.staminaCap),
     );
     int rises = state.struggleRises;
     final int nextIndex = state.exchangeIndex + 1;
@@ -149,7 +153,7 @@ abstract final class FightRules {
     }
     return state.copyWith(
       player: state.player.copyWith(
-        stamina: PlayerState.maxStamina,
+        stamina: state.player.staminaCap,
         breathCharges: state.player.breathCharges - 1,
       ),
     );
@@ -168,7 +172,7 @@ abstract final class FightRules {
       round: state.round + 1,
       phase: FightPhase.telegraph,
       player: p.copyWith(
-        stamina: (p.stamina + refill).clamp(0, PlayerState.maxStamina),
+        stamina: (p.stamina + refill).clamp(0, p.staminaCap),
         resolve: (p.resolve + FightTuning.cornerResolveRefill).clamp(0, PlayerState.maxResolve),
         breathCharges: PlayerState.breathPerRound,
       ),

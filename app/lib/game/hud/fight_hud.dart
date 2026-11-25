@@ -66,7 +66,7 @@ class FightHud extends StatelessWidget {
         final PlayerState p = s.player;
         final Widget weight = FightMeter(kind: MeterKind.weight, value: s.weight, max: s.startingWeight <= 0 ? 1 : s.startingWeight, label: labels.weight, valueText: formatNumber(s.weight, locale));
         final Widget resolve = FightMeter(kind: MeterKind.resolve, value: p.resolve, max: PlayerState.maxResolve, label: labels.resolve, valueText: formatNumber(p.resolve, locale));
-        final Widget stamina = FightMeter(kind: MeterKind.stamina, value: p.stamina, max: PlayerState.maxStamina, label: labels.stamina, valueText: formatNumber(p.stamina, locale));
+        final Widget stamina = FightMeter(kind: MeterKind.stamina, value: p.stamina, max: p.staminaCap, label: labels.stamina, valueText: formatNumber(p.stamina, locale));
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints box) {
             final bool wide = box.maxWidth > box.maxHeight;

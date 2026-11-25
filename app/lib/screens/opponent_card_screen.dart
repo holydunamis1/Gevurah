@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../core/catalog/card_catalog.dart';
 import '../core/catalog/struggle_catalog.dart';
+import '../core/logic/fight_rules.dart';
 import '../core/logic/progression_rules.dart';
 import '../core/models/daily_challenge.dart';
 import '../core/models/fight_config.dart';
@@ -21,12 +22,13 @@ import '../widgets/primary_button.dart';
 import '../widgets/screen_frame.dart';
 import '../widgets/section_header.dart';
 import 'parts/app_ad_slot.dart';
+import 'parts/reward_offer.dart';
 import 'parts/verse_block.dart';
 
 /// Who the player is about to face: its name, its tell, a verse, and the
 /// equipped cards. Starting the bout configures the fight provider and then
 /// calls [onStart].
-class OpponentCardScreen extends StatelessWidget {
+class OpponentCardScreen extends StatefulWidget {
   const OpponentCardScreen({
     super.key,
     required this.struggleId,
@@ -50,9 +52,24 @@ class OpponentCardScreen extends StatelessWidget {
   /// Opens How to play; offered until the player has fought a first bout.
   final VoidCallback? onHowToPlay;
 
+  @override
+  State<OpponentCardScreen> createState() => _OpponentCardScreenState();
+}
+
+class _OpponentCardScreenState extends State<OpponentCardScreen> {
+  bool _extraBreath = false;
+  bool _extraStamina = false;
+
+  String get struggleId => widget.struggleId;
+  FightMode get mode => widget.mode;
+
+  /// Rewarded offers are never made for the Daily Bout (it must be the same
+  /// for everyone) or for Training.
+  bool get _offersRewards => mode != FightMode.daily && mode != FightMode.training;
+
   void _start(AppProviders app) {
     final Loadout loadout = app.loadout.value.loadout;
-    final int seed = daily?.seed ?? app.fight.clock.now().millisecondsSinceEpoch & 0x7fffffff;
+    final int seed = widget.daily?.seed ?? app.fight.clock.now().millisecondsSinceEpoch & 0x7fffffff;
     final bool started = app.fight.start(
       FightConfig(
         mode: mode,
@@ -60,13 +77,15 @@ class OpponentCardScreen extends StatelessWidget {
         cardIds: loadout.cardIds,
         stance: loadout.stance,
         seed: seed,
-        difficulty: difficulty,
+        difficulty: widget.difficulty,
+        extraBreath: _extraBreath ? 1 : 0,
+        extraStamina: _extraStamina ? FightTuning.rewardStamina : 0,
         timingAssist: app.settings.settings.timingAssist,
       ),
-      daily: daily,
+      daily: widget.daily,
     );
     if (started) {
-      onStart();
+      widget.onStart();
     }
   }
 
@@ -78,7 +97,7 @@ class OpponentCardScreen extends StatelessWidget {
     final StruggleDef? def = StruggleCatalog.byId(struggleId);
     final String name = def == null ? struggleId : l.struggleName(struggleId);
     return ScreenFrame(
-      navBar: NavBar(title: name, onBack: onBack, backLabel: l.commonBack),
+      navBar: NavBar(title: name, onBack: widget.onBack, backLabel: l.commonBack),
       adSlot: const AppAdSlot(),
       child: ListenableBuilder(
         listenable: Listenable.merge(<Listenable>[app.loadout, app.progress]),
@@ -92,7 +111,7 @@ class OpponentCardScreen extends StatelessWidget {
                 child: ListView(
                   padding: const EdgeInsets.all(Sp.lg),
                   children: <Widget>[
-              if (onHowToPlay != null && app.progress.value.progress.bouts.isEmpty) AppRow(label: l.howToOpen, leadingIcon: AppIcons.help, onPressed: onHowToPlay),
+              if (widget.onHowToPlay != null && app.progress.value.progress.bouts.isEmpty) AppRow(label: l.howToOpen, leadingIcon: AppIcons.help, onPressed: widget.onHowToPlay),
               if (def != null && def.track == StruggleTrack.career) Text(l.tierLabel(def.tier), style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
               if (def != null) ...<Widget>[
                 const SizedBox(height: Sp.sm),
@@ -105,7 +124,8 @@ class OpponentCardScreen extends StatelessWidget {
               if (loadout.cardIds.isEmpty) Text(l.opponentNoCards, style: theme.text.callout.copyWith(color: theme.palette.textSecondary)),
               for (final String id in loadout.cardIds) _cardRow(l, id),
               AppRow(label: l.opponentStance(l.stanceName(loadout.stance)), leadingIcon: AppIcons.guard, showChevron: false),
-              AppRow(label: l.opponentChange, onPressed: onChangeCards),
+              AppRow(label: l.opponentChange, onPressed: widget.onChangeCards),
+              if (_offersRewards) ..._rewardRows(l, app),
                   ],
                 ),
               ),
@@ -118,6 +138,20 @@ class OpponentCardScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  List<Widget> _rewardRows(AppLocalizations l, AppProviders app) {
+    return <Widget>[
+      if (_extraBreath)
+        AppRow(label: l.rewardBreathReady, leadingIcon: AppIcons.breath, showChevron: false)
+      else
+        RewardOffer(label: l.rewardBreath, icon: AppIcons.breath, run: app.rewards.watch, onEarned: () => setState(() => _extraBreath = true)),
+      if (mode == FightMode.endurance)
+        if (_extraStamina)
+          AppRow(label: l.rewardStaminaReady, leadingIcon: AppIcons.breath, showChevron: false)
+        else
+          RewardOffer(label: l.rewardStamina, icon: AppIcons.breath, run: app.rewards.watch, onEarned: () => setState(() => _extraStamina = true)),
+    ];
   }
 
   Widget _cardRow(AppLocalizations l, String id) {

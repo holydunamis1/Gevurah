@@ -53,7 +53,7 @@ void main() {
     expect(find.byType(OnboardingScreen), findsOneWidget);
     await t.tap(find.text(l.onboardingPlay));
     await go(t);
-    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(HomeScreen, skipOffstage: false), findsOneWidget);
     expect(find.byType(OnboardingScreen), findsNothing);
     expect(find.byType(HowToPlayScreen), findsOneWidget);
   });

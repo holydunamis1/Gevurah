@@ -151,6 +151,8 @@ void main() {
       await t.pump();
       await t.pump();
       await t.scrollUntilVisible(find.text('Extra Breath for this bout'), 200, scrollable: find.byType(Scrollable).first);
+      await t.ensureVisible(find.text('Extra Breath for this bout'));
+      await t.pumpAndSettle();
       await t.tap(find.text('Extra Breath for this bout'));
       await t.pump();
       await t.pump();
@@ -167,6 +169,8 @@ void main() {
       await t.pump();
       await t.pump();
       await t.scrollUntilVisible(find.text('Extra Breath for this bout'), 200, scrollable: find.byType(Scrollable).first);
+      await t.ensureVisible(find.text('Extra Breath for this bout'));
+      await t.pumpAndSettle();
       await t.tap(find.text('Extra Breath for this bout'));
       await t.pump();
       await t.pump();

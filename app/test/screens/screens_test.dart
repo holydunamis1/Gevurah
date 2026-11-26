@@ -408,12 +408,12 @@ void main() {
       await t.pump();
       final bool won = r.app.fight.value!.won;
       expect(find.text(won ? 'You stood firm' : 'Not this time'), findsOneWidget);
-      expect(find.text('Continue'), findsOneWidget);
+      expect(find.text('Next fight'), findsOneWidget);
       expect(r.ads.interstitialsShown, r.app.ads.interstitialAllowed ? 1 : 0);
       if (won) {
         expect(r.app.progress.value.progress.bouts[first]?.wins, 1);
       }
-      await t.tap(find.text('Continue'));
+      await t.tap(find.text('Next fight'));
       await t.tap(find.text('Try again'));
       await t.tap(find.text('Home'));
       expect(log, <String>['continue', 'again', 'home']);

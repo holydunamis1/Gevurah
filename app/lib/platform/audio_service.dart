@@ -1,4 +1,5 @@
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../core/ports/audio_port.dart';
 import '../core/ports/log_port.dart';
@@ -60,6 +61,7 @@ class AudioService implements AudioPort {
     try {
       await action();
     } on Object catch (e) {
+      debugPrint('GevurahAudio: $what failed: $e');
       log?.log(LogLevel.warning, 'Audio $what failed', error: e);
     }
   }

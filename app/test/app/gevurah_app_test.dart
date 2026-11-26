@@ -10,8 +10,8 @@ import 'package:gevurah/screens/daily_bout_screen.dart';
 import 'package:gevurah/screens/error_screen.dart';
 import 'package:gevurah/screens/fight_screen.dart';
 import 'package:gevurah/screens/home_screen.dart';
-import 'package:gevurah/screens/how_to_play_screen.dart';
-import 'package:gevurah/screens/onboarding_screen.dart';
+import 'package:gevurah/core/models/fight_config.dart';
+import 'package:gevurah/screens/result_screen.dart';
 import 'package:gevurah/screens/settings_screen.dart';
 
 import '../screens/screens_test.dart' show Rigging, makeApp, playOut;
@@ -44,32 +44,45 @@ Future<void> go(WidgetTester t) async {
   await t.pump(const Duration(milliseconds: 500));
 }
 
+/// The app opens into a fight; this leaves it through the pause sheet and
+/// shows the menu.
+Future<void> openMenu(WidgetTester t, AppLocalizations l) async {
+  final SemanticsHandle h = t.ensureSemantics();
+  await t.tap(find.bySemanticsLabel(l.hudPause));
+  await t.pump(const Duration(milliseconds: 500));
+  await t.tap(find.text(l.fightLeave));
+  await t.pump(const Duration(milliseconds: 500));
+  await t.tap(find.text(l.fightLeave));
+  await t.pump(const Duration(milliseconds: 500));
+  h.dispose();
+}
+
 void main() {
   final AppLocalizations l = lookupAppLocalizations(const Locale('en'));
 
-  testWidgets('first run shows onboarding, then Home after Play', (WidgetTester t) async {
+  testWidgets('the app opens straight into a fight, with no onboarding, and a one-line cue', (WidgetTester t) async {
     final Rigging r = await makeApp();
     await pumpApp(t, r);
-    expect(find.byType(OnboardingScreen), findsOneWidget);
-    await t.tap(find.text(l.onboardingPlay));
-    await go(t);
-    expect(find.byType(HomeScreen, skipOffstage: false), findsOneWidget);
-    expect(find.byType(OnboardingScreen), findsNothing);
-    expect(find.byType(HowToPlayScreen), findsOneWidget);
+    expect(find.byType(FightScreen), findsOneWidget);
+    expect(find.byType(HomeScreen), findsNothing);
+    expect(r.app.fight.value, isNotNull);
+    expect(r.app.fight.value!.config.mode, FightMode.journey);
+    expect(find.text(l.fightCue), findsOneWidget);
   });
 
-  testWidgets('a returning player goes straight to Home', (WidgetTester t) async {
+  testWidgets('Leave from the pause sheet shows the menu', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
+    await openMenu(t, l);
     expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(FightScreen), findsNothing);
   });
 
   testWidgets('Settings opens from Home and Back returns', (WidgetTester t) async {
     final SemanticsHandle h = t.ensureSemantics();
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
+    await openMenu(t, l);
     await t.tap(find.bySemanticsLabel(l.homeSettings));
     await go(t);
     expect(find.byType(SettingsScreen), findsOneWidget);
@@ -82,8 +95,8 @@ void main() {
 
   testWidgets('Journey, Modes and Cards open from Home', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
+    await openMenu(t, l);
     for (final String label in <String>[l.homeJourney, l.homeModes, l.homeCards]) {
       await t.tap(find.text(label).first);
       await go(t);
@@ -94,10 +107,9 @@ void main() {
     }
   });
 
-  testWidgets('starting the first struggle reaches the fight and Leave returns', (WidgetTester t) async {
+  testWidgets('the fight holds landscape and Continue on the menu starts the next fight', (WidgetTester t) async {
     final List<List<DeviceOrientation>> asked = <List<DeviceOrientation>>[];
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await t.pumpWidget(
       GevurahApp(
         providers: r.app,
@@ -107,11 +119,12 @@ void main() {
     );
     await go(t);
     expect(asked.first, <DeviceOrientation>[DeviceOrientation.portraitUp]);
+    expect(asked.last, FightScreen.fightOrientations);
+    await openMenu(t, l);
+    expect(asked.last, FightScreen.menuOrientations);
     await t.tap(find.text(l.homeContinue).first);
     await go(t);
-    await t.tap(find.text(l.opponentStart));
-    await t.pump(const Duration(milliseconds: 500));
-    expect(asked.last, isNot(<DeviceOrientation>[DeviceOrientation.portraitUp]));
+    expect(find.byType(FightScreen), findsOneWidget);
     expect(r.app.fight.value, isNotNull);
   });
 
@@ -136,7 +149,6 @@ void main() {
 
   testWidgets('a cold start from the reminder opens the Daily Bout over Home', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r, launched: () async => true);
     expect(find.byType(DailyBoutScreen), findsOneWidget);
     Navigator.of(t.element(find.byType(DailyBoutScreen))).pop();
@@ -146,15 +158,13 @@ void main() {
 
   testWidgets('a normal start does not open the Daily Bout', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r, launched: () async => false);
     expect(find.byType(DailyBoutScreen), findsNothing);
-    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(FightScreen), findsOneWidget);
   });
 
-  testWidgets('an uncaught error shows the fallback; Retry returns Home', (WidgetTester t) async {
+  testWidgets('an uncaught error shows the fallback; Retry returns to the game', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     final FatalErrorHost fatal = FatalErrorHost();
     await pumpApp(t, r, fatal: fatal);
     expect(find.byType(ErrorScreen), findsNothing);
@@ -164,12 +174,11 @@ void main() {
     await t.tap(find.text(l.errorRetry));
     await go(t);
     expect(find.byType(ErrorScreen), findsNothing);
-    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(FightScreen), findsOneWidget);
   });
 
   testWidgets('Report opens an email with the log attached', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     final FatalErrorHost fatal = FatalErrorHost()..raise();
     final List<String> opened = <String>[];
     await pumpApp(t, r, opened: opened, fatal: fatal, exportLog: () async => 'LOGTEXT');
@@ -181,8 +190,8 @@ void main() {
 
   testWidgets('screens push in 350 ms and pop in 280 ms, instantly with Reduce Motion', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
+    await openMenu(t, l);
     final SemanticsHandle h = t.ensureSemantics();
     await t.tap(find.bySemanticsLabel(l.homeSettings));
     await go(t);
@@ -197,8 +206,8 @@ void main() {
     addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
     final SemanticsHandle h = t.ensureSemantics();
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
+    await openMenu(t, l);
     await t.tap(find.bySemanticsLabel(l.homeSettings));
     await t.pump();
     await t.pump();
@@ -207,16 +216,10 @@ void main() {
     h.dispose();
   });
 
-  testWidgets('a bout started from the app plays to its end', (WidgetTester t) async {
+  testWidgets('the bout the app opens with plays to its end', (WidgetTester t) async {
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     await pumpApp(t, r);
-    await t.tap(find.text(l.homeContinue).first);
-    await go(t);
-    await t.tap(find.text(l.opponentStart));
-    await t.pump(const Duration(milliseconds: 600));
     expect(find.byType(FightScreen), findsOneWidget);
-    expect(r.app.fight.value, isNotNull);
     playOut(r.app);
     expect(r.app.fight.value!.finished, isTrue);
   });
@@ -224,9 +227,9 @@ void main() {
   testWidgets('Settings opens the live privacy and support pages', (WidgetTester t) async {
     final SemanticsHandle h = t.ensureSemantics();
     final Rigging r = await makeApp();
-    await r.app.settings.update((s) => s.copyWith(onboardingDone: true));
     final List<String> opened = <String>[];
     await pumpApp(t, r, opened: opened);
+    await openMenu(t, l);
     await t.tap(find.bySemanticsLabel(l.homeSettings));
     await go(t);
     for (final String label in <String>[l.settingsPrivacy, l.settingsSupport]) {

@@ -5,13 +5,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../core/catalog/training_lessons.dart';
+import '../core/catalog/struggle_catalog.dart';
 import '../core/config/app_config.dart';
 import '../core/models/daily_challenge.dart';
 import '../core/models/fight_config.dart';
+import '../core/models/loadout.dart';
 import '../l10n/app_localizations.dart';
 import '../platform/url_service.dart';
 import '../providers/app_providers.dart';
 import '../providers/app_scope.dart';
+import '../providers/fight_provider.dart';
 import '../screens/achievements_screen.dart';
 import '../screens/card_picker_screen.dart';
 import '../screens/daily_bout_screen.dart';
@@ -22,8 +25,6 @@ import '../screens/journey_map_screen.dart';
 import '../screens/licenses_screen.dart';
 import '../screens/mode_intro_screen.dart';
 import '../screens/modes_screen.dart';
-import '../screens/onboarding_screen.dart';
-import '../screens/opponent_card_screen.dart';
 import '../screens/result_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/parts/lesson_parts.dart';
@@ -44,6 +45,9 @@ abstract final class RouteNames {
 
 /// The struggle Endurance is fought against (the last one, Giving Up).
 const String enduranceStruggleId = 'giving_up';
+
+/// What fills the screen under the menu routes.
+enum _Stage { fight, result, menu }
 
 /// The app: theme, language, direction, one Navigator and the flow between
 /// screens. Screens take callbacks; everything that connects them is here.
@@ -86,12 +90,18 @@ class _GevurahAppState extends State<GevurahApp> {
   StreamSubscription<void>? _taps;
   String? _syncedLanguage;
 
+  /// What the app shows underneath every menu route: the fight (the app opens
+  /// into one), the result of a bout, or the menu.
+  final ValueNotifier<_Stage> _stage = ValueNotifier<_Stage>(_Stage.menu);
+  int _boutId = 0;
+
   AppProviders get app => widget.providers;
 
   @override
   void initState() {
     super.initState();
     unawaited(widget.setOrientations(FightScreen.menuOrientations));
+    _playNext();
     _taps = widget.dailyTaps?.listen((_) => _openDaily());
     unawaited(_openDailyIfColdStart());
     app.locale.addListener(_syncReminder);
@@ -101,6 +111,7 @@ class _GevurahAppState extends State<GevurahApp> {
   @override
   void dispose() {
     app.locale.removeListener(_syncReminder);
+    _stage.dispose();
     unawaited(_taps?.cancel());
     super.dispose();
   }
@@ -118,7 +129,7 @@ class _GevurahAppState extends State<GevurahApp> {
     } on Object {
       fromReminder = false;
     }
-    if (fromReminder && mounted && app.settings.settings.onboardingDone) {
+    if (fromReminder && mounted) {
       _openDaily();
     }
   }
@@ -185,80 +196,100 @@ class _GevurahAppState extends State<GevurahApp> {
 
   void _pop() => _nav.pop();
 
-  void _home() => _nav.popUntil((Route<dynamic> r) => r.isFirst);
+  void _home() => _navigator.currentState?.popUntil((Route<dynamic> r) => r.isFirst);
+
+  /// Leaves any bout in progress and shows the menu.
+  void _toMenu() {
+    if (_stage.value == _Stage.fight) {
+      app.fight.abandon();
+    }
+    _stage.value = _Stage.menu;
+  }
 
   // ---- Flow ---------------------------------------------------------------
 
-  void _openOpponent(String struggleId, FightMode mode, {DailyChallenge? daily, Difficulty difficulty = Difficulty.standard}) {
-    _push(
-      RouteNames.opponent,
-      (BuildContext _) => OpponentCardScreen(
-        struggleId: struggleId,
+  /// Starts a bout against [struggleId] with the equipped cards and stance and
+  /// shows the fight at once. Menu routes above are closed.
+  void _play(String struggleId, FightMode mode, {DailyChallenge? daily, Difficulty difficulty = Difficulty.standard}) {
+    final Loadout loadout = app.loadout.value.loadout;
+    final int seed = daily?.seed ?? app.fight.clock.now().millisecondsSinceEpoch & 0x7fffffff;
+    final bool started = app.fight.start(
+      FightConfig(
         mode: mode,
-        daily: daily,
+        struggleId: struggleId,
+        cardIds: loadout.cardIds,
+        stance: loadout.stance,
+        seed: seed,
         difficulty: difficulty,
-        onStart: _openFight,
-        onChangeCards: _openCards,
-        onHowToPlay: _openHowToPlay,
-        onBack: _pop,
+        timingAssist: app.settings.settings.timingAssist,
       ),
+      daily: daily,
     );
+    if (!started) {
+      return;
+    }
+    _home();
+    _boutId++;
+    _stage.value = _Stage.fight;
+  }
+
+  /// The next career opponent, or the first when every one is cleared.
+  void _playNext() {
+    final String id = HomeScreen.nextStruggle(app.progress.value.progress) ?? StruggleCatalog.career.first.id;
+    _play(id, FightMode.journey);
+  }
+
+  /// The same opponent again with a fresh seed (never the Daily Bout).
+  void _playAgain() {
+    final FightView? v = app.fight.value;
+    if (v == null || v.config.mode == FightMode.daily) {
+      _toMenu();
+      return;
+    }
+    _play(v.config.struggleId, v.config.mode, difficulty: v.config.difficulty);
   }
 
   Widget _fightScreen(BuildContext _) => FightScreen(
+        key: ValueKey<int>(_boutId),
         setOrientations: widget.setOrientations,
-        onFinished: _openResult,
-        onLeave: _pop,
+        onFinished: () => _stage.value = _Stage.result,
+        onLeave: _toMenu,
       );
 
-  void _openFight() => _push(RouteNames.fight, _fightScreen);
-
-  /// The rewarded retry after a loss: the fight replaces the result screen, so
-  /// Back and the next result land where the first bout's did.
+  /// The rewarded retry after a loss: the new bout is already started.
   void _retryBout() {
-    unawaited(_nav.pushReplacement<void, void>(_route<void>(RouteNames.fight, _fightScreen)));
+    _boutId++;
+    _stage.value = _Stage.fight;
   }
 
-  void _openResult() {
-    unawaited(
-      _nav.pushReplacement<void, void>(
-        _route<void>(
-          'result',
-          (BuildContext _) => ResultScreen(
-            onContinue: _afterResult,
-            onTryAgain: _backToOpponent,
-            onHome: _home,
-            onRetry: _retryBout,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _backToOpponent() => _nav.popUntil((Route<dynamic> r) => r.settings.name == RouteNames.opponent);
-
-  /// Back to whatever opened the opponent card: the map, the list or Home.
-  void _afterResult() {
-    _backToOpponent();
-    _nav.pop();
-  }
+  Widget _resultScreen() => ResultScreen(
+        onContinue: _playNext,
+        onTryAgain: _playAgain,
+        onHome: _toMenu,
+        onRetry: _retryBout,
+      );
 
   void _openCards() => _push('cards', (BuildContext _) => CardPickerScreen(onBack: _pop));
 
   void _openJourney() => _push(
         'journey',
-        (BuildContext _) => JourneyMapScreen(onOpen: (String id) => _openOpponent(id, FightMode.journey), onBack: _pop),
+        (BuildContext _) => JourneyMapScreen(onOpen: (String id) => _play(id, FightMode.journey), onBack: _pop),
       );
 
   void _openTrials() => _push(
         'trials',
-        (BuildContext _) => TrialsScreen(onOpen: (String id) => _openOpponent(id, FightMode.trials), onBack: _pop),
+        (BuildContext _) => TrialsScreen(onOpen: (String id) => _play(id, FightMode.trials), onBack: _pop),
       );
 
-  void _openDaily() => _push(
+  void _openDaily() {
+    _toMenu();
+    _pushDaily();
+  }
+
+  void _pushDaily() => _push(
         'daily',
         (BuildContext _) => DailyBoutScreen(
-          onStart: (DailyChallenge c) => _openOpponent(c.struggleId, FightMode.daily, daily: c),
+          onStart: (DailyChallenge c) => _play(c.struggleId, FightMode.daily, daily: c),
           onBack: _pop,
         ),
       );
@@ -284,7 +315,7 @@ class _GevurahAppState extends State<GevurahApp> {
           'mode-intro',
           (BuildContext _) => ModeIntroScreen(
             mode: mode,
-            onChoose: (String? id, Difficulty d) => _openOpponent(id ?? enduranceStruggleId, mode, difficulty: d),
+            onChoose: (String? id, Difficulty d) => _play(id ?? enduranceStruggleId, mode, difficulty: d),
             onBack: _pop,
           ),
         );
@@ -307,7 +338,7 @@ class _GevurahAppState extends State<GevurahApp> {
         'mode-intro',
         (BuildContext _) => ModeIntroScreen(
           mode: FightMode.training,
-          onChoose: (String? id, Difficulty d) => _openOpponent(id ?? enduranceStruggleId, FightMode.training, difficulty: d),
+          onChoose: (String? id, Difficulty d) => _play(id ?? enduranceStruggleId, FightMode.training, difficulty: d),
           onBack: _pop,
         ),
       );
@@ -381,21 +412,25 @@ class _GevurahAppState extends State<GevurahApp> {
       );
 
   Widget _first() {
-    return ListenableBuilder(
-      listenable: app.settings,
-      builder: (BuildContext context, Widget? _) {
-        if (!app.settings.settings.onboardingDone) {
-          return OnboardingScreen(onDone: _openHowToPlay);
+    return ValueListenableBuilder<_Stage>(
+      valueListenable: _stage,
+      builder: (BuildContext context, _Stage stage, Widget? _) {
+        switch (stage) {
+          case _Stage.fight:
+            return _fightScreen(context);
+          case _Stage.result:
+            return _resultScreen();
+          case _Stage.menu:
+            return HomeScreen(
+              onContinue: (String id) => _play(id, FightMode.journey),
+              onJourney: _openJourney,
+              onDaily: _openDaily,
+              onModes: _openModes,
+              onCards: _openCards,
+              onLibrary: _openLibrary,
+              onSettings: _openSettings,
+            );
         }
-        return HomeScreen(
-          onContinue: (String id) => _openOpponent(id, FightMode.journey),
-          onJourney: _openJourney,
-          onDaily: _openDaily,
-          onModes: _openModes,
-          onCards: _openCards,
-          onLibrary: _openLibrary,
-          onSettings: _openSettings,
-        );
       },
     );
   }

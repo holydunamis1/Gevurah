@@ -622,7 +622,7 @@
       }
     }
   },
-  "resultContinue": "Continue",
+  "resultContinue": "Next fight",
   "@resultContinue": {
     "description": "Result button"
   },
@@ -1442,5 +1442,9 @@
   "rewardUnavailable": "No ad is ready right now. Try again later.",
   "@rewardUnavailable": {
     "description": "Shown when no rewarded ad could be shown"
+  },
+  "fightCue": "Tap to block when the hit lands!",
+  "@fightCue": {
+    "description": "One-line cue shown over the first fight until the player has answered a few moves"
   }
 }

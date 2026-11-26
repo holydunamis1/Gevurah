@@ -241,6 +241,29 @@ class _FightScreenState extends State<FightScreen> {
                   return LessonCoach(lesson: widget.lesson!.lesson, done: TrainingLessons.progress(widget.lesson!.lesson, now.history, breathUsed: breathUsed));
                 },
               ),
+            if (widget.lesson == null && app.progress.value.progress.bouts.isEmpty)
+              Positioned(
+                top: Sp.xxl,
+                left: Sp.lg,
+                right: Sp.lg,
+                child: IgnorePointer(
+                  child: ListenableBuilder(
+                    listenable: app.fight,
+                    builder: (BuildContext context, Widget? _) {
+                      final FightView now = app.fight.value ?? view;
+                      if (now.history.length >= 4 || _pause != _Pause.none) {
+                        return const SizedBox.shrink();
+                      }
+                      return Center(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(color: theme.palette.bgSecondary, borderRadius: BorderRadius.circular(Radii.chip), border: Border.all(color: theme.palette.hairline, width: Strokes.hairline)),
+                          child: Padding(padding: const EdgeInsets.symmetric(horizontal: Sp.md, vertical: Sp.sm), child: Text(l.fightCue, style: theme.text.callout)),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
             if (_pause == _Pause.corner)
               ListenableBuilder(
                 listenable: app.fight,

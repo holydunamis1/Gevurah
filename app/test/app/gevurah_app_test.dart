@@ -48,11 +48,14 @@ Future<void> go(WidgetTester t) async {
 Future<void> openMenu(WidgetTester t, AppLocalizations l) async {
   final SemanticsHandle h = t.ensureSemantics();
   await t.tap(find.bySemanticsLabel(l.hudPause));
-  await t.pump(const Duration(milliseconds: 500));
+  await t.pump();
+  await t.pump(const Duration(milliseconds: 600));
   await t.tap(find.text(l.fightLeave));
-  await t.pump(const Duration(milliseconds: 500));
+  await t.pump();
+  await t.pump(const Duration(milliseconds: 600));
   await t.tap(find.text(l.fightLeave));
-  await t.pump(const Duration(milliseconds: 500));
+  await t.pump();
+  await t.pump(const Duration(milliseconds: 600));
   h.dispose();
 }
 

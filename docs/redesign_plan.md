@@ -15,7 +15,7 @@ p6a-7 rating prompt, p6b translations, p6c integration tests, p6d ad map. Every 
 - R2 One-tap fight: simplify the rules and the UI to tap-to-block with an automatic counter, a very forgiving window, two simple health bars, no Stamina. Keep determinism and the Daily Bout.
 - R3 Art: the cartoon boxer and 16 distinct opponent characters drawn in code, bright colours per struggle, big readable wind-ups, hit and defeat animation.
 - R4 Game feel: menu and fight music, richer effects, haptics, screen shake, win and lose moments with the verse after the bout.
-- R5 Menus behind the game: Next fight is the default after a result; map, cards, daily bout and settings behind one small icon; ads and rewards moved to the new moments.
+- R5 Menus behind the game: Next fight is the default after a result. One header on every screen: wordmark on the left; on the right four icons, Map, Daily Bout, Sound and Settings. Language, theme, haptics, privacy, Remove Ads and licences live inside Settings (language and theme follow the device by default). ads and rewards moved to the new moments.
 - Test APK after R1 to R3 so the look and feel can be judged early; then R4, R5, a second APK, and the paused batches resume.
 
 ## Open questions

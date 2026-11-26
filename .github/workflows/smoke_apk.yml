@@ -57,7 +57,7 @@ jobs:
             echo "=== process alive? ==="
             adb shell pidof com.zdmgold.gevurah || echo "NOT RUNNING"
             echo "=== crash lines ==="
-            grep -n -E "FATAL EXCEPTION|AndroidRuntime|Process: com.zdmgold|Fatal signal|SIGSEGV|ANR in|Flutter.*(Exception|Error)|E/flutter" /tmp/logcat.txt | head -60 || true
+            grep -n -E "FATAL EXCEPTION|AndroidRuntime|Process: com.zdmgold|GevurahAudio|Fatal signal|SIGSEGV|ANR in|Flutter.*(Exception|Error)|E/flutter" /tmp/logcat.txt | head -60 || true
             echo "=== context ==="
             grep -n -A25 "FATAL EXCEPTION" /tmp/logcat.txt | head -80 || true
       - uses: actions/upload-artifact@v4

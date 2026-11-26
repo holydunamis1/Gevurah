@@ -11,7 +11,6 @@ import 'package:gevurah/screens/error_screen.dart';
 import 'package:gevurah/screens/fight_screen.dart';
 import 'package:gevurah/screens/home_screen.dart';
 import 'package:gevurah/core/models/fight_config.dart';
-import 'package:gevurah/screens/result_screen.dart';
 import 'package:gevurah/screens/settings_screen.dart';
 
 import '../screens/screens_test.dart' show Rigging, makeApp, playOut;

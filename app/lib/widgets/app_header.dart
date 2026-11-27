@@ -43,7 +43,9 @@ class AppHeader extends StatelessWidget {
       color: theme.palette.bgPrimary,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sp.md),
-        child: Row(
+        child: Semantics(
+          explicitChildNodes: true,
+          child: Row(
           children: <Widget>[
             Expanded(
               child: Text(wordmark, maxLines: 1, overflow: TextOverflow.ellipsis, style: theme.text.title2),
@@ -53,6 +55,7 @@ class AppHeader extends StatelessWidget {
             IconChip(icon: soundOn ? AppIcons.sound : AppIcons.muted, semanticLabel: soundLabel, onPressed: onSound),
             IconChip(icon: AppIcons.settings, semanticLabel: settingsLabel, onPressed: onSettings),
           ],
+        ),
         ),
       ),
     );

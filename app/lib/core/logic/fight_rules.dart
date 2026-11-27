@@ -12,6 +12,10 @@ abstract final class FightTuning {
   /// starting number for tuning.
   static const int rewardStamina = 20;
 
+  /// The one-tap game's struggles have this many times their Weight, so a bout
+  /// lasts a minute or more rather than a few exchanges.
+  static const int easyWeightFactor = 3;
+
   /// Starting Stamina in the one-tap game, so it never runs out.
   static const int endlessStamina = 100000;
 

@@ -1435,7 +1435,7 @@
   "@rewardUnavailable": {
     "description": "Shown when no rewarded ad could be shown"
   },
-  "fightCue": "Tap to block when the hit lands!",
+  "fightCue": "Tap to punch! Tap when they swing to block!",
   "@fightCue": {
     "description": "One-line cue shown over the first fight until the player has answered a few moves"
   }

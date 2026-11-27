@@ -79,6 +79,8 @@ class Rig {
         }
       case FightResumed():
         {}
+      case PlayerPunched():
+        {}
     }
   }
 

@@ -103,6 +103,13 @@ class FightWorld extends PositionComponent {
         }
       case OpeningOpened():
         {}
+      case PlayerPunched():
+        fighter.show(FighterPose.jab);
+        _later(GameTuning.lungeMs * 0.6, () {
+          shadow.flinch();
+          _spawn(EffectKind.impact, _shadowCenter, palette.accent, radius: shadow.size.y * 0.22);
+        });
+        _shakeMs = _shakeTotalMs * 0.4;
       case ExchangeResolved(:final ExchangeRecord record):
         _onResolved(record);
       case FightPaused():

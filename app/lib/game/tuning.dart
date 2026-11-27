@@ -22,6 +22,13 @@ abstract final class GameTuning {
   /// A short breath between exchanges.
   static const double interExchangeMs = 250;
 
+  /// The one-tap game's rest between exchanges, when the player may punch.
+  static const double easyRestMs = 1600;
+
+  /// A free punch's damage and the shortest gap between two of them.
+  static const int freePunchDamage = 3;
+  static const double freePunchGapMs = 230;
+
   /// The wait before the first telegraph, and after a corner, ten-count or pause.
   static const double resumeLeadMs = 700;
 

@@ -11,6 +11,7 @@ import '../core/models/player_state.dart';
 import '../core/models/settings_model.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_helpers.dart';
+import '../game/tuning.dart';
 import '../game/boxing_game.dart';
 import '../game/fight_arena.dart';
 import '../game/fight_controller.dart';
@@ -95,6 +96,7 @@ class _FightScreenState extends State<FightScreen> {
       fight: app.fight,
       input: app.fight.value?.config.easy ?? false ? OneTapStrategy() : TapSwipeStrategy(),
       autoCounter: app.fight.value?.config.easy ?? false,
+      restMs: (app.fight.value?.config.easy ?? false) ? GameTuning.easyRestMs : GameTuning.interExchangeMs,
       nowMs: FightController.stopwatchClock(),
       haptics: app.haptics,
       audio: app.audio,
@@ -155,6 +157,7 @@ class _FightScreenState extends State<FightScreen> {
       case TelegraphStarted():
       case ResponseRegistered():
       case OpeningOpened():
+      case PlayerPunched():
       case ExchangeResolved():
         {}
     }

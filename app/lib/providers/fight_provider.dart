@@ -119,7 +119,7 @@ class FightProvider extends ValueNotifier<FightView?> {
     _aiRng = SeededRng(config.seed).fork('ai');
     _modifiers = Modifiers.from(cardIds: config.cardIds, stance: config.stance);
     final int percent = config.mode == FightMode.sparring ? DifficultyTuning.percent(config.difficulty) : 100;
-    final int base = (def.weight * percent / 100).round();
+    final int base = (def.weight * percent / 100).round() * (config.easy && config.mode != FightMode.endurance ? FightTuning.easyWeightFactor : 1);
     final int weight = config.mode == FightMode.endurance ? base * FightTuning.enduranceWeightFactor : base;
     final bool bonusAllowed = config.mode != FightMode.daily && config.mode != FightMode.training;
     final int breath = bonusAllowed ? config.extraBreath.clamp(0, 1) : 0;
@@ -144,6 +144,25 @@ class FightProvider extends ValueNotifier<FightView?> {
     }
     final int ms = move.telegraphMs - cut;
     return cut == 0 ? move : move.copyWith(telegraphMs: ms < StruggleAi.minTelegraphMs ? StruggleAi.minTelegraphMs : ms);
+  }
+
+  /// A free punch thrown between exchanges. It wears the struggle's Weight down
+  /// but never finishes it: the last blow always comes from a counter.
+  bool punch(int damage) {
+    final FightView? v = value;
+    if (v == null || v.finished || v.state.weight <= 1) {
+      return false;
+    }
+    final int weight = (v.state.weight - damage).clamp(1, v.state.weight);
+    value = FightView(
+      config: v.config,
+      struggle: v.struggle,
+      state: v.state.copyWith(weight: weight),
+      history: v.history,
+      move: v.move,
+      stanceChanges: v.stanceChanges,
+    );
+    return true;
   }
 
   /// How long the current move telegraphs, with the equipped cards and stance.

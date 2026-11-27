@@ -61,6 +61,36 @@ void main() {
       expect(r.app.fight.value!.state.player.stamina, greaterThan(PlayerState.maxStamina * 100));
     });
 
+    test('a tap between exchanges is a free punch that never finishes the struggle', () async {
+      final Rigging r = await makeApp();
+      r.app.fight.start(easyConfig());
+      final int start = r.app.fight.value!.state.weight;
+      expect(start, StruggleCatalog.career.first.weight * 3);
+      final _Clock clock = _Clock();
+      final FightController c = FightController(fight: r.app.fight, input: OneTapStrategy(), nowMs: clock.read, autoCounter: true);
+      int punches = 0;
+      c.events.listen((FightEvent e) {
+        if (e is PlayerPunched) {
+          punches++;
+        }
+      });
+      c.begin();
+      for (int i = 0; i < 200; i++) {
+        clock.now += 300;
+        c.gesture(RawGesture.tap(clock.now));
+        c.tick();
+        if (c.phase != ControllerPhase.lead) {
+          break;
+        }
+      }
+      expect(punches, greaterThan(0));
+      expect(r.app.fight.value!.state.weight, lessThan(start));
+      expect(r.app.fight.punch(100000), isTrue);
+      expect(r.app.fight.value!.state.weight, 1);
+      expect(r.app.fight.punch(3), isFalse, reason: 'the last blow is a counter');
+      expect(r.app.fight.value!.finished, isFalse);
+    });
+
     test('taps alone win a bout: blocks bring automatic counters', () async {
       final Rigging r = await makeApp();
       r.app.fight.start(easyConfig());

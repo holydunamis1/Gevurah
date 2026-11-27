@@ -40,6 +40,11 @@ class OpeningOpened extends FightEvent {
   const OpeningOpened();
 }
 
+/// The player threw a free punch between exchanges.
+class PlayerPunched extends FightEvent {
+  const PlayerPunched();
+}
+
 /// An exchange was decided.
 class ExchangeResolved extends FightEvent {
   const ExchangeResolved(this.record);
@@ -76,6 +81,7 @@ class FightController {
     this.haptics,
     this.audio,
     this.autoCounter = false,
+    this.restMs = GameTuning.interExchangeMs,
   });
 
   final FightProvider fight;
@@ -89,6 +95,11 @@ class FightController {
   /// The one-tap game: when an answer opens a counter, the counter is thrown
   /// at once and perfectly (a combo after a perfect answer, else a strike).
   final bool autoCounter;
+
+  /// The pause between exchanges.
+  final double restMs;
+
+  double _lastPunchMs = -1000;
 
   final StreamController<FightEvent> _events = StreamController<FightEvent>.broadcast(sync: true);
   Stream<FightEvent> get events => _events.stream;
@@ -245,13 +256,35 @@ class FightController {
         if (o != null) {
           _opening = o;
         }
-      case ControllerPhase.idle:
       case ControllerPhase.lead:
+        _freePunch();
+      case ControllerPhase.idle:
       case ControllerPhase.settling:
       case ControllerPhase.resolving:
       case ControllerPhase.paused:
         return;
     }
+  }
+
+  /// A tap between exchanges throws a punch (the one-tap game only).
+  void _freePunch() {
+    if (!autoCounter) {
+      return;
+    }
+    final double now = nowMs();
+    if (now - _lastPunchMs < GameTuning.freePunchGapMs) {
+      return;
+    }
+    if (!fight.punch(GameTuning.freePunchDamage)) {
+      return;
+    }
+    _lastPunchMs = now;
+    _haptic(HapticKind.selection);
+    final AudioPort? a = audio;
+    if (a != null) {
+      unawaited(a.play(GameTuning.soundHit, volume: 0.6));
+    }
+    _emit(const PlayerPunched());
   }
 
   void _onResponse(ResponseEvent r) {
@@ -340,7 +373,7 @@ class FightController {
     } else if (v.state.phase == FightPhase.corner) {
       _pause(PauseReason.corner);
     } else {
-      _enterLead(GameTuning.interExchangeMs);
+      _enterLead(restMs);
     }
   }
 

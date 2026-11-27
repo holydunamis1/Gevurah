@@ -1093,14 +1093,6 @@
   "@settingsPlay": {
     "description": "Settings section"
   },
-  "settingsTimingAssist": "Timing assist",
-  "@settingsTimingAssist": {
-    "description": "Settings switch"
-  },
-  "settingsTimingAssistHint": "Gives every timing window 40 ms more room.",
-  "@settingsTimingAssistHint": {
-    "description": "Settings switch hint"
-  },
   "settingsSound": "Sound effects",
   "@settingsSound": {
     "description": "Settings switch"

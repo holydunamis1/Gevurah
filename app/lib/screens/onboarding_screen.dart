@@ -12,7 +12,6 @@ import '../theme/app_theme.dart';
 import '../theme/icon_aliases.dart';
 import '../theme/tokens.dart';
 import '../widgets/app_row.dart';
-import '../widgets/nav_bar.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/screen_frame.dart';
 import '../widgets/section_header.dart';
@@ -36,7 +35,7 @@ class OnboardingScreen extends StatelessWidget {
     final AppProviders app = AppScope.of(context);
     final AppTheme theme = AppTheme.of(context);
     return ScreenFrame(
-      navBar: NavBar(title: l.appName),
+      navBar: const SizedBox.shrink(),
       child: ListenableBuilder(
         listenable: app.locale,
         builder: (BuildContext context, Widget? _) {

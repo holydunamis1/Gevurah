@@ -56,6 +56,10 @@ abstract final class GameTuning {
   static const String soundTellHeavy = 'tell_heavy';
   static const String soundTellFlurry = 'tell_flurry';
   static const String soundCount = 'count';
+  static const String soundBell = 'bell';
+  static const String soundWin = 'win';
+  static const String soundLose = 'lose';
+  static const String soundMusic = 'music';
   static const List<String> allSounds = <String>[
     soundTell,
     soundTellHeavy,
@@ -67,6 +71,10 @@ abstract final class GameTuning {
     soundDown,
     soundDefeat,
     soundCount,
+    soundBell,
+    soundWin,
+    soundLose,
+    soundMusic,
   ];
 
   /// The tell's sound by move. A fake and a bait sound like the strike they

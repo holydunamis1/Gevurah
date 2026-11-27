@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 
 import '../core/catalog/card_catalog.dart';
 import '../core/models/curated_verse.dart';
 import '../core/models/fight_config.dart';
 import '../core/models/verse_card_def.dart';
+import '../game/tuning.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_helpers.dart';
 import '../providers/app_providers.dart';
@@ -13,7 +16,6 @@ import '../theme/app_theme.dart';
 import '../theme/icon_aliases.dart';
 import '../theme/tokens.dart';
 import '../widgets/app_row.dart';
-import '../widgets/nav_bar.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/screen_frame.dart';
 import '../widgets/star_row.dart';
@@ -44,6 +46,8 @@ class _ResultScreenState extends State<ResultScreen> {
   Future<FightFinish?> _run(AppProviders app) async {
     final FightFinish? done = await app.fight.finish();
     if (done != null) {
+      final bool won = done.view.config.mode == FightMode.endurance || done.view.won;
+      unawaited(app.audio?.play(won ? GameTuning.soundWin : GameTuning.soundLose));
       await app.ads.maybeShowInterstitial();
     }
     return done;
@@ -72,7 +76,7 @@ class _ResultScreenState extends State<ResultScreen> {
     final AppTheme theme = AppTheme.of(context);
     final Future<FightFinish?> future = _finish ??= _run(app);
     return ScreenFrame(
-      navBar: NavBar(title: l.appName),
+      navBar: const SizedBox.shrink(),
       adSlot: const AppAdSlot(),
       child: FutureBuilder<FightFinish?>(
         future: future,

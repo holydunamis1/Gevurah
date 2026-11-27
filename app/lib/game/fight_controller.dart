@@ -167,6 +167,7 @@ class FightController {
     final AudioPort? a = audio;
     if (a != null) {
       unawaited(a.preload(GameTuning.allSounds));
+      unawaited(a.play(GameTuning.soundBell));
     }
     _enterLead(GameTuning.resumeLeadMs);
   }
@@ -315,6 +316,9 @@ class FightController {
     if (record.outcome.damageTaken > 0) {
       _haptic(HapticKind.hit);
       _sound(GameTuning.soundHit);
+    } else if (record.counter != OpeningAction.none && record.outcome.damageDealt > 0) {
+      _haptic(HapticKind.hit);
+      _sound(record.counter == OpeningAction.combo ? GameTuning.soundPerfect : GameTuning.soundHit);
     }
     _phase = ControllerPhase.resolving;
     _until = now + GameTuning.resolveShowMs;

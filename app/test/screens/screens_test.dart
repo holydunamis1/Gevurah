@@ -169,8 +169,7 @@ void main() {
       await t.tap(find.text('Modes'));
       await t.tap(find.text('Cards'));
       await t.tap(find.text('Verse library'));
-      await t.tap(find.bySemanticsLabel('Settings'));
-      expect(log, <String>['continue:$first', 'journey', 'daily', 'modes', 'cards', 'library', 'settings']);
+      expect(log, <String>['continue:$first', 'journey', 'daily', 'modes', 'cards', 'library']);
       expect(HomeScreen.nextStruggle(r.app.progress.value.progress), first);
     });
 

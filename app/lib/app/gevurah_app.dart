@@ -10,6 +10,9 @@ import '../core/config/app_config.dart';
 import '../core/models/daily_challenge.dart';
 import '../core/models/fight_config.dart';
 import '../core/models/loadout.dart';
+import '../core/models/settings_model.dart';
+import '../core/ports/audio_port.dart';
+import '../game/tuning.dart';
 import '../l10n/app_localizations.dart';
 import '../platform/url_service.dart';
 import '../providers/app_providers.dart';
@@ -35,6 +38,7 @@ import '../screens/verse_library_screen.dart';
 import '../screens/error_screen.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens.dart';
+import '../widgets/app_header.dart';
 import 'fatal_error.dart';
 
 /// Route names the flow relies on.
@@ -101,6 +105,8 @@ class _GevurahAppState extends State<GevurahApp> {
   void initState() {
     super.initState();
     unawaited(widget.setOrientations(FightScreen.menuOrientations));
+    _stage.addListener(_music);
+    app.settings.addListener(_music);
     _playNext();
     _taps = widget.dailyTaps?.listen((_) => _openDaily());
     unawaited(_openDailyIfColdStart());
@@ -111,9 +117,46 @@ class _GevurahAppState extends State<GevurahApp> {
   @override
   void dispose() {
     app.locale.removeListener(_syncReminder);
+    _stage.removeListener(_music);
+    app.settings.removeListener(_music);
     _stage.dispose();
     unawaited(_taps?.cancel());
     super.dispose();
+  }
+
+  bool _musicPlaying = false;
+
+  /// Music plays during a fight when sound and music are on, and stops
+  /// everywhere else.
+  void _music() {
+    final AudioPort? a = app.audio;
+    if (a == null) {
+      return;
+    }
+    final SettingsModel s = app.settings.settings;
+    final bool want = _stage.value == _Stage.fight && s.soundOn && s.musicOn;
+    if (want == _musicPlaying) {
+      return;
+    }
+    _musicPlaying = want;
+    if (want) {
+      unawaited(a.startLoop(GameTuning.soundMusic, volume: 0.35));
+    } else {
+      unawaited(a.stopLoop());
+    }
+  }
+
+  /// The header's Sound icon switches every sound and the music together.
+  void _toggleSound() {
+    final SettingsModel s = app.settings.settings;
+    final bool on = !(s.soundOn && s.musicOn);
+    unawaited(app.settings.update((SettingsModel m) => m.copyWith(soundOn: on, musicOn: on)));
+  }
+
+  void _fromHeader(VoidCallback open) {
+    _toMenu();
+    _home();
+    open();
   }
 
   /// A tap on the reminder while the app was closed opens the Daily Bout over
@@ -436,6 +479,48 @@ class _GevurahAppState extends State<GevurahApp> {
     );
   }
 
+  /// The one header above every screen. The screens below it take no top inset
+  /// of their own.
+  Widget _withHeader(Widget child) {
+    return Builder(
+      builder: (BuildContext context) {
+        final AppLocalizations l = AppLocalizations.of(context);
+        final AppTheme theme = AppTheme.of(context);
+        return ColoredBox(
+          color: theme.palette.bgPrimary,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SafeArea(
+                bottom: false,
+                child: ListenableBuilder(
+                  listenable: Listenable.merge(<Listenable>[app.settings, app.daily]),
+                  builder: (BuildContext context, Widget? _) {
+                    final SettingsModel s = app.settings.settings;
+                    return AppHeader(
+                      wordmark: l.appName,
+                      mapLabel: l.homeJourney,
+                      dailyLabel: l.homeDaily,
+                      soundLabel: l.settingsSound,
+                      settingsLabel: l.homeSettings,
+                      soundOn: s.soundOn && s.musicOn,
+                      showDaily: app.daily.value.enabled,
+                      onMap: () => _fromHeader(_openJourney),
+                      onDaily: () => _fromHeader(_openDaily),
+                      onSound: _toggleSound,
+                      onSettings: () => _fromHeader(_openSettings),
+                    );
+                  },
+                ),
+              ),
+              Expanded(child: MediaQuery.removePadding(context: context, removeTop: true, child: child)),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget _withFallback(Widget child) {
     final FatalErrorHost? host = widget.fatalErrors;
     if (host == null) {
@@ -481,7 +566,7 @@ class _GevurahAppState extends State<GevurahApp> {
                 textDirection: app.locale.isRightToLeft ? TextDirection.rtl : TextDirection.ltr,
                 child: AppTheme.forBrightness(
                   brightness: dark ? Brightness.dark : Brightness.light,
-                  child: _withFallback(child ?? const SizedBox.shrink()),
+                  child: _withFallback(_withHeader(child ?? const SizedBox.shrink())),
                 ),
               ),
             );

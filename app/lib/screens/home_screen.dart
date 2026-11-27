@@ -12,8 +12,6 @@ import '../theme/app_theme.dart';
 import '../theme/icon_aliases.dart';
 import '../theme/tokens.dart';
 import '../widgets/app_card.dart';
-import '../widgets/icon_chip.dart';
-import '../widgets/nav_bar.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/screen_frame.dart';
 import '../widgets/warning_banner.dart';
@@ -58,10 +56,7 @@ class HomeScreen extends StatelessWidget {
     final AppLocalizations l = AppLocalizations.of(context);
     final AppProviders app = AppScope.of(context);
     return ScreenFrame(
-      navBar: NavBar(
-        title: l.appName,
-        actions: <Widget>[IconChip(icon: AppIcons.settings, semanticLabel: l.homeSettings, onPressed: onSettings)],
-      ),
+      navBar: const SizedBox.shrink(),
       adSlot: const AppAdSlot(),
       child: ListenableBuilder(
         listenable: Listenable.merge(<Listenable>[app.progress, app.daily]),

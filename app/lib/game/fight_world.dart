@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/components.dart';
@@ -34,6 +35,8 @@ class FightWorld extends PositionComponent {
   StreamSubscription<FightEvent>? _sub;
   final List<_Timer> _timers = <_Timer>[];
   int _lastRises = 0;
+  double _shakeMs = 0;
+  static const double _shakeTotalMs = 260;
 
   FightProvider get _fight => controller.fight;
 
@@ -115,6 +118,9 @@ class FightWorld extends PositionComponent {
   void _onResolved(ExchangeRecord r) {
     final FightView? v = _fight.value;
     shadow.lunge();
+    if (r.outcome.damageTaken > 0 || (r.counter != OpeningAction.none && r.outcome.damageDealt > 0)) {
+      _shakeMs = _shakeTotalMs;
+    }
     if (r.outcome.damageTaken > 0) {
       _spawn(EffectKind.impact, _fighterChest, palette.error, radius: fighter.size.y * 0.45);
     }
@@ -151,6 +157,13 @@ class FightWorld extends PositionComponent {
   @override
   void update(double dt) {
     super.update(dt);
+    if (_shakeMs > 0 && !reduceMotion) {
+      _shakeMs = (_shakeMs - dt * 1000).clamp(0.0, _shakeTotalMs);
+      final double k = _shakeMs / _shakeTotalMs;
+      position = Vector2(math.sin(_shakeMs * 0.12) * 9 * k, math.cos(_shakeMs * 0.17) * 6 * k);
+    } else if (position.x != 0 || position.y != 0) {
+      position = Vector2.zero();
+    }
     if (controller.phase == ControllerPhase.waitingResponse) {
       shadow.tell(controller.telegraphProgress);
     }

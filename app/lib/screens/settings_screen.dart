@@ -125,13 +125,6 @@ class SettingsScreen extends StatelessWidget {
               ),
               SectionHeader(l.settingsPlay),
               ToggleRow(
-                label: l.settingsTimingAssist,
-                subtitle: l.settingsTimingAssistHint,
-                icon: AppIcons.timing,
-                value: s.timingAssist,
-                onChanged: (bool v) => unawaited(app.settings.update((SettingsModel m) => m.copyWith(timingAssist: v))),
-              ),
-              ToggleRow(
                 label: l.settingsSound,
                 icon: AppIcons.sound,
                 value: s.soundOn,

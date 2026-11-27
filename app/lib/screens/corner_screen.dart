@@ -15,7 +15,7 @@ import 'parts/verse_block.dart';
 /// It fills the arena while the bout is paused, and sits side by side with the
 /// verse when the arena is wide (landscape).
 class CornerScreen extends StatelessWidget {
-  const CornerScreen({super.key, required this.round, required this.stance, required this.onStance, required this.onNextRound});
+  const CornerScreen({super.key, required this.round, required this.stance, required this.onStance, required this.onNextRound, this.simple = false});
 
   /// The round that just ended.
   final int round;
@@ -24,6 +24,9 @@ class CornerScreen extends StatelessWidget {
   final Stance stance;
   final ValueChanged<Stance> onStance;
   final VoidCallback onNextRound;
+
+  /// The one-tap game: no stance choice, just the verse and Next round.
+  final bool simple;
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +38,18 @@ class CornerScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(l.cornerStance, style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
-          const SizedBox(height: Sp.xs),
-          SegmentedControl<Stance>(
-            options: <SegmentOption<Stance>>[for (final Stance s in Stance.values) SegmentOption<Stance>(value: s, label: l.stanceName(s))],
-            selected: stance,
-            onChanged: onStance,
-          ),
-          const SizedBox(height: Sp.xs),
-          Text(l.stanceHint(stance), style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
-          const SizedBox(height: Sp.md),
+          if (!simple) ...<Widget>[
+            Text(l.cornerStance, style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
+            const SizedBox(height: Sp.xs),
+            SegmentedControl<Stance>(
+              options: <SegmentOption<Stance>>[for (final Stance s in Stance.values) SegmentOption<Stance>(value: s, label: l.stanceName(s))],
+              selected: stance,
+              onChanged: onStance,
+            ),
+            const SizedBox(height: Sp.xs),
+            Text(l.stanceHint(stance), style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
+            const SizedBox(height: Sp.md),
+          ],
           Text(l.cornerRested, style: theme.text.footnote.copyWith(color: theme.palette.textSecondary)),
           const SizedBox(height: Sp.sm),
           PrimaryButton(label: l.cornerNext, onPressed: onNextRound),

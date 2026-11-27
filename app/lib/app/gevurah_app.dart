@@ -221,7 +221,8 @@ class _GevurahAppState extends State<GevurahApp> {
         stance: loadout.stance,
         seed: seed,
         difficulty: difficulty,
-        timingAssist: app.settings.settings.timingAssist,
+        timingAssist: true,
+        easy: true,
       ),
       daily: daily,
     );

@@ -123,7 +123,11 @@ class FightProvider extends ValueNotifier<FightView?> {
     final int weight = config.mode == FightMode.endurance ? base * FightTuning.enduranceWeightFactor : base;
     final bool bonusAllowed = config.mode != FightMode.daily && config.mode != FightMode.training;
     final int breath = bonusAllowed ? config.extraBreath.clamp(0, 1) : 0;
-    final int stamina = config.mode == FightMode.endurance ? config.extraStamina.clamp(0, FightTuning.rewardStamina) : 0;
+    final int stamina = config.easy
+        ? FightTuning.endlessStamina - PlayerState.maxStamina
+        : config.mode == FightMode.endurance
+            ? config.extraStamina.clamp(0, FightTuning.rewardStamina)
+            : 0;
     final FightState state = FightState.initial(weight, player: PlayerState.boosted(extraBreath: breath, extraStamina: stamina));
     value = FightView(config: config, struggle: def, state: state, history: const <ExchangeRecord>[], move: _pick(def, const <ExchangeRecord>[], config));
     return true;

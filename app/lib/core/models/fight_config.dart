@@ -21,6 +21,7 @@ class FightConfig {
     this.extraBreath = 0,
     this.extraStamina = 0,
     this.isRetry = false,
+    this.easy = false,
   });
 
   final FightMode mode;
@@ -45,6 +46,10 @@ class FightConfig {
   /// True for the one retry a player may earn after a loss.
   final bool isRetry;
 
+  /// The one-tap game: any tap blocks, the counter fires by itself, and Stamina
+  /// never runs out. Set for normal play; the Training lessons keep every action.
+  final bool easy;
+
   FightConfig copyWith({
     FightMode? mode,
     String? struggleId,
@@ -56,6 +61,7 @@ class FightConfig {
     int? extraBreath,
     int? extraStamina,
     bool? isRetry,
+    bool? easy,
   }) {
     return FightConfig(
       mode: mode ?? this.mode,
@@ -68,6 +74,7 @@ class FightConfig {
       extraBreath: extraBreath ?? this.extraBreath,
       extraStamina: extraStamina ?? this.extraStamina,
       isRetry: isRetry ?? this.isRetry,
+      easy: easy ?? this.easy,
     );
   }
 
@@ -82,6 +89,7 @@ class FightConfig {
         if (extraBreath != 0) 'extraBreath': extraBreath,
         if (extraStamina != 0) 'extraStamina': extraStamina,
         if (isRetry) 'isRetry': isRetry,
+        if (easy) 'easy': easy,
       };
 
   factory FightConfig.fromJson(Map<String, Object?> json) {
@@ -103,6 +111,7 @@ class FightConfig {
       extraBreath: json['extraBreath'] is int ? json['extraBreath']! as int : 0,
       extraStamina: json['extraStamina'] is int ? json['extraStamina']! as int : 0,
       isRetry: json['isRetry'] == true,
+      easy: json['easy'] == true,
     );
   }
 
@@ -118,11 +127,12 @@ class FightConfig {
         other.timingAssist == timingAssist &&
         other.extraBreath == extraBreath &&
         other.extraStamina == extraStamina &&
-        other.isRetry == isRetry;
+        other.isRetry == isRetry &&
+        other.easy == easy;
   }
 
   @override
-  int get hashCode => Object.hash(mode, struggleId, listHash(cardIds), stance, seed, difficulty, timingAssist, extraBreath, extraStamina, isRetry);
+  int get hashCode => Object.hash(mode, struggleId, listHash(cardIds), stance, seed, difficulty, timingAssist, extraBreath, extraStamina, isRetry, easy);
 
   @override
   String toString() => 'FightConfig(${mode.name}, $struggleId, seed $seed)';

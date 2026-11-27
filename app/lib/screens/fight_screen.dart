@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import '../core/catalog/training_lessons.dart';
+import '../core/input/one_tap_strategy.dart';
 import '../core/input/tap_swipe_strategy.dart';
 import '../core/models/fight_config.dart';
 import '../core/models/player_state.dart';
@@ -92,7 +93,8 @@ class _FightScreenState extends State<FightScreen> {
     }
     final FightController c = FightController(
       fight: app.fight,
-      input: TapSwipeStrategy(),
+      input: app.fight.value?.config.easy ?? false ? OneTapStrategy() : TapSwipeStrategy(),
+      autoCounter: app.fight.value?.config.easy ?? false,
       nowMs: FightController.stopwatchClock(),
       haptics: app.haptics,
       audio: app.audio,
@@ -231,7 +233,7 @@ class _FightScreenState extends State<FightScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            FightArena(game: game, controller: c, labels: labels, locale: app.locale.value, onPause: () => unawaited(_showPause(l, c))),
+            FightArena(game: game, controller: c, labels: labels, locale: app.locale.value, onPause: () => unawaited(_showPause(l, c)), simple: view.config.easy),
             if (widget.lesson != null)
               ListenableBuilder(
                 listenable: app.fight,
@@ -272,6 +274,7 @@ class _FightScreenState extends State<FightScreen> {
                   return CornerScreen(
                     round: now.state.round,
                     stance: now.stance,
+                    simple: view.config.easy,
                     onStance: app.fight.changeStance,
                     onNextRound: () {
                       app.fight.endCorner();
@@ -282,6 +285,7 @@ class _FightScreenState extends State<FightScreen> {
               ),
             if (_pause == _Pause.tenCount)
               TenCountScreen(
+                simple: view.config.easy,
                 onRise: (int goodTaps) {
                   app.fight.rise(goodTaps);
                   c.resume();

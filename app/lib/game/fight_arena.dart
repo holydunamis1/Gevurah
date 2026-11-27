@@ -10,13 +10,16 @@ import 'input/touch_layer.dart';
 /// The touch layer sits beneath the HUD so the HUD's buttons never count as
 /// guard taps.
 class FightArena extends StatelessWidget {
-  const FightArena({super.key, required this.game, required this.controller, required this.labels, required this.locale, required this.onPause});
+  const FightArena({super.key, required this.game, required this.controller, required this.labels, required this.locale, required this.onPause, this.simple = false});
 
   final BoxingGame game;
   final FightController controller;
   final FightHudLabels labels;
   final String locale;
   final VoidCallback onPause;
+
+  /// The one-tap HUD.
+  final bool simple;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class FightArena extends StatelessWidget {
       children: <Widget>[
         GameWidget<BoxingGame>(game: game),
         FightTouchLayer(onGesture: controller.gesture, nowMs: controller.nowMs, child: const SizedBox.expand()),
-        FightHud(controller: controller, labels: labels, locale: locale, onPause: onPause),
+        FightHud(controller: controller, labels: labels, locale: locale, onPause: onPause, simple: simple),
       ],
     );
   }

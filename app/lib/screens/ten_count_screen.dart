@@ -18,7 +18,7 @@ import 'parts/verse_block.dart';
 /// After [targetTaps] taps, or [limit], the player stands and [onRise] is
 /// called with the good taps.
 class TenCountScreen extends StatefulWidget {
-  const TenCountScreen({super.key, required this.onRise, this.nowMs, this.limit = const Duration(seconds: 10)});
+  const TenCountScreen({super.key, required this.onRise, this.nowMs, this.limit = const Duration(seconds: 10), this.simple = false});
 
   static const int targetTaps = 6;
 
@@ -31,6 +31,9 @@ class TenCountScreen extends StatefulWidget {
   /// A monotonic clock in milliseconds; the real one by default.
   final double Function()? nowMs;
   final Duration limit;
+
+  /// The one-tap game: a single button stands the player up.
+  final bool simple;
 
   /// Whether a tap [gapMs] after the previous one is steady.
   static bool isSteady(double gapMs) => gapMs >= minGapMs && gapMs <= maxGapMs;
@@ -60,6 +63,12 @@ class _TenCountScreenState extends State<TenCountScreen> {
     _done = true;
     _timer?.cancel();
     widget.onRise(_good);
+  }
+
+  /// Standing up in the one-tap game counts as a steady count.
+  void _standUp() {
+    _good = TenCountScreen.targetTaps;
+    _finish();
   }
 
   void _tap() {
@@ -98,14 +107,16 @@ class _TenCountScreenState extends State<TenCountScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Semantics(
-            liveRegion: true,
-            child: Text(l.tenProgress(_taps, TenCountScreen.targetTaps), textAlign: TextAlign.center, style: theme.text.title2),
-          ),
-          const SizedBox(height: Sp.md),
-          PrimaryButton(label: l.tenTap, icon: AppIcons.strike, onPressed: _tap),
-          const SizedBox(height: Sp.sm),
-          PrimaryButton(label: l.tenStand, onPressed: _finish),
+          if (!widget.simple) ...<Widget>[
+            Semantics(
+              liveRegion: true,
+              child: Text(l.tenProgress(_taps, TenCountScreen.targetTaps), textAlign: TextAlign.center, style: theme.text.title2),
+            ),
+            const SizedBox(height: Sp.md),
+            PrimaryButton(label: l.tenTap, icon: AppIcons.strike, onPressed: _tap),
+            const SizedBox(height: Sp.sm),
+          ],
+          PrimaryButton(label: l.tenStand, onPressed: widget.simple ? _standUp : _finish),
         ],
       ),
     );

@@ -12,6 +12,9 @@ abstract final class FightTuning {
   /// starting number for tuning.
   static const int rewardStamina = 20;
 
+  /// Starting Stamina in the one-tap game, so it never runs out.
+  static const int endlessStamina = 100000;
+
   /// Percent of the struggle's starting Weight it gets back when it rises once.
   static const int riseRestorePercent = 30;
 

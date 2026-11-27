@@ -43,7 +43,7 @@ class FightHudLabels {
 /// the tell. Plain Flutter widgets, so every script and direction renders right.
 /// It never shows a verse: scripture appears only in pauses.
 class FightHud extends StatelessWidget {
-  const FightHud({super.key, required this.controller, required this.labels, required this.locale, required this.onPause});
+  const FightHud({super.key, required this.controller, required this.labels, required this.locale, required this.onPause, this.simple = false});
 
   final FightController controller;
   final FightHudLabels labels;
@@ -51,6 +51,9 @@ class FightHud extends StatelessWidget {
   /// The language code, for number formatting.
   final String locale;
   final VoidCallback onPause;
+
+  /// The one-tap game: only Resolve and Weight, no Stamina and no Breath.
+  final bool simple;
 
   @override
   Widget build(BuildContext context) {
@@ -82,24 +85,30 @@ class FightHud extends StatelessWidget {
                         Expanded(child: weight),
                         const SizedBox(width: Sp.md),
                         Expanded(child: resolve),
-                        const SizedBox(width: Sp.md),
-                        Expanded(child: stamina),
+                        if (!simple) ...<Widget>[
+                          const SizedBox(width: Sp.md),
+                          Expanded(child: stamina),
+                        ],
                       ],
                     )
                   else ...<Widget>[
                     weight,
                     const SizedBox(height: Sp.sm),
                     resolve,
-                    const SizedBox(height: Sp.sm),
-                    stamina,
+                    if (!simple) ...<Widget>[
+                      const SizedBox(height: Sp.sm),
+                      stamina,
+                    ],
                   ],
                   const SizedBox(height: Sp.sm),
               Row(
                 children: <Widget>[
                   Expanded(child: Align(alignment: AlignmentDirectional.centerStart, child: AppChip(label: labels.roundLabel(s.round)))),
                   const SizedBox(width: Sp.sm),
-                  _BreathButton(label: labels.breath, charges: p.breathCharges, locale: locale, onPressed: p.breathCharges > 0 ? controller.breathe : null, color: theme.palette.textPrimary),
-                  const SizedBox(width: Sp.sm),
+                  if (!simple) ...<Widget>[
+                    _BreathButton(label: labels.breath, charges: p.breathCharges, locale: locale, onPressed: p.breathCharges > 0 ? controller.breathe : null, color: theme.palette.textPrimary),
+                    const SizedBox(width: Sp.sm),
+                  ],
                   IconChip(icon: AppIcons.pause, semanticLabel: labels.pause, onPressed: onPause),
                 ],
               ),

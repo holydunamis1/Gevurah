@@ -75,6 +75,7 @@ class FightController {
     required this.nowMs,
     this.haptics,
     this.audio,
+    this.autoCounter = false,
   });
 
   final FightProvider fight;
@@ -84,6 +85,10 @@ class FightController {
   final double Function() nowMs;
   final HapticsPort? haptics;
   final AudioPort? audio;
+
+  /// The one-tap game: when an answer opens a counter, the counter is thrown
+  /// at once and perfectly (a combo after a perfect answer, else a strike).
+  final bool autoCounter;
 
   final StreamController<FightEvent> _events = StreamController<FightEvent>.broadcast(sync: true);
   Stream<FightEvent> get events => _events.stream;
@@ -262,7 +267,11 @@ class FightController {
     // The input strategy has taken its answer; close the response now.
     input.finishResponse();
     final double now = nowMs();
-    if (opens) {
+    if (opens && autoCounter) {
+      _opening = OpeningEvent(q == Quality.perfect ? OpeningAction.combo : OpeningAction.strike, const BeatOffset(0));
+      _emit(const OpeningOpened());
+      _phase = ControllerPhase.settling;
+    } else if (opens) {
       final double at = (now > _beat ? now : _beat);
       _openingBeat = at + GameTuning.openingDelayMs;
       input.beginOpening(_openingBeat);

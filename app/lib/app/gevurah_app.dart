@@ -488,9 +488,14 @@ class _GevurahAppState extends State<GevurahApp> {
         final AppTheme theme = AppTheme.of(context);
         return ColoredBox(
           color: theme.palette.bgPrimary,
+          // Bottom-up, so the header is painted after the screens: a route blocks
+          // the semantics of anything painted before it, and the header must stay
+          // readable to a screen reader.
           child: Column(
+            verticalDirection: VerticalDirection.up,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Expanded(child: MediaQuery.removePadding(context: context, removeTop: true, child: child)),
               SafeArea(
                 bottom: false,
                 child: ListenableBuilder(
@@ -513,7 +518,6 @@ class _GevurahAppState extends State<GevurahApp> {
                   },
                 ),
               ),
-              Expanded(child: MediaQuery.removePadding(context: context, removeTop: true, child: child)),
             ],
           ),
         );

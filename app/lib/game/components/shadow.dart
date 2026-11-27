@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 
 import '../../theme/tokens.dart';
 import '../tuning.dart';
+import 'character.dart';
 
 enum ShadowState { idle, tell, lunge, flinch, down, dissolve, rise }
 
@@ -70,9 +71,12 @@ class ShadowShape {
 /// defeated and then lifts away like a weight released. With Reduce Motion
 /// every movement is replaced by a change of opacity and glow.
 class Shadow extends PositionComponent {
-  Shadow({required this.shape, required this.palette, this.reduceMotion = false});
+  Shadow({required this.shape, required this.palette, this.reduceMotion = false, this.character});
 
   final ShadowShape shape;
+
+  /// The bright cartoon look; when null the abstract outline is drawn.
+  final CharacterSpec? character;
   final AppPalette palette;
   final bool reduceMotion;
 
@@ -203,6 +207,20 @@ class Shadow extends PositionComponent {
     canvas.save();
     canvas.translate(size.x / 2 + dx, size.y / 2 + dy);
     canvas.scale(scale);
+    final CharacterSpec? spec = character;
+    if (spec != null) {
+      final bool hurt = _state == ShadowState.flinch || _state == ShadowState.down || _state == ShadowState.dissolve;
+      final double lunge = _state == ShadowState.lunge ? (_stateMs / GameTuning.lungeMs).clamp(0.0, 1.0) : 0;
+      if (a < 1) {
+        canvas.saveLayer(null, Paint()..color = const Color(0xFFFFFFFF).withValues(alpha: a));
+      }
+      CharacterPainter.paint(canvas, spec, r, CharacterMood(tell: reduceMotion ? 0 : _tell, hurt: hurt, lunge: reduceMotion ? 0 : lunge, time: time), glow: palette.tellGlow);
+      if (a < 1) {
+        canvas.restore();
+      }
+      canvas.restore();
+      return;
+    }
     final Path outline = shape.path(r, time: time);
     if (glow > 0) {
       canvas.drawPath(

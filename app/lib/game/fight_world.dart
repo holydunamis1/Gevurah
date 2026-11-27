@@ -11,6 +11,7 @@ import '../theme/tokens.dart';
 import 'components/effects.dart';
 import 'components/fighter.dart';
 import 'components/ring.dart';
+import 'components/character.dart';
 import 'components/shadow.dart';
 import 'fight_controller.dart';
 import 'tuning.dart';
@@ -19,7 +20,7 @@ import 'tuning.dart';
 /// It only draws and animates; it never decides an outcome.
 class FightWorld extends PositionComponent {
   FightWorld({required this.controller, required this.palette, required String struggleId, this.reduceMotion = false})
-      : shadow = Shadow(shape: ShadowShape.forId(struggleId), palette: palette, reduceMotion: reduceMotion),
+      : shadow = Shadow(shape: ShadowShape.forId(struggleId), palette: palette, reduceMotion: reduceMotion, character: CharacterSpec.forId(struggleId)),
         fighter = Fighter(palette: palette, reduceMotion: reduceMotion),
         ring = Ring(palette: palette);
 

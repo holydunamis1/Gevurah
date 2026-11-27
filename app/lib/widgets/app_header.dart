@@ -36,6 +36,10 @@ class AppHeader extends StatelessWidget {
   final VoidCallback onSound;
   final VoidCallback onSettings;
 
+  /// Each icon is its own semantic node so a screen reader (and a test) finds
+  /// it by name.
+  static Widget _chip(Widget chip) => Semantics(container: true, child: chip);
+
   @override
   Widget build(BuildContext context) {
     final AppTheme theme = AppTheme.of(context);
@@ -43,19 +47,16 @@ class AppHeader extends StatelessWidget {
       color: theme.palette.bgPrimary,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sp.md),
-        child: Semantics(
-          explicitChildNodes: true,
-          child: Row(
+        child: Row(
           children: <Widget>[
             Expanded(
               child: Text(wordmark, maxLines: 1, overflow: TextOverflow.ellipsis, style: theme.text.title2),
             ),
-            IconChip(icon: AppIcons.journey, semanticLabel: mapLabel, onPressed: onMap),
-            if (showDaily) IconChip(icon: AppIcons.daily, semanticLabel: dailyLabel, onPressed: onDaily),
-            IconChip(icon: soundOn ? AppIcons.sound : AppIcons.muted, semanticLabel: soundLabel, onPressed: onSound),
-            IconChip(icon: AppIcons.settings, semanticLabel: settingsLabel, onPressed: onSettings),
+            _chip(IconChip(icon: AppIcons.journey, semanticLabel: mapLabel, onPressed: onMap)),
+            if (showDaily) _chip(IconChip(icon: AppIcons.daily, semanticLabel: dailyLabel, onPressed: onDaily)),
+            _chip(IconChip(icon: soundOn ? AppIcons.sound : AppIcons.muted, semanticLabel: soundLabel, onPressed: onSound)),
+            _chip(IconChip(icon: AppIcons.settings, semanticLabel: settingsLabel, onPressed: onSettings)),
           ],
-        ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gevurah/widgets/app_header.dart';
@@ -11,9 +10,7 @@ void main() {
     final SemanticsHandle h = t.ensureSemantics();
     final r = await makeApp();
     await pumpApp(t, r);
-    debugPrint('HEADER_FOUND=${find.byType(AppHeader).evaluate().length}');
-    debugPrint('SEM=${t.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode?.toStringDeep()}');
-    final String dump = 'HEADER_FOUND=${find.byType(AppHeader).evaluate().length} SEM=${t.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode?.toStringDeep()}';
+    final String dump = 'HEADER_FOUND=${find.byType(AppHeader).evaluate().length} SEM=${t.binding.rootPipelineOwner.semanticsOwner?.rootSemanticsNode?.toStringDeep()}';
     h.dispose();
     fail(dump);
   });

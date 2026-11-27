@@ -9,7 +9,7 @@ void main() {
     final SemanticsHandle h = t.ensureSemantics();
     final r = await makeApp();
     await pumpApp(t, r);
-    final String dump = 'HEADER_FOUND=${find.byType(AppHeader).evaluate().length} SEM=${t.binding.rootPipelineOwner.semanticsOwner?.rootSemanticsNode?.toStringDeep()}';
+    final String dump = 'HEADER_FOUND=${find.byType(AppHeader).evaluate().length} SEM=${t.binding.renderViews.first.owner?.semanticsOwner?.rootSemanticsNode?.toStringDeep()}';
     h.dispose();
     fail(dump);
   });

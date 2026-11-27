@@ -13,6 +13,8 @@ void main() {
     await pumpApp(t, r);
     debugPrint('HEADER_FOUND=${find.byType(AppHeader).evaluate().length}');
     debugPrint('SEM=${t.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode?.toStringDeep()}');
+    final String dump = 'HEADER_FOUND=${find.byType(AppHeader).evaluate().length} SEM=${t.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode?.toStringDeep()}';
     h.dispose();
+    fail(dump);
   });
 }
